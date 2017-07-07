@@ -1,26 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mUU-wy-Hhu">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Loading View Controller-->
+        <scene sceneID="gsr-EA-9gl">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mUU-wy-Hhu" customClass="LoadingViewController" customModule="UTShuttleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="qzs-W2-16F"/>
+                        <viewControllerLayoutGuide type="bottom" id="swk-9e-izS"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="47I-Y0-CPP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoUTShuttleLite" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-3h-Rfj">
+                                <rect key="frame" x="62.5" y="296" width="250" height="75"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMP-YV-QKQ">
+                                <rect key="frame" x="128.5" y="391" width="119" height="36"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.36470588240000001" green="0.7725490196" blue="0.73333333329999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="centerY" secondItem="47I-Y0-CPP" secondAttribute="centerY" id="HMW-y4-rkK"/>
+                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="QZl-Hi-ETX"/>
+                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="47I-Y0-CPP" secondAttribute="leading" constant="10" id="ir0-jZ-PFg"/>
+                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="top" secondItem="b5e-3h-Rfj" secondAttribute="bottom" constant="20" id="pu3-A9-MHf"/>
+                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="ruQ-Jf-2El"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QMP-YV-QKQ" secondAttribute="trailing" constant="10" id="uD5-ti-xtT"/>
+                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="wHM-O2-Bgs"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5e-3h-Rfj" secondAttribute="trailing" constant="1" id="wxT-k1-Reb"/>
+                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="47I-Y0-CPP" secondAttribute="leading" constant="1" id="xdS-W2-ZBK"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="loadingLabel" destination="QMP-YV-QKQ" id="drW-U3-zmv"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pg7-6N-yZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="210" y="117"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logoUTShuttleLite" width="250" height="75"/>
+    </resources>
 </document>
