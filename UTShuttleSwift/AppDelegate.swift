@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var mainNC: UINavigationController?
+
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -44,6 +47,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    // MARK: Helper Functions
+    
+    func setupUI()
+    {
+        //check if logged in
+        //show correct UI
+        var rootVC = UIStoryboard.init(name: "main", bundle: nil).instantiateViewController(withIdentifier: "registerDeviceVC")
+        guard let isLoggedIn = Defaults[.isLoggedIn] else {Defaults[.isLoggedIn] = false; return}
+        print(Defaults[.isLoggedIn] ?? "NOT THERE - THIS FAILED")
+        if isLoggedIn
+        {
+            rootVC = UIStoryboard.init(name: "main", bundle: nil).instantiateViewController(withIdentifier: "mainVC")
+        }
+        else
+        {
+            guard let isDeviceRegistered = Defaults[.isDeviceRegistered] else {Defaults[.isDeviceRegistered] = false; return}
+            if isDeviceRegistered
+            {
+                rootVC = UIStoryboard.init(name: "main", bundle: nil).instantiateViewController(withIdentifier: "loginFlowVC")
+            }
+            // else register - already instantiated
+
+        }
+        
+        
+        mainNC = UINavigationController(rootViewController: rootVC)
+        
     }
 
 

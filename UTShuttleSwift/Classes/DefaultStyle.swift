@@ -31,7 +31,7 @@ public class DefaultStyle: NSObject {
 public struct ColorPalette {
     
     
-    static let UTSTeal = UIColor(hex: "#5DC5BB")
+    static let UTSTeal = UIColor(hex: "#32968c")
 
     
 }

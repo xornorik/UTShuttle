@@ -20,6 +20,7 @@
 		44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C301F0F9E910045E3B0 /* Extensions.swift */; };
 		44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */; };
 		44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */; };
+		44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A989B31F109D770021D5E9 /* NavigationUtils.swift */; };
 		46016C68D1BAB6B8A67B7226 /* Pods_UTShuttleSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF6145F7D1AE52E70E57237D /* Pods_UTShuttleSwiftUITests.framework */; };
 		C59A446A285E705AA500DBB8 /* Pods_UTShuttleSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B788D8310D89358AD9D2C6A /* Pods_UTShuttleSwiftTests.framework */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		44A83C301F0F9E910045E3B0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Classes/Extensions.swift; sourceTree = "<group>"; };
 		44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModalUtils.swift; path = Classes/ModalUtils.swift; sourceTree = "<group>"; };
 		44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = Classes/LoadingViewController.swift; sourceTree = "<group>"; };
+		44A989B31F109D770021D5E9 /* NavigationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationUtils.swift; path = Classes/NavigationUtils.swift; sourceTree = "<group>"; };
 		5DE46148F6AF9F97E9420CCD /* Pods-UTShuttleSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftTests/Pods-UTShuttleSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C915D832750365DC1004A53 /* Pods-UTShuttleSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftUITests/Pods-UTShuttleSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7CD2F9FC00E844220F405396 /* Pods-UTShuttleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwift/Pods-UTShuttleSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				4448505B1F0F57F20039E209 /* DefaultStyle.swift */,
 				4448505D1F0F62C70039E209 /* DeviceDetails.swift */,
 				44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */,
+				44A989B31F109D770021D5E9 /* NavigationUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */,
+				44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */,

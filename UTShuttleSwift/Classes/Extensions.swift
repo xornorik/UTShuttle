@@ -868,9 +868,21 @@ extension Int {
 //        left.updateValue(value, forKey: key)
 //    }
 //}
+extension UIApplication {
+    
+    class func topViewController() -> UIViewController? {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let mainNC = delegate.mainNC
+        return mainNC?.childViewControllers.last
+    }
+    
+}
+
 extension DefaultsKeys {
     static let deviceId = DefaultsKey<String?>("deviceId")
     static let appVersion = DefaultsKey<String?>("appVersion")
     static let uniqueId = DefaultsKey<String?>("uniqueId") // only used for registering a new device
+    static let isLoggedIn = DefaultsKey<Bool?>("isLoggedIn")
+    static let isDeviceRegistered = DefaultsKey<Bool?>("isDeviceRegistered")
 }
 

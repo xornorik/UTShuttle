@@ -9,6 +9,7 @@
 import UIKit
 import SwiftSocket
 import SwiftyUserDefaults
+import Alamofire
 
 class CommandClient: NSObject {
     
@@ -17,6 +18,9 @@ class CommandClient: NSObject {
     var address = "10.10.11.14"
     var port:Int32 = 3006
     var client:TCPClient
+    
+    let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.apple.com")
+
     
     override init() {
         self.client = TCPClient(address: self.address, port: self.port)
@@ -35,9 +39,26 @@ class CommandClient: NSObject {
     
     //MARK: TCP Functions
     
+    func listenForReachability()
+    {
+        self.reachabilityManager?.listener = { status in
+            print("Network Status Changed: \(status)")
+            switch status
+            {
+            case .notReachable:
+                showError(title: "Oops", message: "We are experiencing a network connection issue. Please move to another location and try connecting again")
+            case .reachable(_), .unknown:
+                CommandClient.shared.startConnection()
+                break
+            }
+        }
+        
+        self.reachabilityManager?.startListening()
+    }
+    
     func startConnection()
     {
-        switch client.connect(timeout: -1) {
+        switch client.connect(timeout: 1) {
         case .success:
             print("Connected to TCP Server")
         case .failure(_):
@@ -47,7 +68,7 @@ class CommandClient: NSObject {
     
     func isConnected()->Bool
     {
-        switch client.connect(timeout: -1) {
+        switch client.connect(timeout: 1) {
         case .success:
             print("Connected to TCP Server")
             return true
@@ -84,7 +105,7 @@ class CommandClient: NSObject {
                         callback(true)
                     case 2:
                         print("Invalid Device")
-                        showError(title: "Invalid Device", message: "Please Report!")
+                        callback(true)
                     default:
                         print("Switch case exhaustive")
                     }
@@ -94,7 +115,7 @@ class CommandClient: NSObject {
             }
         }
         else{
-            showError(title: "Connection Lost", message: "Connection to server has been lost")
+            callback(false)
         }
     }
     

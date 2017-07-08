@@ -13,11 +13,13 @@ class LoadingViewController: UIViewController {
     @IBOutlet weak var loadingLabel:UILabel!
     
     var loadingTimer:Timer!
+    let tcpClient = CommandClient.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.isNavigationBarHidden = true
 
-        // Do any additional setup after loading the view.
         loadingLabel.alpha = 0 //start without showing loading
     }
     
@@ -25,6 +27,21 @@ class LoadingViewController: UIViewController {
         super.viewDidAppear(true)
         
         startAnimationLoop()
+        if permissionCheck()
+        {
+            tcpClient.deviceAuth { (success) in
+                if success
+                {
+                    let delegate = UIApplication.shared.delegate as! AppDelegate
+                    delegate.setupUI()
+                }
+                else
+                {
+                    showError(title: "Connection Lost", message: "Connection to server has been lost")
+                }
+                
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,6 +52,11 @@ class LoadingViewController: UIViewController {
     
     // MARK: Helper Functions
     
+    func permissionCheck() -> Bool
+    {
+        //write code for checking required permissions
+        return true //for now
+    }
     
     func startAnimationLoop()
     {

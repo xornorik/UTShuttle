@@ -13,7 +13,7 @@ func showError(title: String, message: String, callback: (()->())? = nil) {
     
     Alertift.alert(title: title, message: message)
     .action(.default("OK")) { _ in
-        callback!()
+        callback?()
     }
     .show()
 }
