@@ -17,6 +17,7 @@
 		447B7B1E1F0E4DBA00C4774E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 447B7B1C1F0E4DBA00C4774E /* LaunchScreen.storyboard */; };
 		447B7B291F0E4DBA00C4774E /* UTShuttleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B281F0E4DBA00C4774E /* UTShuttleSwiftTests.swift */; };
 		447B7B341F0E4DBA00C4774E /* UTShuttleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B331F0E4DBA00C4774E /* UTShuttleSwiftUITests.swift */; };
+		448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */; };
 		44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C301F0F9E910045E3B0 /* Extensions.swift */; };
 		44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */; };
 		44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */; };
@@ -61,6 +62,7 @@
 		447B7B2F1F0E4DBA00C4774E /* UTShuttleSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UTShuttleSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		447B7B331F0E4DBA00C4774E /* UTShuttleSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTShuttleSwiftUITests.swift; sourceTree = "<group>"; };
 		447B7B351F0E4DBA00C4774E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceRegistrationViewController.swift; path = Classes/DeviceRegistrationViewController.swift; sourceTree = "<group>"; };
 		44A83C301F0F9E910045E3B0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Classes/Extensions.swift; sourceTree = "<group>"; };
 		44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModalUtils.swift; path = Classes/ModalUtils.swift; sourceTree = "<group>"; };
 		44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = Classes/LoadingViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */,
+				448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -537,6 +540,7 @@
 				44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
+				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,
 				4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */,
 				447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */,
 				4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */,

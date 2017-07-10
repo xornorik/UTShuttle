@@ -18,6 +18,9 @@ public class DefaultStyle: NSObject {
         
         UIWindow.appearance().tintColor = ColorPalette.UTSTeal
         
+        UIApplication.shared.statusBarView?.backgroundColor = ColorPalette.UTSTeal
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = ColorPalette.UTSTeal
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont(name: "Helvetica Neue", size: 15)!]
@@ -31,7 +34,7 @@ public class DefaultStyle: NSObject {
 public struct ColorPalette {
     
     
-    static let UTSTeal = UIColor(hex: "#32968c")
+    static let UTSTeal = UIColor(hex: "#32968C")
 
     
 }
