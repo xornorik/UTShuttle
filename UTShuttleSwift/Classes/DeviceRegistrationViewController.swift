@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 class DeviceRegistrationViewController: UIViewController {
     
@@ -64,7 +65,7 @@ class DeviceRegistrationViewController: UIViewController {
     
     func nextButtonTapped()
     {
-        guard let uid = uidTextField.text else {showError(title: "Alert", message: "Unique ID cannot be empty."); return}
+        guard let uid = uidTextField.text, uid != "" else {showError(title: "Alert", message: "Please enter the unique ID."); return}
         tcpClient.deviceRegistration(uniqueId: uid) { (success, error) in
             
             if success
@@ -89,7 +90,20 @@ class DeviceRegistrationViewController: UIViewController {
 
     func textMessageButtonTapped()
     {
+        guard let mobileNo = uidTextField.text, mobileNo != "" else {showError(title: "Alert", message: "Please enter the mobile number."); return}
         
+        tcpClient.receiveUID(mobileNo: mobileNo) { (success) in
+            
+            if success
+            {
+                uidTextField.text = Defaults[.uniqueId]
+                //[!] show alert?
+            }
+            else
+            {
+                showError(title: "Alert", message: "Your cell phone is not registered with us. Please contact your manager to get this number registered.")
+            }
+        }
     }
 }
 extension DeviceRegistrationViewController:UITextFieldDelegate
