@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 class LoadingViewController: UIViewController {
     
@@ -21,6 +22,9 @@ class LoadingViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
 
         loadingLabel.alpha = 0 //start without showing loading
+        
+        print(Defaults[.lastLatitude] ?? "No lat")
+        print(Defaults[.lastLongitude] ?? "no lon")
     }
     
     override func viewDidAppear(_ animated: Bool) {
