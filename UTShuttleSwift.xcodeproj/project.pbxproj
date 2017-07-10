@@ -12,6 +12,7 @@
 		4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505B1F0F57F20039E209 /* DefaultStyle.swift */; };
 		4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505D1F0F62C70039E209 /* DeviceDetails.swift */; };
 		444A35971F138ED200D48C63 /* DriverLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A35961F138ED200D48C63 /* DriverLoginViewController.swift */; };
+		444A359A1F13A7D100D48C63 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A35991F13A7D100D48C63 /* LocationManager.swift */; };
 		447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B131F0E4DBA00C4774E /* AppDelegate.swift */; };
 		447B7B191F0E4DBA00C4774E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 447B7B171F0E4DBA00C4774E /* Main.storyboard */; };
 		447B7B1B1F0E4DBA00C4774E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447B7B1A1F0E4DBA00C4774E /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 		4448505D1F0F62C70039E209 /* DeviceDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceDetails.swift; path = Classes/DeviceDetails.swift; sourceTree = "<group>"; };
 		444850601F0F64BA0039E209 /* UTShuttleSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UTShuttleSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		444A35961F138ED200D48C63 /* DriverLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DriverLoginViewController.swift; path = Classes/DriverLoginViewController.swift; sourceTree = "<group>"; };
+		444A35991F13A7D100D48C63 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = Classes/LocationManager.swift; sourceTree = "<group>"; };
 		447B7B101F0E4DB900C4774E /* UTShuttleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UTShuttleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		447B7B131F0E4DBA00C4774E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		447B7B181F0E4DBA00C4774E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 		444A35981F139ECB00D48C63 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				444A35991F13A7D100D48C63 /* LocationManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				444A35971F138ED200D48C63 /* DriverLoginViewController.swift in Sources */,
 				44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */,
 				44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */,
+				444A359A1F13A7D100D48C63 /* LocationManager.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,

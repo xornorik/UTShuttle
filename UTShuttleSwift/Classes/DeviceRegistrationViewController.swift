@@ -90,13 +90,14 @@ class DeviceRegistrationViewController: UIViewController {
 
     func textMessageButtonTapped()
     {
-        guard let mobileNo = uidTextField.text, mobileNo != "" else {showError(title: "Alert", message: "Please enter the mobile number."); return}
+        guard let mobileNo = phoneNoTextField.text, mobileNo != "" else {showError(title: "Alert", message: "Please enter the mobile number."); return}
         
         tcpClient.receiveUID(mobileNo: mobileNo) { (success) in
             
             if success
             {
                 uidTextField.text = Defaults[.uniqueId]
+                phoneNoTextField.resignFirstResponder()
                 //[!] show alert?
             }
             else

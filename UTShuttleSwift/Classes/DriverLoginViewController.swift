@@ -104,9 +104,10 @@ class DriverLoginViewController: UIViewController {
         if validateForm()
         {
             guard let deviceId = Defaults[.deviceId] else {return}
-            //get lat and lon to pass - passing 0 for now
+            guard let lat = Defaults[.lastLatitude] else {return}
+            guard let lon = Defaults[.lastLongitude] else {return}
             
-            tcpClient.driverAuth(userId: userIdTF.text!, password: passwordTF.text!, deviceId: deviceId, lat: "0", lon: "0", callback: { (success, error) in
+            tcpClient.driverAuth(userId: userIdTF.text!, password: passwordTF.text!, deviceId: deviceId, lat: String(lat), lon: String(lon), callback: { (success, error) in
                 
                 if success
                 {

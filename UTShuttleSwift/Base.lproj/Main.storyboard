@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zby-Sq-uVy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KUc-qr-H3l">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -54,7 +54,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pg7-6N-yZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="870" y="116"/>
+            <point key="canvasLocation" x="617" y="116"/>
         </scene>
         <!--Device Registration View Controller-->
         <scene sceneID="SV2-BL-jMO">
@@ -138,7 +138,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                             </textField>
                             <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="hk2-2Q-z3x">
                                 <rect key="frame" x="106" y="622" width="163" height="25"/>
@@ -195,7 +195,7 @@
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="DQW-YN-2PD" secondAttribute="trailing" constant="10" id="CcQ-Q3-fQo"/>
                             <constraint firstItem="VHq-Oj-wBq" firstAttribute="centerX" secondItem="Mz2-on-aOQ" secondAttribute="centerX" id="Ct5-g5-caD"/>
                             <constraint firstItem="8Ci-fH-sSo" firstAttribute="top" secondItem="hk2-2Q-z3x" secondAttribute="bottom" constant="20" id="EjO-p8-Lug"/>
-                            <constraint firstItem="VHq-Oj-wBq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rvt-Vm-o13" secondAttribute="bottom" constant="5" id="G8W-BA-g1v"/>
+                            <constraint firstItem="VHq-Oj-wBq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rvt-Vm-o13" secondAttribute="bottom" constant="10" id="G8W-BA-g1v"/>
                             <constraint firstItem="ar4-x1-gHw" firstAttribute="height" secondItem="VHq-Oj-wBq" secondAttribute="height" id="IGg-bl-pGF"/>
                             <constraint firstItem="rvt-Vm-o13" firstAttribute="top" secondItem="517-7i-HgE" secondAttribute="bottom" constant="10" id="IY3-Sn-5C3"/>
                             <constraint firstItem="517-7i-HgE" firstAttribute="centerX" secondItem="Mz2-on-aOQ" secondAttribute="centerX" id="J38-dg-dQQ"/>
@@ -233,7 +233,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cVz-mY-z6E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1488.8" y="115.59220389805098"/>
+            <point key="canvasLocation" x="1014" y="116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zsG-w0-A3y">
@@ -411,7 +411,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aEt-aR-Ssb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2098.4000000000001" y="115.59220389805098"/>
+            <point key="canvasLocation" x="1415" y="116"/>
         </scene>
     </scenes>
     <resources>

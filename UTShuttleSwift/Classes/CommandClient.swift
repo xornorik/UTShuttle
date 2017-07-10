@@ -237,6 +237,8 @@ class CommandClient: NSObject {
                         print("Bad response from server")
                     }
                 }
+            case .failure(_):
+                callback(false, driverAuthError.ConnectionError)
             }
         }
         else
@@ -261,9 +263,9 @@ class CommandClient: NSObject {
         {
             encodedReq += parameter + "|"
         }
-        encodedReq.remove(at: encodedReq.endIndex) //removing the last | symbol
+        encodedReq.remove(at: encodedReq.index(before: encodedReq.endIndex)) //removing the last | symbol
         encodedReq += "}"
-        
+        print("Sending request: \(encodedReq)")
         return encodedReq
     }
 }

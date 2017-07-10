@@ -890,5 +890,7 @@ extension DefaultsKeys {
     static let isLoggedIn = DefaultsKey<Bool?>("isLoggedIn")
     static let isDeviceRegistered = DefaultsKey<Bool?>("isDeviceRegistered")
     static let isLoginDetailsRemembered = DefaultsKey<Bool?>("isLoginDetailsRemembered")
+    static let lastLatitude = DefaultsKey<Double?>("lastLatitude")
+    static let lastLongitude = DefaultsKey<Double?>("lastLongitude")
 }
 
