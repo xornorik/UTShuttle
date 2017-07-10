@@ -11,6 +11,11 @@ import UIKit
 class NavigationUtils {
     
     
+    static func goToDriverLogin()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverLoginVC")
+        self.setCurrentVC(nextVC: nextVC)
+    }
     
     static func presentVC(nextVC: UIViewController) {
         
@@ -20,5 +25,17 @@ class NavigationUtils {
         nextVC.navigationItem.hidesBackButton = true
         
         currentNavController.present(nextVC, animated: true, completion: {})
+    }
+    
+    static func setCurrentVC(nextVC: UIViewController) {
+        
+        let currentNavController = UIApplication.topViewController()!.navigationController!
+        
+        nextVC.navigationItem.backBarButtonItem = nil
+        nextVC.navigationItem.hidesBackButton = true
+        
+        currentNavController.popViewController(animated: false)
+        currentNavController.setViewControllers([nextVC], animated: true)
+        
     }
 }

@@ -46,26 +46,8 @@ class CommandClient: NSObject {
     
     //MARK: TCP Functions
     
-    func listenForReachability()
-    {
-        self.reachabilityManager?.listener = { status in
-            print("Network Status Changed: \(status)")
-            switch status
-            {
-            case .notReachable:
-                showError(title: "Oops", message: "We are experiencing a network connection issue. Please move to another location and try connecting again")
-            case .reachable(_), .unknown:
-                CommandClient.shared.startConnection()
-                break
-            }
-        }
-        
-        self.reachabilityManager?.startListening()
-    }
-    
     func startConnection()
     {
-        listenForReachability()
         switch client.connect(timeout: 1) {
         case .success:
             print("Connected to TCP Server")

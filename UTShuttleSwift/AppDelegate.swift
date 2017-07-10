@@ -8,13 +8,15 @@
 
 import UIKit
 import SwiftyUserDefaults
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mainNC: UINavigationController?
-
+    
+    let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.apple.com")
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -22,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //setting Theme
         DefaultStyle.sharedInstance.apply()
-//        CommandClient.shared.startConnection()
+        listenForReachability()
         
         
         return true
@@ -78,6 +80,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mainNC = UINavigationController(rootViewController: rootVC)
         self.window?.rootViewController = self.mainNC
         
+    }
+    
+    func listenForReachability()
+    {
+        self.reachabilityManager?.listener = { status in
+            print("Network Status Changed: \(status)")
+            switch status
+            {
+            case .notReachable:
+                showError(title: "Oops", message: "We are experiencing a network connection issue. Please move to another location and try connecting again")
+            case .reachable(_), .unknown:
+                CommandClient.shared.startConnection()
+                break
+            }
+        }
+        
+        self.reachabilityManager?.startListening()
     }
 
 
