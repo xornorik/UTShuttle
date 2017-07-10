@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //setting Theme
         DefaultStyle.sharedInstance.apply()
+        CommandClient.shared.startConnection()
         
         
         return true

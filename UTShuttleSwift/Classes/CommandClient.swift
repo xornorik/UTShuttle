@@ -36,6 +36,13 @@ class CommandClient: NSObject {
         
     }
     
+    enum deviceRegError:Int {
+        case InvalidUniqueId = 2
+        case Success = 1
+        case MobileNoNotFound = 0
+        case ConnectionError = 99
+    }
+    
     
     //MARK: TCP Functions
     
@@ -58,6 +65,7 @@ class CommandClient: NSObject {
     
     func startConnection()
     {
+        listenForReachability()
         switch client.connect(timeout: 1) {
         case .success:
             print("Connected to TCP Server")
@@ -162,6 +170,50 @@ class CommandClient: NSObject {
             showError(title: "Connection Lost", message: "Connection to server has been lost")
         }
     }
+    
+    func deviceRegistration(uniqueId:String, callback:(_ success:Bool,_ error:deviceRegError )->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(DeviceDetails.deviceID())
+            reqParameters.append(Commands.DeviceReg)
+            reqParameters.append(uniqueId)
+            reqParameters.append("1") //iOS:1, Android:0
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr.last!) else { print("Some error"); return }
+                    switch status {
+                    case 1:
+                        //success
+                        callback(true,deviceRegError.Success)
+                    case 0:
+                        callback(false, deviceRegError.MobileNoNotFound)
+                    case 2:
+                        callback(false, deviceRegError.InvalidUniqueId)
+                    default:
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false, deviceRegError.ConnectionError)
+            }
+            
+        }
+        else
+        {
+            showError(title: "Connection Lost", message: "Connection to server has been lost")
+        }
+    }
+    
+//    func driverAuth()
     
     //MARK: Helper Functions
     
