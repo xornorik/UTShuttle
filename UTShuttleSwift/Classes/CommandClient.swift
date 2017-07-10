@@ -36,10 +36,22 @@ class CommandClient: NSObject {
         
     }
     
+    //Mark: ERRORS
     enum deviceRegError:Int {
         case InvalidUniqueId = 2
         case Success = 1
         case MobileNoNotFound = 0
+        case ConnectionError = 99
+    }
+    
+    enum driverAuthError:Int {
+        case Fail = 0
+        case Success = 1
+        case InvalidVehicle = 2
+        case InvalidDriverCreds = 3
+        case DriverAlreadyLoggedIn = 4
+        case InvalidDevice = 5
+        case InvalidDriver = 6
         case ConnectionError = 99
     }
     
@@ -195,7 +207,43 @@ class CommandClient: NSObject {
         }
     }
     
-//    func driverAuth()
+    func driverAuth(userId:String, password:String, deviceId:String, lat:String, lon:String, callback:(_ success:Bool, _ error:driverAuthError)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.DriverAuth)
+            reqParameters.append(lat)
+            reqParameters.append(lon)
+            reqParameters.append(userId)
+            reqParameters.append(password)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr.last!) else { print("Some error"); return }
+                    switch status {
+                    case 0,2,3,4,5,6:
+                        callback(false, driverAuthError(rawValue: status)!)
+                    case 1:
+                        callback(true, driverAuthError.Success)
+                    default:
+                        print("Bad response from server")
+                    }
+                }
+            }
+        }
+        else
+        {
+            callback(false, driverAuthError.ConnectionError)
+        }
+    }
     
     //MARK: Helper Functions
     
@@ -218,6 +266,4 @@ class CommandClient: NSObject {
         
         return encodedReq
     }
-
-    
 }

@@ -341,7 +341,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWw-Ue-Aae">
                                 <rect key="frame" x="16" y="348.5" width="30" height="30"/>
@@ -377,6 +377,7 @@
                             <constraint firstItem="1PM-KF-gzM" firstAttribute="centerX" secondItem="A6G-DW-RY3" secondAttribute="centerX" id="M7j-md-Qxe"/>
                             <constraint firstItem="RcA-Z0-KaH" firstAttribute="width" secondItem="1PM-KF-gzM" secondAttribute="width" id="MTS-Os-WuF"/>
                             <constraint firstItem="qyI-Ho-uby" firstAttribute="leading" secondItem="A6G-DW-RY3" secondAttribute="leadingMargin" constant="12" id="Pf4-QN-gp9"/>
+                            <constraint firstItem="xVL-v7-3TU" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sjF-bl-8KD" secondAttribute="bottom" constant="10" id="RJ1-gO-P1C"/>
                             <constraint firstItem="gWw-Ue-Aae" firstAttribute="leading" secondItem="A6G-DW-RY3" secondAttribute="leadingMargin" id="SmC-JY-ra6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xVL-v7-3TU" secondAttribute="trailing" constant="5" id="V3S-to-rrX"/>
                             <constraint firstItem="sjF-bl-8KD" firstAttribute="top" secondItem="RcA-Z0-KaH" secondAttribute="bottom" constant="5" id="Vdu-bf-9IP"/>
@@ -405,6 +406,7 @@
                         <outlet property="loginButton" destination="7ZL-vC-vRW" id="H74-ff-pTv"/>
                         <outlet property="passwordTF" destination="lbm-Pj-eaP" id="dyU-K6-Iua"/>
                         <outlet property="signUpButton" destination="PYo-oC-Qxp" id="tG9-zD-7op"/>
+                        <outlet property="userIdTF" destination="xVL-v7-3TU" id="3Yg-4G-chB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aEt-aR-Ssb" userLabel="First Responder" sceneMemberID="firstResponder"/>

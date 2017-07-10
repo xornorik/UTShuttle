@@ -98,6 +98,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.reachabilityManager?.startListening()
     }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+
+        return .portrait;
+    }
 
 
 }

@@ -179,6 +179,13 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		444A35981F139ECB00D48C63 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		447B7B071F0E4DB900C4774E = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +214,7 @@
 				447B7B131F0E4DBA00C4774E /* AppDelegate.swift */,
 				444850501F0F45070039E209 /* API Client */,
 				444850511F0F45170039E209 /* TCP Client */,
+				444A35981F139ECB00D48C63 /* Managers */,
 				444850541F0F454D0039E209 /* Views */,
 				444850531F0F45410039E209 /* Utils */,
 				444850521F0F452D0039E209 /* Storyboards */,

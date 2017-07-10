@@ -889,5 +889,6 @@ extension DefaultsKeys {
     static let uniqueId = DefaultsKey<String?>("uniqueId") // only used for registering a new device
     static let isLoggedIn = DefaultsKey<Bool?>("isLoggedIn")
     static let isDeviceRegistered = DefaultsKey<Bool?>("isDeviceRegistered")
+    static let isLoginDetailsRemembered = DefaultsKey<Bool?>("isLoginDetailsRemembered")
 }
 

@@ -70,7 +70,7 @@ class DeviceRegistrationViewController: UIViewController {
             
             if success
             {
-                //show login screen
+                NavigationUtils.goToDriverLogin()
             }
             else
             {
