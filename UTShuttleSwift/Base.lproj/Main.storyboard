@@ -24,11 +24,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoUTShuttleLite" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-3h-Rfj">
-                                <rect key="frame" x="62.5" y="296" width="250" height="75"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="vhn-jj-6NA">
+                                <rect key="frame" x="0.0" y="-0.5" width="375" height="668"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="vhn-jj-6NA" secondAttribute="height" multiplier="187:333" id="bpV-B0-zz8"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMP-YV-QKQ">
-                                <rect key="frame" x="128.5" y="391" width="119" height="36"/>
+                                <rect key="frame" x="128" y="383.5" width="119" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -36,25 +39,26 @@
                         </subviews>
                         <color key="backgroundColor" red="0.19607843137254902" green="0.58823529411764708" blue="0.5490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="centerY" secondItem="47I-Y0-CPP" secondAttribute="centerY" id="HMW-y4-rkK"/>
+                            <constraint firstItem="vhn-jj-6NA" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="4cZ-9j-XdK"/>
                             <constraint firstItem="QMP-YV-QKQ" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="QZl-Hi-ETX"/>
+                            <constraint firstAttribute="trailing" secondItem="vhn-jj-6NA" secondAttribute="trailing" id="RVV-zM-R2h"/>
+                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="top" secondItem="47I-Y0-CPP" secondAttribute="centerYWithinMargins" constant="50" id="RcI-jN-VjL"/>
+                            <constraint firstItem="vhn-jj-6NA" firstAttribute="centerY" secondItem="47I-Y0-CPP" secondAttribute="centerY" id="YWF-SF-7b4"/>
                             <constraint firstItem="QMP-YV-QKQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="47I-Y0-CPP" secondAttribute="leading" constant="10" id="ir0-jZ-PFg"/>
-                            <constraint firstItem="QMP-YV-QKQ" firstAttribute="top" secondItem="b5e-3h-Rfj" secondAttribute="bottom" constant="20" id="pu3-A9-MHf"/>
+                            <constraint firstItem="vhn-jj-6NA" firstAttribute="leading" secondItem="47I-Y0-CPP" secondAttribute="leading" id="qzv-Cc-PAG"/>
                             <constraint firstItem="QMP-YV-QKQ" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="ruQ-Jf-2El"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QMP-YV-QKQ" secondAttribute="trailing" constant="10" id="uD5-ti-xtT"/>
-                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="centerX" secondItem="47I-Y0-CPP" secondAttribute="centerX" id="wHM-O2-Bgs"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5e-3h-Rfj" secondAttribute="trailing" constant="1" id="wxT-k1-Reb"/>
-                            <constraint firstItem="b5e-3h-Rfj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="47I-Y0-CPP" secondAttribute="leading" constant="1" id="xdS-W2-ZBK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Bdt-rX-Fa1"/>
                     <connections>
                         <outlet property="loadingLabel" destination="QMP-YV-QKQ" id="drW-U3-zmv"/>
+                        <outlet property="splashImageView" destination="vhn-jj-6NA" id="bbr-Ex-ooj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pg7-6N-yZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="617" y="116"/>
+            <point key="canvasLocation" x="862" y="116"/>
         </scene>
         <!--Device Registration View Controller-->
         <scene sceneID="SV2-BL-jMO">
@@ -233,7 +237,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cVz-mY-z6E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="116"/>
+            <point key="canvasLocation" x="1486" y="116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zsG-w0-A3y">
@@ -256,7 +260,7 @@
         <!--Driver Login View Controller-->
         <scene sceneID="tEf-MW-NLT">
             <objects>
-                <viewController storyboardIdentifier="driverloginVC" id="Zby-Sq-uVy" customClass="DriverLoginViewController" customModule="UTShuttleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="driverLoginVC" id="Zby-Sq-uVy" customClass="DriverLoginViewController" customModule="UTShuttleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nrs-4j-GnJ"/>
                         <viewControllerLayoutGuide type="bottom" id="Q3m-ch-YPp"/>
@@ -411,13 +415,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aEt-aR-Ssb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1415" y="116"/>
+            <point key="canvasLocation" x="2110" y="116"/>
         </scene>
     </scenes>
     <resources>
         <image name="buttonCheckboxFalse" width="50" height="50"/>
         <image name="logoUTShuttleDark" width="250" height="75"/>
-        <image name="logoUTShuttleLite" width="250" height="75"/>
         <image name="logoUTUniversal" width="210" height="65"/>
+        <image name="splashScreen" width="187" height="333"/>
     </resources>
 </document>

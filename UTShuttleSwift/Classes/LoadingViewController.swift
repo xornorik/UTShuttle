@@ -12,6 +12,7 @@ import SwiftyUserDefaults
 class LoadingViewController: UIViewController {
     
     @IBOutlet weak var loadingLabel:UILabel!
+    @IBOutlet weak var splashImageView:UIImageView!
     
     var loadingTimer:Timer!
     let tcpClient = CommandClient.shared
@@ -22,9 +23,6 @@ class LoadingViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
 
         loadingLabel.alpha = 0 //start without showing loading
-        
-        print(Defaults[.lastLatitude] ?? "No lat")
-        print(Defaults[.lastLongitude] ?? "no lon")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,8 +34,13 @@ class LoadingViewController: UIViewController {
             tcpClient.deviceAuth { (success) in
                 if success
                 {
-                    let delegate = UIApplication.shared.delegate as! AppDelegate
-                    delegate.setupUI()
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                        self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                        self.splashImageView.alpha = 0
+                    }, completion: { (success) in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        delegate.setupUI()
+                    })
                 }
                 else
                 {

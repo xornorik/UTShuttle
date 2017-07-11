@@ -9,6 +9,7 @@ target 'UTShuttleSwift' do
   pod 'SwiftSocket'
   pod 'SwiftyUserDefaults'
   pod 'Alertift'
+  pod 'MRCountryPicker'
 
   # Pods for UTShuttleSwift
 

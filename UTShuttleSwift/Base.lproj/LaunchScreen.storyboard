@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,16 +22,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoUTShuttleLite" translatesAutoresizingMaskIntoConstraints="NO" id="T1m-fA-sFz">
-                                <rect key="frame" x="62.5" y="296" width="250" height="75"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="FYD-Ru-5lm">
+                                <rect key="frame" x="0.0" y="-0.5" width="375" height="668"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FYD-Ru-5lm" secondAttribute="height" multiplier="187:333" id="bBK-gO-fan"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.19607843137254902" green="0.58823529411764708" blue="0.5490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="T1m-fA-sFz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="1" id="41Q-ZD-Fg5"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="T1m-fA-sFz" secondAttribute="trailing" constant="1" id="CQ4-NZ-Asz"/>
-                            <constraint firstItem="T1m-fA-sFz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="cSN-9U-g2u"/>
-                            <constraint firstItem="T1m-fA-sFz" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="rpi-XN-hvQ"/>
+                            <constraint firstAttribute="trailing" secondItem="FYD-Ru-5lm" secondAttribute="trailing" id="735-X7-akV"/>
+                            <constraint firstItem="FYD-Ru-5lm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Bbd-PU-yyh"/>
+                            <constraint firstItem="FYD-Ru-5lm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="uJ0-dx-1qV"/>
+                            <constraint firstItem="FYD-Ru-5lm" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="xnA-Pb-vXm"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,6 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logoUTShuttleLite" width="250" height="75"/>
+        <image name="splashScreen" width="187" height="333"/>
     </resources>
 </document>

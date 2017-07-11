@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //setting Theme
         DefaultStyle.sharedInstance.apply()
         listenForReachability()
+        LocationManager.shared.locationManager.requestAlwaysAuthorization()
         LocationManager.shared.startTracking()
         
         
