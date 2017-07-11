@@ -283,6 +283,7 @@
 		44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */; };
 		44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */; };
 		44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A989B31F109D770021D5E9 /* NavigationUtils.swift */; };
+		44DA7CC01F14D10800C9718A /* DriverRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */; };
 		46016C68D1BAB6B8A67B7226 /* Pods_UTShuttleSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF6145F7D1AE52E70E57237D /* Pods_UTShuttleSwiftUITests.framework */; };
 		C59A446A285E705AA500DBB8 /* Pods_UTShuttleSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B788D8310D89358AD9D2C6A /* Pods_UTShuttleSwiftTests.framework */; };
 /* End PBXBuildFile section */
@@ -589,6 +590,7 @@
 		44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModalUtils.swift; path = Classes/ModalUtils.swift; sourceTree = "<group>"; };
 		44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = Classes/LoadingViewController.swift; sourceTree = "<group>"; };
 		44A989B31F109D770021D5E9 /* NavigationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationUtils.swift; path = Classes/NavigationUtils.swift; sourceTree = "<group>"; };
+		44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DriverRegisterViewController.swift; path = Classes/DriverRegisterViewController.swift; sourceTree = "<group>"; };
 		5DE46148F6AF9F97E9420CCD /* Pods-UTShuttleSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftTests/Pods-UTShuttleSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C915D832750365DC1004A53 /* Pods-UTShuttleSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftUITests/Pods-UTShuttleSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7CD2F9FC00E844220F405396 /* Pods-UTShuttleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwift/Pods-UTShuttleSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 				44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */,
 				448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */,
 				444A35961F138ED200D48C63 /* DriverLoginViewController.swift */,
+				44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1623,6 +1626,7 @@
 				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,
 				444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */,
 				4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */,
+				44DA7CC01F14D10800C9718A /* DriverRegisterViewController.swift in Sources */,
 				447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */,
 				4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */,
 				444A37A51F14C65100D48C63 /* CountryPickerTextField.swift in Sources */,

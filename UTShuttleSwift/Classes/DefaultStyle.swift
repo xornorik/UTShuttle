@@ -22,8 +22,8 @@ public class DefaultStyle: NSObject {
         UIApplication.shared.statusBarStyle = .lightContent
         
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = ColorPalette.UTSTeal
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont(name: "Helvetica Neue", size: 15)!]
+        UINavigationBar.appearance().barTintColor = ColorPalette.UTSTealLight
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont(name: "Helvetica Neue", size: 17)!]
         //UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont(name: "Roboto-Light", size: 14)!], forState: UIControlState.Normal)
         
         UITextField.appearance().textColor = UIColor.black
@@ -35,6 +35,7 @@ public struct ColorPalette {
     
     
     static let UTSTeal = UIColor(hex: "#32968C")
+    static let UTSTealLight = UIColor(hex: "#5DC5BB")
 
     
 }

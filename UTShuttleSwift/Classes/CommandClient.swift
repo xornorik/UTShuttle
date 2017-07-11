@@ -183,7 +183,7 @@ class CommandClient: NSObject {
                 if let response = String(bytes: data, encoding: .utf8) {
                     print("response received: \(response)")
                     let responseArr = decodeResponse(responseString: response)
-                    guard let status = Int(responseArr.last!) else { print("Some error"); return }
+                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Some error"); return } //exceptional case server side
                     switch status {
                     case 1:
                         //success

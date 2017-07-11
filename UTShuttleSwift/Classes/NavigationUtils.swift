@@ -17,6 +17,26 @@ class NavigationUtils {
         self.setCurrentVC(nextVC: nextVC)
     }
     
+    static func goToDriverRegisterStep1()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverRegisterVC")
+        self.pushToVC(nextVC: nextVC)
+    }
+    
+    static func goToDriverRegisterStep2()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverRegisterVC") as! DriverRegisterViewController
+        nextVC.rStatus = RegistrationStatus.step2
+        self.pushToVC(nextVC: nextVC)
+    }
+    
+    static func goToDriverRegisterStep3()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverRegisterVC") as! DriverRegisterViewController
+        nextVC.rStatus = RegistrationStatus.step3
+        self.pushToVC(nextVC: nextVC)
+    }
+    
     static func presentVC(nextVC: UIViewController) {
         
         let currentNavController = UIApplication.topViewController()!.navigationController!
@@ -25,6 +45,14 @@ class NavigationUtils {
         nextVC.navigationItem.hidesBackButton = true
         
         currentNavController.present(nextVC, animated: true, completion: {})
+    }
+    
+    static func pushToVC(nextVC: UIViewController) {
+        
+        let currentNavController = UIApplication.topViewController()!.navigationController!
+        currentNavController.navigationBar.topItem?.title = " " // for clearing back button title
+        
+        currentNavController.pushViewController(nextVC, animated: true)
     }
     
     static func setCurrentVC(nextVC: UIViewController) {

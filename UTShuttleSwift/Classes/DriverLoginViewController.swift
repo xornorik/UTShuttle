@@ -28,8 +28,8 @@ class DriverLoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         setupVC()
     }
 
@@ -43,6 +43,7 @@ class DriverLoginViewController: UIViewController {
     func setupVC()
     {
         loginButton.cornerRadius = 10
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
         
         //check if previous settings exist for remember me
         if let rememberMe = Defaults[.isLoginDetailsRemembered]
@@ -96,7 +97,7 @@ class DriverLoginViewController: UIViewController {
     
     func signUpTapped()
     {
-        
+        NavigationUtils.goToDriverRegisterStep1()
     }
     
     func loginTapped()
