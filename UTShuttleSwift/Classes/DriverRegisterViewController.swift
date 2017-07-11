@@ -2,7 +2,7 @@
 //  DriverRegisterViewController.swift
 //  UTShuttleSwift
 //
-//  Created by Apple Developer on 11/07/17.
+//  Created by Srinivas Vemuri on 11/07/17.
 //  Copyright © 2017 PLEXITECH. All rights reserved.
 //
 
@@ -16,11 +16,20 @@ enum RegistrationStatus {
 
 class DriverRegisterViewController: UIViewController {
     
-    var rStatus = RegistrationStatus.step1
-    
     @IBOutlet weak var stepImageView:UIImageView!
     @IBOutlet weak var registerTableView:UITableView!
     @IBOutlet weak var nextButton:UIButton!
+    
+    var rStatus = RegistrationStatus.step1
+
+    var firstName = ""
+    var lastname = ""
+    var email = ""
+    var mobile = ""
+    var licenseNo = ""
+    var licenseExp = ""
+    var username = ""
+    var password = ""
     
 
     override func viewDidLoad() {
@@ -52,7 +61,6 @@ class DriverRegisterViewController: UIViewController {
         case .step2:
             self.title = "Driver Information"
             self.stepImageView.image = UIImage(named: "imgRegStep2")
-
         case .step3:
             self.title = "Account Information"
             self.stepImageView.image = UIImage(named: "imgRegStep3")
@@ -67,6 +75,7 @@ class DriverRegisterViewController: UIViewController {
     {
         switch rStatus {
         case .step1:
+            storeStep1()
             NavigationUtils.goToDriverRegisterStep2()
         case .step2:
             NavigationUtils.goToDriverRegisterStep3()
@@ -75,6 +84,58 @@ class DriverRegisterViewController: UIViewController {
         }
     }
     
+    func textFieldDidChange(textField: UITextField)
+    {
+        switch rStatus {
+        case .step1:
+            switch textField.tag {
+            case 100:
+                firstName = textField.text!
+            case 101:
+                lastname = textField.text!
+            case 102:
+                email = textField.text!
+            case 103:
+                mobile = textField.text!
+            default:
+                print("Exhaustive")
+            }
+        case .step2:
+            break
+        case .step3:
+            break
+        }
+    }
+    
+    func storeStep1()
+    {
+        
+    }
+    
+    func storeStep2()
+    {
+        
+    }
+    
+    func storeStep3()
+    {
+        
+    }
+    
+    func validateStep1()
+    {
+        
+    }
+    
+    func validateStep2()
+    {
+        
+    }
+    
+    func validateStep3()
+    {
+        
+    }
 }
 extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSource
 {
@@ -115,6 +176,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "Doe"
                 tf.autocapitalizationType = .words
                 tf.keyboardType = .asciiCapable
+                tf.tag = 101
                 
                 label.text = "Last Name"
                 return cell
@@ -127,6 +189,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "johndoe@company.com"
                 tf.autocapitalizationType = .none
                 tf.keyboardType = .emailAddress
+                tf.tag = 102
+                
                 label.text = "Email ID"
                 return cell
 
@@ -138,6 +202,11 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 tf.text = "+1 "
                 tf.autocapitalizationType = .words
+                tf.tag = 103
+                
+                //handle country picking
+                
+                
                 label.text = "Phone Number"
                 countryButton.setImage(UIImage(named: "US.png"), for: .normal)
                 return cell
@@ -197,11 +266,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
             default:
                 return UITableViewCell()
             }
-            
-        default:
-            print("Keep waiting")
         }
-        return UITableViewCell()
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65
