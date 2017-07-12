@@ -47,6 +47,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This Application required location to work.</string>
+	<string>This Application requires location to work.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This Application requires camera access to work.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This Application requires Photo Library access to work.</string>
 </dict>
 </plist>

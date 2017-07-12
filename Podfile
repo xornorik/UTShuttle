@@ -9,6 +9,8 @@ target 'UTShuttleSwift' do
   pod 'SwiftSocket'
   pod 'SwiftyUserDefaults'
   pod 'Alertift'
+  pod 'ImagePicker'
+
 
   # Pods for UTShuttleSwift
 

@@ -1,0 +1,27 @@
+PODS:
+  - Alamofire (4.5.0)
+  - Alertift (2.0)
+  - ImagePicker (2.1.1)
+  - SwiftSocket (2.0.1)
+  - SwiftyJSON (3.1.4)
+  - SwiftyUserDefaults (3.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - Alertift
+  - ImagePicker
+  - SwiftSocket
+  - SwiftyJSON
+  - SwiftyUserDefaults
+
+SPEC CHECKSUMS:
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Alertift: 2b28b3ba3af73141390f329153f85aee9a56b2a8
+  ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
+  SwiftSocket: 2d814afdc97c89217982f86fd036c1874134a63f
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
+
+PODFILE CHECKSUM: 0b3001663e130f18dc21e6e592875fdafc6c09e6
+
+COCOAPODS: 1.2.1

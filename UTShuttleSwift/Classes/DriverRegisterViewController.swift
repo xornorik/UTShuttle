@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyUserDefaults
 import SwiftyJSON
+import ImagePicker
 
 enum RegistrationStatus {
     case step1
@@ -75,6 +76,8 @@ class DriverRegisterViewController: UIViewController {
             self.stepImageView.image = UIImage(named: "imgRegStep2")
         case .step3:
             self.title = "Account Information"
+            
+            self.nextButton.setTitle("CONTINUE", for: .normal)
             self.stepImageView.image = UIImage(named: "imgRegStep3")
 
         }
@@ -272,7 +275,17 @@ class DriverRegisterViewController: UIViewController {
     
     func pickPhotoForUpload()
     {
+        var config = Configuration()
+        config.doneButtonTitle = "Finish"
+        config.noImagesTitle = "Sorry! There are no images here!"
+        config.recordLocation = false
+        config.allowMultiplePhotoSelection = false
         
+        let imagePicker = ImagePickerController()
+        imagePicker.configuration = config
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true, completion: nil)
     }
 }
 extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSource
@@ -391,6 +404,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 uploadButton.addTarget(self, action: #selector(pickPhotoForUpload), for: .touchUpInside)
                 
+                cell.setNeedsLayout()
                 cell.setNeedsDisplay()
                 
                 return cell
@@ -464,7 +478,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = ""
+                tf.placeholder = "******"
                 tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 tf.tag = 1001
@@ -476,7 +490,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = ""
+                tf.placeholder = "******"
                 tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 tf.tag = 1002
@@ -531,5 +545,22 @@ extension DriverRegisterViewController : UIPickerViewDelegate, UIPickerViewDataS
         
         self.registerTableView.reloadRows(at: [self.selectedIndexPath!], with: .none)
         
+    }
+}
+extension DriverRegisterViewController : ImagePickerDelegate
+{
+    
+    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        //do Nothing
+    }
+    
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        self.selectedPhoto = images.first
+        self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+        imagePicker.dismiss(animated: true, completion: nil)
     }
 }
