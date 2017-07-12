@@ -892,5 +892,14 @@ extension DefaultsKeys {
     static let isLoginDetailsRemembered = DefaultsKey<Bool?>("isLoginDetailsRemembered")
     static let lastLatitude = DefaultsKey<Double?>("lastLatitude")
     static let lastLongitude = DefaultsKey<Double?>("lastLongitude")
+    static let driverFirstName = DefaultsKey<String?>("driverFirstName")
+    static let driverLastName = DefaultsKey<String?>("driverLastName")
+    static let driverEmail = DefaultsKey<String?>("driverEmail")
+    static let driverMobile = DefaultsKey<String?>("driverMobile")
+    static let driverLicense = DefaultsKey<String?>("driverLicense")
+    static let driverLicenseExp = DefaultsKey<String?>("driverLicesnseExp")
+    static let driverUsername = DefaultsKey<String?>("driverUsername")
+    static let driverPassword = DefaultsKey<String?>("driverpassword")
+    
 }
 

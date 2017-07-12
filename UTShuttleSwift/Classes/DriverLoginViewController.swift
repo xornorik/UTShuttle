@@ -67,6 +67,10 @@ class DriverLoginViewController: UIViewController {
         checkBoxButton.addTarget(self, action: #selector(toggleRememberMe), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        
+        //setting gesture recognizer for dismissing keyboard
+        let tapGC = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tapGC)
     
     }
     
@@ -76,6 +80,11 @@ class DriverLoginViewController: UIViewController {
         guard passwordTF.text != "" else {showError(title: "Alert", message: "Please enter the password."); return false}
         
         return true
+    }
+    
+    func dismissKeyboard()
+    {
+        self.view.endEditing(false)
     }
     
     func toggleRememberMe()
