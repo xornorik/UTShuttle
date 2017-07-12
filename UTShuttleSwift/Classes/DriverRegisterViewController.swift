@@ -32,10 +32,12 @@ class DriverRegisterViewController: UIViewController {
     var licenseExp = ""
     var username = ""
     var password = ""
+    var retypePassword = ""
     
     var countryPicker = UIPickerView()
     var countries = [Country]()
     var phoneCellIndexPath:IndexPath?
+    var isPickingCountry = false //just for keeping the keyboard active on a special instance
     var chosenCountry = Country(code: "US", name: "United States", phoneCode: "+1")
     
 
@@ -106,15 +108,20 @@ class DriverRegisterViewController: UIViewController {
     
     func nextButtonTapped()
     {
-        switch rStatus {
-        case .step1:
-            storeDetails()
-            NavigationUtils.goToDriverRegisterStep2()
-        case .step2:
-            storeDetails()
-            NavigationUtils.goToDriverRegisterStep3()
-        default:
-            print("This should not happen")
+        
+        if validateForm()
+        {
+            switch rStatus {
+            case .step1:
+                storeDetails()
+                NavigationUtils.goToDriverRegisterStep2()
+            case .step2:
+                storeDetails()
+                NavigationUtils.goToDriverRegisterStep3()
+            default:
+                print("This should not happen")
+            }
+
         }
     }
     
@@ -130,7 +137,7 @@ class DriverRegisterViewController: UIViewController {
             case 1002:
                 email = textField.text!
             case 1003:
-                mobile = chosenCountry.phoneCode! + textField.text!
+                mobile = textField.text!
             default:
                 print("Exhaustive")
             }
@@ -148,7 +155,7 @@ class DriverRegisterViewController: UIViewController {
             Defaults[.driverFirstName] = firstName
             Defaults[.driverLastName] = lastname
             Defaults[.driverEmail] = email
-            Defaults[.driverMobile] = mobile
+            Defaults[.driverMobile] = chosenCountry.phoneCode! + mobile
         case .step2:
             Defaults[.driverLicense] = licenseNo
             Defaults[.driverLicenseExp] = licenseExp
@@ -158,14 +165,32 @@ class DriverRegisterViewController: UIViewController {
         }
     }
     
-    func validate()
+    func validateForm() -> Bool
     {
-    
+        switch rStatus {
+        case .step1:
+            let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+            let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+            
+            guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
+            guard lastname != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
+            guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
+            guard mobile != "", mobile.characters.count < 10 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
+        case .step2:
+            guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
+            guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
+        case .step3:
+            guard username != "" else {showError(title: "Alert", message: "Please enter a username."); return false}
+            guard password != "", password.characters.count < 4 else {showError(title: "Alert", message: "Please enter a password with atleast 4 characters."); return false}
+            guard password == retypePassword else {showError(title: "Alert", message: "Passwords do not match. Please try again."); return false}
+        }
+        return true
     }
     
     func countryPickerButtonTapped()
     {
         guard rStatus == .step1 else{return}
+        isPickingCountry = true
         let phoneNoCell = self.registerTableView.cellForRow(at: phoneCellIndexPath!)//button.superview?.superview as? UITableViewCell
         let phoneNotextField = phoneNoCell?.viewWithTag(1003) as! UITextField
         
@@ -193,6 +218,8 @@ class DriverRegisterViewController: UIViewController {
     
     func donePickingCountry()
     {
+        isPickingCountry = false
+
         let phoneNoCell = self.registerTableView.cellForRow(at: phoneCellIndexPath!)//button.superview?.superview as? UITableViewCell
         let phoneNoTextField = phoneNoCell?.viewWithTag(1003) as! UITextField
         let countryPickerButton = phoneNoCell?.viewWithTag(102) as! UIButton
@@ -233,6 +260,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "John"
                 tf.autocapitalizationType = .words
                 tf.keyboardType = .asciiCapable
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 tf.tag = 1000
 
 
@@ -247,6 +275,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "Doe"
                 tf.autocapitalizationType = .words
                 tf.keyboardType = .asciiCapable
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 tf.tag = 1001
                 
                 label.text = "Last Name"
@@ -260,6 +289,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "johndoe@company.com"
                 tf.autocapitalizationType = .none
                 tf.keyboardType = .emailAddress
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 tf.tag = 1002
                 
                 label.text = "Email ID"
@@ -269,10 +299,15 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath)
                 if let tf = cell.viewWithTag(100) as? UITextField {
                     tf.autocapitalizationType = .none
-                    tf.keyboardType = .asciiCapable
+                    tf.keyboardType = .numberPad
+                    tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                     tf.tag = 1003
+                    
+                    if isPickingCountry {tf.becomeFirstResponder()}
                 } else {
                     let tf = cell.viewWithTag(1003) as! UITextField
+                    tf.text = mobile
+                    tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                     tf.becomeFirstResponder()
                 }
                 let label = cell.viewWithTag(101) as! UILabel
@@ -301,6 +336,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let label = cell.viewWithTag(101) as! UILabel
                 
                 tf.placeholder = "989454"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 label.text = "Driver License Number"
                 return cell
             case 1:
@@ -309,6 +345,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let label = cell.viewWithTag(101) as! UILabel
                 
                 tf.placeholder = "989454"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 label.text = "Driver License Expiry Date"
                 return cell
             default:
@@ -322,6 +359,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let label = cell.viewWithTag(101) as! UILabel
                 
                 tf.placeholder = "989454"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 label.text = "Type your User Name"
                 return cell
             case 1:
@@ -330,6 +368,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let label = cell.viewWithTag(101) as! UILabel
                 
                 tf.placeholder = "989454"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 label.text = "Type password"
                 return cell
             case 2:
@@ -338,6 +377,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let label = cell.viewWithTag(101) as! UILabel
                 
                 tf.placeholder = "989454"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                 label.text = "Retype Password"
                 return cell
 
@@ -382,5 +422,4 @@ extension DriverRegisterViewController : UIPickerViewDelegate, UIPickerViewDataS
         self.registerTableView.reloadRows(at: [self.phoneCellIndexPath!], with: .none)
         
     }
-    
 }
