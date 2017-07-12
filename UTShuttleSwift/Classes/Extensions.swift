@@ -883,6 +883,21 @@ extension UIApplication {
     }
 }
 
+extension String.CharacterView {
+    /// This method makes it easier extract a substring by character index where a character is viewed as a human-readable character (grapheme cluster).
+    internal func substring(start: Int, offsetBy: Int) -> String? {
+        guard let substringStartIndex = self.index(startIndex, offsetBy: start, limitedBy: endIndex) else {
+            return nil
+        }
+        
+        guard let substringEndIndex = self.index(startIndex, offsetBy: start + offsetBy, limitedBy: endIndex) else {
+            return nil
+        }
+        
+        return String(self[substringStartIndex ..< substringEndIndex])
+    }
+}
+
 extension DefaultsKeys {
     static let deviceId = DefaultsKey<String?>("deviceId")
     static let appVersion = DefaultsKey<String?>("appVersion")
@@ -896,10 +911,13 @@ extension DefaultsKeys {
     static let driverLastName = DefaultsKey<String?>("driverLastName")
     static let driverEmail = DefaultsKey<String?>("driverEmail")
     static let driverMobile = DefaultsKey<String?>("driverMobile")
+    static let driverCountryCode = DefaultsKey<String?>("driverCountryCode")
     static let driverLicense = DefaultsKey<String?>("driverLicense")
     static let driverLicenseExp = DefaultsKey<String?>("driverLicesnseExp")
     static let driverUsername = DefaultsKey<String?>("driverUsername")
     static let driverPassword = DefaultsKey<String?>("driverpassword")
+    static let driverProfilePhoto = DefaultsKey<String?>("driverProfilePhoto")
+    static let driverProfilePhotoSize = DefaultsKey<Double?>("driverProfilePhotoSize")
     
 }
 

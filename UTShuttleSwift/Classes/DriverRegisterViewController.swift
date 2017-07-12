@@ -24,6 +24,7 @@ class DriverRegisterViewController: UIViewController {
     @IBOutlet weak var nextButton:UIButton!
     
     var rStatus = RegistrationStatus.step1
+    var apiClient = APIClient.shared
 
     var firstName = ""
     var lastname = ""
@@ -76,10 +77,8 @@ class DriverRegisterViewController: UIViewController {
             self.stepImageView.image = UIImage(named: "imgRegStep2")
         case .step3:
             self.title = "Account Information"
-            
-            self.nextButton.setTitle("CONTINUE", for: .normal)
             self.stepImageView.image = UIImage(named: "imgRegStep3")
-
+            self.nextButton.setTitle("CONTINUE", for: .normal)
         }
         
         nextButton.cornerRadius = 10
@@ -121,11 +120,7 @@ class DriverRegisterViewController: UIViewController {
                 NavigationUtils.goToDriverRegisterStep2()
             case .step2:
                 storeDetails()
-                if let profilePhoto = self.selectedPhoto {
-                    NavigationUtils.goToDriverRegisterStep3(profilePhotoForUpload: profilePhoto)
-                }else {
-                    NavigationUtils.goToDriverRegisterStep3(profilePhotoForUpload: nil)
-                }
+                NavigationUtils.goToDriverRegisterStep3()
             default:
                 print("This should not happen")
             }
@@ -179,7 +174,8 @@ class DriverRegisterViewController: UIViewController {
             Defaults[.driverFirstName] = firstName
             Defaults[.driverLastName] = lastname
             Defaults[.driverEmail] = email
-            Defaults[.driverMobile] = chosenCountry.phoneCode! + mobile
+            Defaults[.driverMobile] =  mobile
+            Defaults[.driverCountryCode] = chosenCountry.phoneCode
         case .step2:
             Defaults[.driverLicense] = licenseNo
             Defaults[.driverLicenseExp] = licenseExp
@@ -187,6 +183,87 @@ class DriverRegisterViewController: UIViewController {
             Defaults[.driverUsername] = username
             Defaults[.driverPassword] = password
         }
+    }
+    
+    func registerDriver()
+    {
+        let payload:[String:Any] = [
+                "RowIndex": 0,
+                "UniqueId": "",
+                "DeviceId": Defaults[.deviceId]!,
+                "UserName": Defaults[.driverUsername]!,
+                "FirstName": Defaults[.driverFirstName]!,
+                "LastName": Defaults[.driverLastName]!,
+                "Email": Defaults[.driverEmail]!,
+                "Mobile": format(phoneNumber: Defaults[.driverMobile]!)!,
+                "Password": Defaults[.driverPassword]!,
+                "DateofBirth": "",
+                "Address_1": "",
+                "Address_2": "",
+                "ZipCode": "",
+                "CityId": 0,
+                "StateId": 0,
+                "CityName": "",
+                "StateName": "",
+                "Phone": format(phoneNumber: Defaults[.driverMobile]!)!,
+                "CountryCode": Defaults[.driverCountryCode]!,
+                "DriverLicenceNumber": Defaults[.driverLicense]!,
+                "DriverLicenceExpiryDate": Defaults[.driverLicenseExp]!,
+                "DotPermitNumber": "",
+                "DotPermitExpiryDate": "",
+                "ImageSize": Defaults[.driverProfilePhotoSize]!,
+                "Extension": ".jpg"
+            ]
+        
+    }
+    
+    func format(phoneNumber sourcePhoneNumber: String) -> String? {
+        
+        // Remove any character that is not a number
+        let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let length = numbersOnly.characters.count
+        let hasLeadingOne = numbersOnly.hasPrefix("1")
+        
+        // Check for supported phone number length
+        guard length == 7 || length == 10 || (length == 11 && hasLeadingOne) else {
+            return nil
+        }
+        
+        let hasAreaCode = (length >= 10)
+        var sourceIndex = 0
+        
+        // Leading 1
+        var leadingOne = ""
+        if hasLeadingOne {
+            leadingOne = "1 "
+            sourceIndex += 1
+        }
+        
+        // Area code
+        var areaCode = ""
+        if hasAreaCode {
+            let areaCodeLength = 3
+            guard let areaCodeSubstring = numbersOnly.characters.substring(start: sourceIndex, offsetBy: areaCodeLength) else {
+                return nil
+            }
+            areaCode = String(format: "(%@) ", areaCodeSubstring)
+            sourceIndex += areaCodeLength
+        }
+        
+        // Prefix, 3 characters
+        let prefixLength = 3
+        guard let prefix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: prefixLength) else {
+            return nil
+        }
+        sourceIndex += prefixLength
+        
+        // Suffix, 4 characters
+        let suffixLength = 4
+        guard let suffix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: suffixLength) else {
+            return nil
+        }
+        
+        return leadingOne + areaCode + prefix + "-" + suffix
     }
     
     func validateForm() -> Bool
@@ -276,7 +353,7 @@ class DriverRegisterViewController: UIViewController {
     func pickPhotoForUpload()
     {
         var config = Configuration()
-        config.doneButtonTitle = "Finish"
+        config.doneButtonTitle = "Done"
         config.noImagesTitle = "Sorry! There are no images here!"
         config.recordLocation = false
         config.allowMultiplePhotoSelection = false
@@ -354,7 +431,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath)
                 if let tf = cell.viewWithTag(100) as? UITextField {
                     tf.autocapitalizationType = .none
-                    tf.placeholder = "123 456 789"
+                    tf.placeholder = "(123) 456-789"
                     tf.keyboardType = .numberPad
                     tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                     tf.tag = 1003
@@ -391,9 +468,14 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let profilePhoto = cell.viewWithTag(101) as! UIImageView
                 let uploadButton = cell.viewWithTag(100) as! UIButton
                 
-                if let img = self.selectedPhoto
+                if let img = Defaults[.driverProfilePhoto]
                 {
-                    profilePhoto.image = img
+                    let decodedData = Data(base64Encoded: img, options: .ignoreUnknownCharacters)!
+                    profilePhoto.image = UIImage(data: decodedData)
+                }
+                else
+                {
+                    profilePhoto.image = UIImage(named: "imgUserProfilePlaceholder")
                 }
                 
                 //ui code
@@ -559,8 +641,24 @@ extension DriverRegisterViewController : ImagePickerDelegate
     }
     
     func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        self.selectedPhoto = images.first
-        self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
-        imagePicker.dismiss(animated: true, completion: nil)
+//        self.selectedPhoto = images.first
+        guard let photo = images.first else {return}
+        let compressedImage = UIImageJPEGRepresentation(photo, 0.5)!
+        let compressedImageData = NSData(data: compressedImage)
+        
+        let imgSize:Int = compressedImageData.length
+        Defaults[.driverProfilePhotoSize] = Double(imgSize) / 1024
+        if Double(imgSize)/(1024*1024) > 2
+        {
+            imagePicker.dismiss(animated: true, completion: { 
+                showError(title: "Alert", message: "File size greater than 2MB")
+            })
+        }
+        else
+        {
+            Defaults[.driverProfilePhoto] = compressedImage.base64EncodedString(options: .lineLength64Characters)
+            self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+            imagePicker.dismiss(animated: true, completion: nil)
+        }
     }
 }

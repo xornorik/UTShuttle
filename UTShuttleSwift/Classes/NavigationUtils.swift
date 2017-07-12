@@ -30,11 +30,10 @@ class NavigationUtils {
         self.pushToVC(nextVC: nextVC)
     }
     
-    static func goToDriverRegisterStep3(profilePhotoForUpload:UIImage?) //for passing the photo to final VC
+    static func goToDriverRegisterStep3()
     {
         let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverRegisterVC") as! DriverRegisterViewController
         nextVC.rStatus = RegistrationStatus.step3
-        nextVC.selectedPhoto = profilePhotoForUpload
         self.pushToVC(nextVC: nextVC)
     }
     
