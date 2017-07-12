@@ -25,11 +25,18 @@ class APIClient : NSObject {
     
     func setup()
     {
-        let config = manager.session.configuration
+        
     }
     
     func driverRegistration(payload:[String:Any], callback:(_ success:Bool)->())
     {
         let parameters:[String:Any] = ["Driver":payload]
+        let url = testBaseUrl + EndPoints.driverRegistration
+        manager.request(url, method: HTTPMethod.post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+        .validate()
+        .responseJSON { (response) in
+            <#code#>
+        }
+        
     }
 }
