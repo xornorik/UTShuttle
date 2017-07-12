@@ -36,10 +36,11 @@ class DriverRegisterViewController: UIViewController {
     
     var countryPicker = UIPickerView()
     var countries = [Country]()
-    var phoneCellIndexPath:IndexPath?
+    var selectedIndexPath:IndexPath?
     var isPickingCountry = false //just for keeping the keyboard active on a special instance
     var chosenCountry = Country(code: "US", name: "United States", phoneCode: "+1")
     
+    var selectedPhoto:UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +118,11 @@ class DriverRegisterViewController: UIViewController {
                 NavigationUtils.goToDriverRegisterStep2()
             case .step2:
                 storeDetails()
-                NavigationUtils.goToDriverRegisterStep3()
+                if let profilePhoto = self.selectedPhoto {
+                    NavigationUtils.goToDriverRegisterStep3(profilePhotoForUpload: profilePhoto)
+                }else {
+                    NavigationUtils.goToDriverRegisterStep3(profilePhotoForUpload: nil)
+                }
             default:
                 print("This should not happen")
             }
@@ -142,9 +147,25 @@ class DriverRegisterViewController: UIViewController {
                 print("Exhaustive")
             }
         case .step2:
-            break
+            switch textField.tag {
+            case 1000:
+                licenseNo = textField.text!
+            case 1001:
+                licenseExp = textField.text!
+            default:
+                print("Exhaustive")
+            }
         case .step3:
-            break
+            switch textField.tag {
+            case 1000:
+                username = textField.text!
+            case 1001:
+                password = textField.text!
+            case 1002:
+                retypePassword = textField.text!
+            default:
+                print("Exhaustive")
+            }
         }
     }
     
@@ -191,7 +212,7 @@ class DriverRegisterViewController: UIViewController {
     {
         guard rStatus == .step1 else{return}
         isPickingCountry = true
-        let phoneNoCell = self.registerTableView.cellForRow(at: phoneCellIndexPath!)//button.superview?.superview as? UITableViewCell
+        let phoneNoCell = self.registerTableView.cellForRow(at: selectedIndexPath!)//button.superview?.superview as? UITableViewCell
         let phoneNotextField = phoneNoCell?.viewWithTag(1003) as! UITextField
         
         if phoneNotextField.isFirstResponder
@@ -220,7 +241,7 @@ class DriverRegisterViewController: UIViewController {
     {
         isPickingCountry = false
 
-        let phoneNoCell = self.registerTableView.cellForRow(at: phoneCellIndexPath!)//button.superview?.superview as? UITableViewCell
+        let phoneNoCell = self.registerTableView.cellForRow(at: selectedIndexPath!)//button.superview?.superview as? UITableViewCell
         let phoneNoTextField = phoneNoCell?.viewWithTag(1003) as! UITextField
         let countryPickerButton = phoneNoCell?.viewWithTag(102) as! UIButton
         phoneNoTextField.resignFirstResponder()
@@ -232,6 +253,27 @@ class DriverRegisterViewController: UIViewController {
         phoneNoCell?.setNeedsDisplay()
     }
     
+    func handleDatePicker(sender:UIDatePicker)
+    {
+        let dateCell = self.registerTableView.cellForRow(at: self.selectedIndexPath!)
+        let dateTf = dateCell?.viewWithTag(1001) as! UITextField
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        
+        dateTf.text = dateFormatter.string(from: sender.date)
+        licenseExp = dateTf.text!
+    }
+    
+    func dismissKeyboard()
+    {
+        self.view.endEditing(false)
+    }
+    
+    func pickPhotoForUpload()
+    {
+        
+    }
 }
 extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSource
 {
@@ -241,7 +283,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
         case .step1:
             return 4
         case .step2:
-            return 2
+            return 3
         case .step3:
             return 4
         }
@@ -299,6 +341,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath)
                 if let tf = cell.viewWithTag(100) as? UITextField {
                     tf.autocapitalizationType = .none
+                    tf.placeholder = "123 456 789"
                     tf.keyboardType = .numberPad
                     tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
                     tf.tag = 1003
@@ -314,7 +357,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let countryButton = cell.viewWithTag(102) as! UIButton
                 let countryCodeLabel = cell.viewWithTag(103) as! UILabel
                                 
-                self.phoneCellIndexPath = indexPath
+                self.selectedIndexPath = indexPath
                 
                 countryCodeLabel.text = chosenCountry.phoneCode
                 countryButton.setImage(chosenCountry.flag, for: .normal)
@@ -331,21 +374,73 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
             switch indexPath.row
             {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
+                let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath)
+                let profilePhoto = cell.viewWithTag(101) as! UIImageView
+                let uploadButton = cell.viewWithTag(100) as! UIButton
                 
-                tf.placeholder = "989454"
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                label.text = "Driver License Number"
+                if let img = self.selectedPhoto
+                {
+                    profilePhoto.image = img
+                }
+                
+                //ui code
+                profilePhoto.cornerRadius = profilePhoto.frame.size.width/2
+                profilePhoto.clipsToBounds = true
+                profilePhoto.layer.borderColor = ColorPalette.UTSTealLight.cgColor
+                profilePhoto.layer.borderWidth = 1
+                
+                uploadButton.addTarget(self, action: #selector(pickPhotoForUpload), for: .touchUpInside)
+                
+                cell.setNeedsDisplay()
+                
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = "989454"
+                tf.placeholder = "9894541234325425"
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.tag = 1000
+                
+                label.text = "Driver License Number"
+                return cell
+            case 2:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
+                let tf = cell.viewWithTag(100) as! UITextField
+                let label = cell.viewWithTag(101) as! UILabel
+                
+                tf.placeholder = "12-05-2019"
+                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                
+                //configure datepicker
+                let minDate = (Calendar.current as NSCalendar).date(byAdding: .month, value: 6, to: Date(), options: []) //[!] Check with mgmt
+                let pickerView = UIDatePicker()
+                pickerView.datePickerMode = .date
+                pickerView.addTarget(self, action: #selector(handleDatePicker), for: UIControlEvents.valueChanged)
+                pickerView.minimumDate = minDate
+                
+                let toolBar = UIToolbar()
+                toolBar.barStyle = UIBarStyle.default
+                toolBar.tintColor = ColorPalette.UTSTeal
+                toolBar.isTranslucent = true
+                toolBar.sizeToFit()
+                
+                let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissKeyboard))
+                let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+                toolBar.setItems([spaceButton, doneButton], animated: false)
+
+                let df = DateFormatter()
+                df.dateFormat = "dd-MM-yyyy"
+                licenseExp = df.string(from: minDate!)
+                
+//                tf.text = df.string(from: pickerView.date)
+                tf.tag = 1001
+                tf.inputView = pickerView
+                tf.inputAccessoryView = toolBar
+
+                self.selectedIndexPath = indexPath
+                
                 label.text = "Driver License Expiry Date"
                 return cell
             default:
@@ -358,8 +453,10 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = "989454"
+                tf.placeholder = "John Doe"
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.tag = 1000
+                
                 label.text = "Type your User Name"
                 return cell
             case 1:
@@ -367,8 +464,11 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = "989454"
+                tf.placeholder = ""
+                tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.tag = 1001
+                
                 label.text = "Type password"
                 return cell
             case 2:
@@ -376,8 +476,11 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 let tf = cell.viewWithTag(100) as! UITextField
                 let label = cell.viewWithTag(101) as! UILabel
                 
-                tf.placeholder = "989454"
+                tf.placeholder = ""
+                tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.tag = 1002
+                
                 label.text = "Retype Password"
                 return cell
 
@@ -387,7 +490,14 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        if rStatus == .step2 && indexPath.row == 0
+        {
+            return 150
+        }
+        else
+        {
+            return 65
+        }
     }
 }
 extension DriverRegisterViewController : UIPickerViewDelegate, UIPickerViewDataSource
@@ -419,7 +529,7 @@ extension DriverRegisterViewController : UIPickerViewDelegate, UIPickerViewDataS
         let country = countries[row]
         self.chosenCountry = country
         
-        self.registerTableView.reloadRows(at: [self.phoneCellIndexPath!], with: .none)
+        self.registerTableView.reloadRows(at: [self.selectedIndexPath!], with: .none)
         
     }
 }

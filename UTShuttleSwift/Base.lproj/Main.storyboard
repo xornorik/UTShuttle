@@ -9,6 +9,7 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -586,6 +587,51 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="imageCell" rowHeight="157" id="DMA-Sm-rFx">
+                                        <rect key="frame" x="0.0" y="220" width="375" height="157"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DMA-Sm-rFx" id="hpP-gh-ScU">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="157"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ImgUserProfilePlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="Ua2-oZ-otn">
+                                                    <rect key="frame" x="133" y="13" width="109" height="109"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="Ua2-oZ-otn" secondAttribute="height" multiplier="1:1" id="CMw-m7-7Qk"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="One file only, 2MB limit, .jpg,.png" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12d-I8-gnV">
+                                                    <rect key="frame" x="81" y="127" width="212.5" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgProfileUpload" translatesAutoresizingMaskIntoConstraints="NO" id="mg6-lU-TEe">
+                                                    <rect key="frame" x="205.5" y="85.5" width="36.5" height="36.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="mg6-lU-TEe" secondAttribute="height" multiplier="1:1" id="Yzd-gS-tWL"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knP-Gc-6pg">
+                                                    <rect key="frame" x="133" y="13" width="109" height="109"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="mg6-lU-TEe" firstAttribute="bottom" secondItem="Ua2-oZ-otn" secondAttribute="bottom" id="9cE-Wv-ifz"/>
+                                                <constraint firstItem="mg6-lU-TEe" firstAttribute="width" secondItem="Ua2-oZ-otn" secondAttribute="width" multiplier="1/3" id="LAy-wb-fbC"/>
+                                                <constraint firstItem="Ua2-oZ-otn" firstAttribute="centerX" secondItem="hpP-gh-ScU" secondAttribute="centerX" id="Xfj-8o-HeS"/>
+                                                <constraint firstItem="12d-I8-gnV" firstAttribute="centerX" secondItem="hpP-gh-ScU" secondAttribute="centerX" id="aHE-Vv-9gb"/>
+                                                <constraint firstItem="12d-I8-gnV" firstAttribute="top" secondItem="Ua2-oZ-otn" secondAttribute="bottom" constant="5" id="dnO-e3-W1f"/>
+                                                <constraint firstItem="knP-Gc-6pg" firstAttribute="trailing" secondItem="Ua2-oZ-otn" secondAttribute="trailing" id="hdk-be-ZPy"/>
+                                                <constraint firstItem="knP-Gc-6pg" firstAttribute="bottom" secondItem="Ua2-oZ-otn" secondAttribute="bottom" id="iJB-vk-93m"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="12d-I8-gnV" secondAttribute="bottom" constant="5" id="iSe-UI-KL6"/>
+                                                <constraint firstItem="mg6-lU-TEe" firstAttribute="trailing" secondItem="Ua2-oZ-otn" secondAttribute="trailing" id="l0Z-Wi-uB1"/>
+                                                <constraint firstItem="Ua2-oZ-otn" firstAttribute="top" secondItem="hpP-gh-ScU" secondAttribute="topMargin" constant="5" id="mVK-gZ-qZ1"/>
+                                                <constraint firstItem="knP-Gc-6pg" firstAttribute="leading" secondItem="Ua2-oZ-otn" secondAttribute="leading" id="ooy-ad-5bw"/>
+                                                <constraint firstItem="knP-Gc-6pg" firstAttribute="top" secondItem="Ua2-oZ-otn" secondAttribute="top" id="tUP-TR-Vcd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="10c-y7-HWf" id="J9N-la-uhp"/>
@@ -639,8 +685,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ImgUserProfilePlaceholder" width="52" height="52"/>
         <image name="US.png" width="40" height="30"/>
         <image name="buttonCheckboxFalse" width="50" height="50"/>
+        <image name="imgProfileUpload" width="30" height="30"/>
         <image name="imgRegStep1" width="310" height="50"/>
         <image name="logoUTShuttleDark" width="250" height="75"/>
         <image name="logoUTUniversal" width="210" height="65"/>
