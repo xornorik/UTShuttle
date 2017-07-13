@@ -37,6 +37,12 @@ class NavigationUtils {
         self.pushToVC(nextVC: nextVC)
     }
     
+    static func goToDashboard()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboardVC")
+        self.setCurrentVC(nextVC: nextVC)
+    }
+    
     
     static func presentVC(nextVC: UIViewController) {
         

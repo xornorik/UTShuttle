@@ -223,8 +223,7 @@ class CommandClient: NSObject {
             var reqParameters = [String]()
             reqParameters.append(deviceId)
             reqParameters.append(Commands.DriverAuth)
-            reqParameters.append(lat)
-            reqParameters.append(lon)
+            reqParameters.append(lat+","+lon)
             reqParameters.append(userId)
             reqParameters.append(password)
             
@@ -238,10 +237,10 @@ class CommandClient: NSObject {
                     let responseArr = decodeResponse(responseString: response)
                     guard let status = Int(responseArr[responseArr.endIndex - 4]) else { print("Wrong Status"); return }
                     switch status {
-                    case 0,2,3,4,5,6:
+                    case 0,3,4,5,6:
                         callback(false, driverAuthError(rawValue: status)!, [])
-                    case 1:
-                        callback(true, driverAuthError.Success, responseArr)
+                    case 1,2:
+                        callback(true, driverAuthError.Success, responseArr) //as advised by backend
                     default:
                         print("Bad response from server")
                     }

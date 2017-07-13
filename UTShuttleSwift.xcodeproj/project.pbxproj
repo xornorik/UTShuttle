@@ -272,6 +272,7 @@
 		444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */; };
 		444A37A31F14B4F000D48C63 /* SwiftCountryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */; };
 		444A37A51F14C65100D48C63 /* CountryPickerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */; };
+		44663FE71F179A98005ACF79 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44663FE61F179A97005ACF79 /* DashboardViewController.swift */; };
 		447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B131F0E4DBA00C4774E /* AppDelegate.swift */; };
 		447B7B191F0E4DBA00C4774E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 447B7B171F0E4DBA00C4774E /* Main.storyboard */; };
 		447B7B1B1F0E4DBA00C4774E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447B7B1A1F0E4DBA00C4774E /* Assets.xcassets */; };
@@ -574,6 +575,7 @@
 		444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftCountryView.swift; sourceTree = "<group>"; };
 		444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwiftCountryView.xib; sourceTree = "<group>"; };
 		444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CountryPickerTextField.swift; path = Classes/CountryPickerTextField.swift; sourceTree = "<group>"; };
+		44663FE61F179A97005ACF79 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DashboardViewController.swift; path = Classes/DashboardViewController.swift; sourceTree = "<group>"; };
 		447B7B101F0E4DB900C4774E /* UTShuttleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UTShuttleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		447B7B131F0E4DBA00C4774E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		447B7B181F0E4DBA00C4774E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */,
 				444A35961F138ED200D48C63 /* DriverLoginViewController.swift */,
 				44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */,
+				44663FE61F179A97005ACF79 /* DashboardViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1635,6 +1638,7 @@
 				4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */,
 				444A37A51F14C65100D48C63 /* CountryPickerTextField.swift in Sources */,
 				4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */,
+				44663FE71F179A98005ACF79 /* DashboardViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

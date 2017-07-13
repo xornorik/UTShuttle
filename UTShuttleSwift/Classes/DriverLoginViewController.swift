@@ -113,6 +113,7 @@ class DriverLoginViewController: UIViewController {
     {
         if validateForm()
         {
+            print(Defaults[.deviceId]!)
             guard let deviceId = Defaults[.deviceId] else {return}
             guard let lat = Defaults[.lastLatitude] else {return}
             guard let lon = Defaults[.lastLongitude] else {return}
@@ -121,7 +122,9 @@ class DriverLoginViewController: UIViewController {
                 
                 if success
                 {
-                    //go to Home Screen of app
+                    //store stuff and go to Home Screen of app
+                    Defaults[.isLoggedIn] = true
+                    NavigationUtils.goToDashboard()
                 }
                 else
                 {
@@ -144,6 +147,9 @@ class DriverLoginViewController: UIViewController {
                     }
                 }
             })
+            
+            
+            
         }
     }
     

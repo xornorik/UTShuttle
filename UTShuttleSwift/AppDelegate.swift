@@ -61,15 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //check if logged in
         //show correct UI
         var rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "deviceRegistrationVC")
-        if let deviceId = Defaults[.deviceId]
-        {
-            print(deviceId)
-        }
         if Defaults[.deviceId] != nil
         {
             if Defaults[.isLoggedIn] ?? false
             {
-                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainVC")
+                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboardVC")
             }
             else
             {
@@ -78,26 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else
         {
-            //device registration
+            //device registration already instantiated
         }
-        
-//        guard let isLoggedIn = Defaults[.isLoggedIn] else {Defaults[.isLoggedIn] = false; return}
-//        print(Defaults[.isLoggedIn] ?? "NOT THERE - THIS FAILED")
-//        if isLoggedIn
-//        {
-//            rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainVC")
-//        }
-//        else
-//        {
-//            guard let isDeviceRegistered = Defaults[.isDeviceRegistered] else {Defaults[.isDeviceRegistered] = false; return}
-//            if isDeviceRegistered
-//            {
-//                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "loginFlowVC")
-//            }
-//            // else register - already instantiated
-//
-//        }
-        
         
         mainNC = UINavigationController(rootViewController: rootVC)
         self.window?.rootViewController = self.mainNC

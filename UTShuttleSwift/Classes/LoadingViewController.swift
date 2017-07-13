@@ -2,7 +2,7 @@
 //  LoadingViewController.swift
 //  UTShuttleSwift
 //
-//  Created by Apple Developer on 07/07/17.
+//  Created by Srinivas Vemuri on 07/07/17.
 //  Copyright © 2017 PLEXITECH. All rights reserved.
 //
 
