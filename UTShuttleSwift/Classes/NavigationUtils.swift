@@ -37,6 +37,7 @@ class NavigationUtils {
         self.pushToVC(nextVC: nextVC)
     }
     
+    
     static func presentVC(nextVC: UIViewController) {
         
         let currentNavController = UIApplication.topViewController()!.navigationController!

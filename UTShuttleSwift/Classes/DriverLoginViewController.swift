@@ -117,7 +117,7 @@ class DriverLoginViewController: UIViewController {
             guard let lat = Defaults[.lastLatitude] else {return}
             guard let lon = Defaults[.lastLongitude] else {return}
             
-            tcpClient.driverAuth(userId: userIdTF.text!, password: passwordTF.text!, deviceId: deviceId, lat: String(lat), lon: String(lon), callback: { (success, error) in
+            tcpClient.driverAuth(userId: userIdTF.text!, password: passwordTF.text!, deviceId: deviceId, lat: String(lat), lon: String(lon), callback: { (success, error, response) in
                 
                 if success
                 {
@@ -137,8 +137,8 @@ class DriverLoginViewController: UIViewController {
                         showError(title: "Alert", message: "Driver Already Logged in")
                     case .InvalidDevice:
                         showError(title: "Alert", message: "Invalid or Inactive Device")
-                    case .InvalidDriver:
-                        showError(title: "Alert", message: "Invalid or Inactive Driver")
+                    case .Fail:
+                        showError(title: "Alert", message: "Login failed.")
                     default:
                         break
                     }

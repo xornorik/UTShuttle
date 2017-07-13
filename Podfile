@@ -10,6 +10,8 @@ target 'UTShuttleSwift' do
   pod 'SwiftyUserDefaults'
   pod 'Alertift'
   pod 'ImagePicker'
+  pod 'PKHUD'
+  pod 
 
 
   # Pods for UTShuttleSwift

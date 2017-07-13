@@ -38,9 +38,10 @@ class DriverRegisterViewController: UIViewController {
     
     var countryPicker = UIPickerView()
     var countries = [Country]()
-    var selectedIndexPath:IndexPath?
+    var selectedIndexPath:IndexPath? //used for country picking, date picking and terms and condition toggling
     var isPickingCountry = false //just for keeping the keyboard active on a special instance
     var chosenCountry = Country(code: "US", name: "United States", phoneCode: "+1")
+    var isAgreeToTermsAndConditions = false
     
     var selectedPhoto:UIImage?
 
@@ -121,8 +122,9 @@ class DriverRegisterViewController: UIViewController {
             case .step2:
                 storeDetails()
                 NavigationUtils.goToDriverRegisterStep3()
-            default:
-                print("This should not happen")
+            case .step3:
+                storeDetails()
+                registerDriver()
             }
 
         }
@@ -190,13 +192,13 @@ class DriverRegisterViewController: UIViewController {
         let payload:[String:Any] = [
                 "RowIndex": 0,
                 "UniqueId": "",
-                "DeviceId": Defaults[.deviceId]!,
-                "UserName": Defaults[.driverUsername]!,
-                "FirstName": Defaults[.driverFirstName]!,
-                "LastName": Defaults[.driverLastName]!,
-                "Email": Defaults[.driverEmail]!,
-                "Mobile": format(phoneNumber: Defaults[.driverMobile]!)!,
-                "Password": Defaults[.driverPassword]!,
+                "DeviceId": Defaults[.deviceId] ?? 0,
+                "UserName": Defaults[.driverUsername] ?? "",
+                "FirstName": Defaults[.driverFirstName] ?? "",
+                "LastName": Defaults[.driverLastName] ?? "",
+                "Email": Defaults[.driverEmail] ?? "",
+                "Mobile": format(phoneNumber: Defaults[.driverMobile]!) ?? "",
+                "Password": Defaults[.driverPassword] ?? "",
                 "DateofBirth": "",
                 "Address_1": "",
                 "Address_2": "",
@@ -205,15 +207,41 @@ class DriverRegisterViewController: UIViewController {
                 "StateId": 0,
                 "CityName": "",
                 "StateName": "",
-                "Phone": format(phoneNumber: Defaults[.driverMobile]!)!,
-                "CountryCode": Defaults[.driverCountryCode]!,
-                "DriverLicenceNumber": Defaults[.driverLicense]!,
-                "DriverLicenceExpiryDate": Defaults[.driverLicenseExp]!,
+                "Phone": format(phoneNumber: Defaults[.driverMobile]!) ?? "",
+                "CountryCode": Defaults[.driverCountryCode] ?? "+1",
+                "DriverLicenceNumber": Defaults[.driverLicense] ?? "",
+                "DriverLicenceExpiryDate": Defaults[.driverLicenseExp] ?? "" ,
                 "DotPermitNumber": "",
                 "DotPermitExpiryDate": "",
-                "ImageSize": Defaults[.driverProfilePhotoSize]!,
+                "ImageUser": Defaults[.driverProfilePhoto] ?? "",
+                "ImageSize": Defaults[.driverProfilePhotoSize] ?? 0,
                 "Extension": ".jpg"
             ]
+        apiClient.driverRegistration(payload: payload) { (success, error) in
+            
+            if success
+            {
+                NavigationUtils.goToDriverLogin()
+            }
+            else
+            {
+                showError(title: "Alert", message: error)
+            }
+        }
+    }
+    
+    func toggleAgreeToTermsAndConditions()
+    {
+        guard let indexPath = self.selectedIndexPath else {return}
+        if self.isAgreeToTermsAndConditions
+        {
+            self.isAgreeToTermsAndConditions = false
+        }
+        else
+        {
+            self.isAgreeToTermsAndConditions = true
+        }
+        self.registerTableView.reloadRows(at: [indexPath], with: .none)
         
     }
     
@@ -282,8 +310,9 @@ class DriverRegisterViewController: UIViewController {
             guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
         case .step3:
             guard username != "" else {showError(title: "Alert", message: "Please enter a username."); return false}
-            guard password != "", password.characters.count < 4 else {showError(title: "Alert", message: "Please enter a password with atleast 4 characters."); return false}
+            guard password != "", password.characters.count > 4 else {showError(title: "Alert", message: "Please enter a password with atleast 4 characters."); return false}
             guard password == retypePassword else {showError(title: "Alert", message: "Passwords do not match. Please try again."); return false}
+            if !isAgreeToTermsAndConditions {showError(title: "Alert", message: "Please agree to the terms and conditions before proceeding."); return false}
         }
         return true
     }
@@ -450,6 +479,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 self.selectedIndexPath = indexPath
                 
                 countryCodeLabel.text = chosenCountry.phoneCode
+                Defaults[.driverCountryCode] = chosenCountry.phoneCode //to Initialize it to US
                 countryButton.setImage(chosenCountry.flag, for: .normal)
                 countryButton.addTarget(self, action: #selector(countryPickerButtonTapped), for: .touchUpInside)
 
@@ -579,7 +609,20 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 label.text = "Retype Password"
                 return cell
-
+            case 3:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "termsCell", for: indexPath)
+                let checkboxImageView = cell.viewWithTag(100) as! UIImageView
+                let agreeButton = cell.viewWithTag(101) as! UIButton
+                
+                if isAgreeToTermsAndConditions{
+                    checkboxImageView.image = UIImage(named: "buttonCheckboxTrue")
+                }else{
+                    checkboxImageView.image = UIImage(named: "buttonCheckboxFalse")
+                }
+                
+                selectedIndexPath = indexPath
+                agreeButton.addTarget(self, action: #selector(toggleAgreeToTermsAndConditions), for: .touchUpInside)
+                return cell
             default:
                 return UITableViewCell()
             }

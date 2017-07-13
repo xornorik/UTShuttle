@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import SwiftyUserDefaults
+import PKHUD
 
 class APIClient : NSObject {
     
@@ -28,14 +29,48 @@ class APIClient : NSObject {
         
     }
     
-    func driverRegistration(payload:[String:Any], callback:(_ success:Bool)->())
+    func parseError(response:DataResponse<Any>)
     {
+        if HUD.isVisible
+        {
+            HUD.hide()
+        }
+        guard let responseCode = response.response?.statusCode else {
+            showError(title: "Connection Lost", message: "Connection to server has been lost")
+            return
+        }
+        print(responseCode)
+        print(response.result.error.debugDescription)
+    }
+    
+    func driverRegistration(payload:[String:Any], callback:@escaping (_ success:Bool,_ error:String)->())
+    {
+        print("Requesting driver registration")
+        HUD.show(.progress)
         let parameters:[String:Any] = ["Driver":payload]
         let url = testBaseUrl + EndPoints.driverRegistration
-        manager.request(url, method: HTTPMethod.post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
         .validate()
         .responseJSON { (response) in
-            <#code#>
+            print("Received response \(response)")
+            if response.result.isSuccess {
+                let json = JSON(response.result.value!)
+                if json["IsSuccess"].boolValue
+                {
+                    HUD.flash(HUDContentType.success, delay: 0.3)
+                    callback(true,"")
+                }
+                else
+                {
+                    HUD.hide()
+                    callback(false,json["ResponseMessage"].stringValue)
+                }
+            }
+            else
+            {
+                HUD.hide()
+                self.parseError(response: response)
+            }
         }
         
     }

@@ -122,8 +122,8 @@ class DeviceRegistrationViewController: UIViewController {
                     showError(title: "Connection Lost", message: "Connection to server has been lost")
                 case .InvalidUniqueId:
                     showError(title: "Alert", message: "The unique ID entered by you is invalid. Please enter the correct ID or send a request for another ID.")
-                case .MobileNoNotFound:
-                    showError(title: "Alert", message: "This unique ID has already been used for another device. Please contact your manager.")
+                case .Failed:
+                    showError(title: "Alert", message: "Invalid unique ID.")
                 case .Success:
                     break
                 }

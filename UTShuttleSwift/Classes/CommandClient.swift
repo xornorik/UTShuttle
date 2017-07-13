@@ -37,10 +37,17 @@ class CommandClient: NSObject {
     }
     
     //Mark: ERRORS
+//    enum deviceAuthError:Int {
+//        case Success = 1
+//        case InvalidDevice = 2
+//        case LoggedOut = 3 //logged out from backend
+//        case ConnectionError = 99
+//    }
+    
     enum deviceRegError:Int {
         case InvalidUniqueId = 2
         case Success = 1
-        case MobileNoNotFound = 0
+        case Failed = 0
         case ConnectionError = 99
     }
     
@@ -96,9 +103,6 @@ class CommandClient: NSObject {
                     guard let status = Int(responseArr.last!) else { print("Some error"); return }
                     switch Int(status)
                     {
-                    case 0:
-                        print("Failed")
-                        callback(false)
                     case 1:
                         print("Success")
                         //Store the details retreived and show login page
@@ -107,6 +111,11 @@ class CommandClient: NSObject {
                         callback(true)
                     case 2:
                         print("Invalid Device")
+                        Defaults[.deviceId] = nil
+                        Defaults[.appVersion] = nil
+                        callback(true)
+                    case 3:
+                        print("Logged out from backend")
                         callback(true)
                     default:
                         print("Switch case exhaustive")
@@ -183,13 +192,13 @@ class CommandClient: NSObject {
                 if let response = String(bytes: data, encoding: .utf8) {
                     print("response received: \(response)")
                     let responseArr = decodeResponse(responseString: response)
-                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Some error"); return } //exceptional case server side
+                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Wrong Status"); return }
                     switch status {
                     case 1:
                         //success
                         callback(true,deviceRegError.Success)
                     case 0:
-                        callback(false, deviceRegError.MobileNoNotFound)
+                        callback(false, deviceRegError.Failed)
                     case 2:
                         callback(false, deviceRegError.InvalidUniqueId)
                     default:
@@ -207,7 +216,7 @@ class CommandClient: NSObject {
         }
     }
     
-    func driverAuth(userId:String, password:String, deviceId:String, lat:String, lon:String, callback:(_ success:Bool, _ error:driverAuthError)->())
+    func driverAuth(userId:String, password:String, deviceId:String, lat:String, lon:String, callback:(_ success:Bool, _ error:driverAuthError, _ response:[String])->())
     {
         if isConnected()
         {
@@ -227,23 +236,23 @@ class CommandClient: NSObject {
                 if let response = String(bytes: data, encoding: .utf8) {
                     print("response received: \(response)")
                     let responseArr = decodeResponse(responseString: response)
-                    guard let status = Int(responseArr.last!) else { print("Some error"); return }
+                    guard let status = Int(responseArr[responseArr.endIndex - 4]) else { print("Wrong Status"); return }
                     switch status {
                     case 0,2,3,4,5,6:
-                        callback(false, driverAuthError(rawValue: status)!)
+                        callback(false, driverAuthError(rawValue: status)!, [])
                     case 1:
-                        callback(true, driverAuthError.Success)
+                        callback(true, driverAuthError.Success, responseArr)
                     default:
                         print("Bad response from server")
                     }
                 }
             case .failure(_):
-                callback(false, driverAuthError.ConnectionError)
+                callback(false, driverAuthError.ConnectionError, [])
             }
         }
         else
         {
-            callback(false, driverAuthError.ConnectionError)
+            callback(false, driverAuthError.ConnectionError, [])
         }
     }
     
