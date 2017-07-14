@@ -37,12 +37,12 @@ class CommandClient: NSObject {
     }
     
     //Mark: ERRORS
-//    enum deviceAuthError:Int {
-//        case Success = 1
-//        case InvalidDevice = 2
-//        case LoggedOut = 3 //logged out from backend
-//        case ConnectionError = 99
-//    }
+    enum deviceAuthError:Int {
+        case Success = 1
+        case InvalidDevice = 2
+        case LoggedOut = 3 //logged out from backend
+        case ConnectionError = 99
+    }
     
     enum deviceRegError:Int {
         case InvalidUniqueId = 2
@@ -88,7 +88,7 @@ class CommandClient: NSObject {
     }
 
     
-    func deviceAuth(callback:(_ success:Bool)->()){
+    func deviceAuth(callback:(_ response:deviceAuthError)->()){
         if isConnected()
         {
             let udid = DeviceDetails.deviceID() //consider encrypting
@@ -108,25 +108,25 @@ class CommandClient: NSObject {
                         //Store the details retreived and show login page
                         Defaults[.deviceId] = responseArr[0]
                         Defaults[.appVersion] = responseArr[1]
-                        callback(true)
+                        callback(.Success)
                     case 2:
                         print("Invalid Device")
                         Defaults[.deviceId] = nil
                         Defaults[.appVersion] = nil
-                        callback(true)
+                        callback(.InvalidDevice)
                     case 3:
                         print("Logged out from backend")
-                        callback(true)
+                        callback(.LoggedOut)
                     default:
                         print("Switch case exhaustive")
                     }
                 }
             case .failure( _ ):
-                callback(false)
+                callback(.ConnectionError)
             }
         }
         else{
-            callback(false)
+            callback(.ConnectionError)
         }
     }
     

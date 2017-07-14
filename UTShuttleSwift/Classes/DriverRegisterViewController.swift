@@ -48,7 +48,15 @@ class DriverRegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -61,6 +69,8 @@ class DriverRegisterViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK: Setup Functions
     
     func setupVC()
     {
@@ -109,6 +119,9 @@ class DriverRegisterViewController: UIViewController {
         }
         
     }
+    
+    //MARK: UI Functions
+
     
     func nextButtonTapped()
     {
@@ -169,6 +182,23 @@ class DriverRegisterViewController: UIViewController {
         }
     }
     
+    func toggleAgreeToTermsAndConditions()
+    {
+        guard let indexPath = self.selectedIndexPath else {return}
+        if self.isAgreeToTermsAndConditions
+        {
+            self.isAgreeToTermsAndConditions = false
+        }
+        else
+        {
+            self.isAgreeToTermsAndConditions = true
+        }
+        self.registerTableView.reloadRows(at: [indexPath], with: .none)
+        
+    }
+    
+    //MARK: I/O Functions
+    
     func storeDetails()
     {
         switch rStatus {
@@ -215,12 +245,13 @@ class DriverRegisterViewController: UIViewController {
                 "DotPermitExpiryDate": "",
                 "ImageUser": Defaults[.driverProfilePhoto] ?? "",
                 "ImageSize": Defaults[.driverProfilePhotoSize] ?? 0,
-                "Extension": ".jpg"
+                "Extension": ".jpeg"
             ]
         apiClient.driverRegistration(payload: payload) { (success, error) in
             
             if success
             {
+                Defaults[.driverProfilePhoto] = nil //clear base64 Image
                 NavigationUtils.goToDriverLogin()
             }
             else
@@ -230,27 +261,17 @@ class DriverRegisterViewController: UIViewController {
         }
     }
     
-    func toggleAgreeToTermsAndConditions()
-    {
-        guard let indexPath = self.selectedIndexPath else {return}
-        if self.isAgreeToTermsAndConditions
-        {
-            self.isAgreeToTermsAndConditions = false
-        }
-        else
-        {
-            self.isAgreeToTermsAndConditions = true
-        }
-        self.registerTableView.reloadRows(at: [indexPath], with: .none)
-        
-    }
+
+    
+    //MARK: Validation Functions
+
     
     func format(phoneNumber sourcePhoneNumber: String) -> String? {
         
         // Remove any character that is not a number
         let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         let length = numbersOnly.characters.count
-        let hasLeadingOne = numbersOnly.hasPrefix("1")
+        let hasLeadingOne = numbersOnly.hasPrefix("+1")
         
         // Check for supported phone number length
         guard length == 7 || length == 10 || (length == 11 && hasLeadingOne) else {
@@ -263,7 +284,7 @@ class DriverRegisterViewController: UIViewController {
         // Leading 1
         var leadingOne = ""
         if hasLeadingOne {
-            leadingOne = "1 "
+            leadingOne = "+1 "
             sourceIndex += 1
         }
         
@@ -316,6 +337,8 @@ class DriverRegisterViewController: UIViewController {
         }
         return true
     }
+    
+    //MARK: Picker Functions
     
     func countryPickerButtonTapped()
     {
@@ -393,6 +416,22 @@ class DriverRegisterViewController: UIViewController {
         
         present(imagePicker, animated: true, completion: nil)
     }
+    
+    // MARK: Keyboard Notifications
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardHeight = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
+            let padding:CGFloat = 20
+            registerTableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardHeight + padding, 0)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.2, animations: {
+            // For some reason adding inset in keyboardWillShow is animated by itself but removing is not, that's why we have to use animateWithDuration here
+            self.registerTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        })
+    }
 }
 extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSource
 {
@@ -422,6 +461,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.autocapitalizationType = .words
                 tf.keyboardType = .asciiCapable
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
                 tf.tag = 1000
 
 
@@ -437,6 +477,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.autocapitalizationType = .words
                 tf.keyboardType = .asciiCapable
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
                 tf.tag = 1001
                 
                 label.text = "Last Name"
@@ -451,6 +492,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.autocapitalizationType = .none
                 tf.keyboardType = .emailAddress
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
                 tf.tag = 1002
                 
                 label.text = "Email ID"
@@ -463,6 +505,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                     tf.placeholder = "(123) 456-789"
                     tf.keyboardType = .numberPad
                     tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                    tf.delegate = self
+
                     tf.tag = 1003
                     
                     if isPickingCountry {tf.becomeFirstResponder()}
@@ -470,6 +514,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                     let tf = cell.viewWithTag(1003) as! UITextField
                     tf.text = mobile
                     tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                    tf.delegate = self
+
                     tf.becomeFirstResponder()
                 }
                 let label = cell.viewWithTag(101) as! UILabel
@@ -495,7 +541,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
             {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath)
-                let profilePhoto = cell.viewWithTag(101) as! UIImageView
+                let profilePhoto = cell.viewWithTag(101) as! RoundedImageView
                 let uploadButton = cell.viewWithTag(100) as! UIButton
                 
                 if let img = Defaults[.driverProfilePhoto]
@@ -509,7 +555,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 }
                 
                 //ui code
-                profilePhoto.cornerRadius = profilePhoto.frame.size.width/2
+                profilePhoto.cornerRadius = profilePhoto.bounds.size.width/2
                 profilePhoto.clipsToBounds = true
                 profilePhoto.layer.borderColor = ColorPalette.UTSTealLight.cgColor
                 profilePhoto.layer.borderWidth = 1
@@ -527,6 +573,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 tf.placeholder = "9894541234325425"
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
+
                 tf.tag = 1000
                 
                 label.text = "Driver License Number"
@@ -564,6 +612,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.tag = 1001
                 tf.inputView = pickerView
                 tf.inputAccessoryView = toolBar
+                tf.delegate = self
+
 
                 self.selectedIndexPath = indexPath
                 
@@ -581,6 +631,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 tf.placeholder = "John Doe"
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
+
                 tf.tag = 1000
                 
                 label.text = "Type your User Name"
@@ -593,6 +645,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "******"
                 tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
+
                 tf.tag = 1001
                 
                 label.text = "Type password"
@@ -605,6 +659,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 tf.placeholder = "******"
                 tf.isSecureTextEntry = true
                 tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+                tf.delegate = self
+
                 tf.tag = 1002
                 
                 label.text = "Retype Password"
@@ -690,7 +746,7 @@ extension DriverRegisterViewController : ImagePickerDelegate
         let compressedImageData = NSData(data: compressedImage)
         
         let imgSize:Int = compressedImageData.length
-        Defaults[.driverProfilePhotoSize] = Double(imgSize) / 1024
+        Defaults[.driverProfilePhotoSize] = Double(imgSize) /// 1024
         if Double(imgSize)/(1024*1024) > 2
         {
             imagePicker.dismiss(animated: true, completion: { 
@@ -703,5 +759,18 @@ extension DriverRegisterViewController : ImagePickerDelegate
             self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
             imagePicker.dismiss(animated: true, completion: nil)
         }
+    }
+}
+extension DriverRegisterViewController : UITextFieldDelegate
+{
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        let cell = textField.superview?.superview as! UITableViewCell
+//        
+//        registerTableView.scrollToRow(at: registerTableView.indexPath(for: cell)!, at: .top, animated: true)
+//    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dismissKeyboard()
+        return true
     }
 }

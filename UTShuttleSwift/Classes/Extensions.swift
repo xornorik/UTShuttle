@@ -124,78 +124,90 @@ extension Int {
 //    }
 //}
 //
-//extension UIView {
-//    
-//    @IBInspectable var bottomBorder: Bool {
-//        get {
-//            return self.layer.getSublayerNamed("bottom_border") != nil
-//        }
-//        set {
-//            if newValue == true {
-//                let bottomBorder = CALayer()
-//                bottomBorder.backgroundColor = UIColor.blackColor().CGColor
-//                bottomBorder.frame = CGRectMake(0, CGRectGetHeight(self.frame) - 2.0, CGRectGetWidth(self.frame), 2.0)
-//                bottomBorder.name = "bottom_border"
-//                self.layer.addSublayer(bottomBorder)
-//            }
-//        }
-//    }
-//    
-//    @IBInspectable var makeCircle: Bool {
-//        get {
-//            return self.layer.cornerRadius != 0.5 * self.bounds.size.width
-//        }
-//        set {
-//            self.layer.cornerRadius = 0.5 * self.bounds.size.width
-//            self.clipsToBounds = true
-//        }
-//    }
-//    
-//    @IBInspectable var materialShadow: Bool {
-//        get {
-//            return self.layer.shadowOffset == CGSizeMake(0, 3.0)
-//        }
-//        set {
-//            self.layer.shadowOffset = CGSizeMake(0, 3.0)
-//            self.layer.shadowRadius = 3.0
-//            self.layer.shadowOpacity = 0.5
-//            self.layer.masksToBounds = false
-//        }
-//    }
-//    
-//    @IBInspectable var shadowColor: Bool {
-//        get {
-//            return self.layer.shadowOffset == CGSizeMake(0, 3.0)
-//        }
-//        set {
-//            self.layer.shadowOffset = CGSizeMake(0, 3.0)
-//            self.layer.shadowRadius = 3.0
-//            self.layer.shadowOpacity = 0.5
-//            self.layer.masksToBounds = false
-//        }
-//    }
-//    
-//}
-//
-//
-//extension CALayer {
-//    
-//    func getSublayerNamed(name: String) -> CALayer? {
-//        
-//        guard let sublayers = self.sublayers where sublayers.count > 0 else {
-//            return nil
-//        }
-//        
-//        for l in sublayers {
-//            if l.name == name {
-//                return l
-//            }
-//        }
-//        
-//        return nil
-//    }
-//    
-//}
+extension UIView {
+    
+    @IBInspectable var bottomBorder: Bool {
+        get {
+            return self.layer.getSublayerNamed(name: "bottom_border") != nil
+        }
+        set {
+            if newValue == true {
+                let bottomBorder = CALayer()
+                bottomBorder.backgroundColor = UIColor.black.cgColor
+                bottomBorder.frame = CGRect(x: 0, y: self.frame.height - 2, width: self.frame.width, height: 2)//CGRectMake(0, self.frame.height - 2.0, self.frame.width, 2.0)
+                bottomBorder.name = "bottom_border"
+                self.layer.addSublayer(bottomBorder)
+            }
+        }
+    }
+    
+    @IBInspectable var makeCircle: Bool {
+        get {
+            return self.layer.cornerRadius != 0.5 * self.bounds.size.width
+        }
+        set {
+            self.layer.cornerRadius = 0.5 * self.bounds.size.width
+            self.clipsToBounds = true
+        }
+    }
+    
+    @IBInspectable var materialShadow: Bool {
+        get {
+            return self.layer.shadowOffset == CGSize(width: 0, height: 3)//CGSizeMake(0, 3.0)
+        }
+        set {
+            self.layer.shadowOffset = CGSize(width: 0, height: 3)//CGSizeMake(0, 3.0)
+            self.layer.shadowRadius = 3.0
+            self.layer.shadowOpacity = 0.5
+            self.layer.masksToBounds = false
+        }
+    }
+    
+    @IBInspectable var shadowColor: Bool {
+        get {
+            return self.layer.shadowOffset == CGSize(width: 0, height: 3)//CGSizeMake(0, 3.0)
+        }
+        set {
+            self.layer.shadowOffset = CGSize(width: 0, height: 3)//CGSizeMake(0, 3.0)
+            self.layer.shadowRadius = 3.0
+            self.layer.shadowOpacity = 0.5
+            self.layer.masksToBounds = false
+        }
+    }
+    
+}
+extension UIImageView {
+    
+    func makeCircleForVariableSizedView()
+    {
+        func layoutSubviews() {
+            super.layoutSubviews()
+            
+            let radius: CGFloat = self.bounds.size.width / 2.0
+            
+            self.layer.cornerRadius = radius
+        }
+    }
+}
+
+extension CALayer {
+    
+    func getSublayerNamed(name: String) -> CALayer? {
+        
+        guard let sublayers = self.sublayers, sublayers.count > 0 else {
+            return nil
+        }
+        
+        for l in sublayers {
+            if l.name == name {
+                return l
+            }
+        }
+        
+        return nil
+    }
+    
+}
 //
 //extension String
 //{
@@ -918,6 +930,8 @@ extension DefaultsKeys {
     static let driverPassword = DefaultsKey<String?>("driverpassword")
     static let driverProfilePhoto = DefaultsKey<String?>("driverProfilePhoto")
     static let driverProfilePhotoSize = DefaultsKey<Double?>("driverProfilePhotoSize")
+    static let driverLoginTime = DefaultsKey<String?>("driverLoginTime")
+
     
 }
 

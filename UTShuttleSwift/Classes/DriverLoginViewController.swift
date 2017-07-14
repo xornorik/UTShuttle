@@ -113,7 +113,6 @@ class DriverLoginViewController: UIViewController {
     {
         if validateForm()
         {
-            print(Defaults[.deviceId]!)
             guard let deviceId = Defaults[.deviceId] else {return}
             guard let lat = Defaults[.lastLatitude] else {return}
             guard let lon = Defaults[.lastLongitude] else {return}
@@ -124,6 +123,12 @@ class DriverLoginViewController: UIViewController {
                 {
                     //store stuff and go to Home Screen of app
                     Defaults[.isLoggedIn] = true
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "h:mm a"
+                    Defaults[.driverLoginTime] = dateFormatter.string(from: Date())
+                    
+                    
                     NavigationUtils.goToDashboard()
                 }
                 else

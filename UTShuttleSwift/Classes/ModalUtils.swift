@@ -8,6 +8,9 @@
 
 import Foundation
 import Alertift
+import PKHUD
+
+//Mark: Alert Functions
 
 func showError(title: String, message: String, callback: (()->())? = nil) {
     
@@ -17,3 +20,42 @@ func showError(title: String, message: String, callback: (()->())? = nil) {
     }
     .show()
 }
+
+func showErrorWithRetry(title: String, message: String, callback: (()->())? = nil) {
+    
+    Alertift.alert(title: title, message: message)
+        .action(.default("Retry")) { _ in
+            callback?()
+    }
+    .show()
+}
+
+// Mark: Activity Indicator Functions 
+
+func showHUD()
+{
+    HUD.show(.labeledProgress(title: "", subtitle: "Loading"))
+}
+
+func isHUDVisible() -> Bool
+{
+    return HUD.isVisible
+}
+
+func hideHUD()
+{
+    HUD.hide()
+}
+
+func showSuccessHUD()
+{
+    HUD.flash(.success, delay: 0.3)
+}
+
+func showErrorHUD()
+{
+    HUD.flash(.error, delay: 0.3)
+}
+
+
+

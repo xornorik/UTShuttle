@@ -2,6 +2,7 @@ PODS:
   - Alamofire (4.5.0)
   - Alertift (2.0)
   - ImagePicker (2.1.1)
+  - Kingfisher (3.10.3)
   - PKHUD (4.2.3)
   - SwiftSocket (2.0.1)
   - SwiftyJSON (3.1.4)
@@ -11,6 +12,7 @@ DEPENDENCIES:
   - Alamofire
   - Alertift
   - ImagePicker
+  - Kingfisher (~> 3.0)
   - PKHUD
   - SwiftSocket
   - SwiftyJSON
@@ -20,11 +22,12 @@ SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   Alertift: 2b28b3ba3af73141390f329153f85aee9a56b2a8
   ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
+  Kingfisher: a0ac82dc5bcf0388dd74b294cf2cc13730c63436
   PKHUD: c7692163a09875cbf15827dc581df3c5cf7f1015
   SwiftSocket: 2d814afdc97c89217982f86fd036c1874134a63f
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: 831fc0cf0c6b1578410cfe657dc794f522f5dd6f
+PODFILE CHECKSUM: c3a361724d20df7bf2f8820bdfa0adb2e4d5b6f1
 
 COCOAPODS: 1.2.1
