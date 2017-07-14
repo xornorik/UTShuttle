@@ -65,7 +65,7 @@ class DashboardViewController: UIViewController {
         self.profilePhotoImageView.layer.borderWidth = 3
         self.profilePhotoImageView.layer.borderColor = ColorPalette.UTSTealLight.cgColor
         
-        versionLabel.text = DeviceDetails.appVersion()
+        versionLabel.text = "Version: " + DeviceDetails.appVersion()
         timeLogLabel.text = "Logged in at " + Defaults[.driverLoginTime]!
     }
     

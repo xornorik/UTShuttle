@@ -51,7 +51,7 @@ class DeviceDetails {
     }
     
     static func appVersion() -> String {
-        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleVersion"] as AnyObject
+        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
         return nsObject as! String
     }
     

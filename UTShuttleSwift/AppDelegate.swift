@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //setting Theme
         DefaultStyle.sharedInstance.apply()
+        APIClient.shared.setup()
+        
+        //This will go to Loading page
         listenForReachability()
         LocationManager.shared.locationManager.requestAlwaysAuthorization()
         LocationManager.shared.startTracking()
