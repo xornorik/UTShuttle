@@ -288,6 +288,9 @@
 		44DA7CC01F14D10800C9718A /* DriverRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */; };
 		44DA7CC21F162D2400C9718A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA7CC11F162D2400C9718A /* APIClient.swift */; };
 		46016C68D1BAB6B8A67B7226 /* Pods_UTShuttleSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF6145F7D1AE52E70E57237D /* Pods_UTShuttleSwiftUITests.framework */; };
+		B38AB7BE1F19265900157888 /* JobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38AB7BD1F19265900157888 /* JobsViewController.swift */; };
+		B3ED3B141F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ED3B131F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift */; };
+		B3ED3B181F1B3D2900B8E480 /* CurrentJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */; };
 		C59A446A285E705AA500DBB8 /* Pods_UTShuttleSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B788D8310D89358AD9D2C6A /* Pods_UTShuttleSwiftTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -603,6 +606,9 @@
 		93A07D6AF8232032A54E9D19 /* Pods-UTShuttleSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwift/Pods-UTShuttleSwift.release.xcconfig"; sourceTree = "<group>"; };
 		9E115FC69025670375E8344A /* Pods-UTShuttleSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftTests/Pods-UTShuttleSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B13FCEEBC0C589EC6975E86D /* Pods_UTShuttleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UTShuttleSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B38AB7BD1F19265900157888 /* JobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JobsViewController.swift; path = Classes/JobsViewController.swift; sourceTree = "<group>"; };
+		B3ED3B131F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UTSNodeCollectionViewCell.swift; path = Classes/UTSNodeCollectionViewCell.swift; sourceTree = "<group>"; };
+		B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CurrentJobViewController.swift; path = Classes/CurrentJobViewController.swift; sourceTree = "<group>"; };
 		DF6145F7D1AE52E70E57237D /* Pods_UTShuttleSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UTShuttleSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -696,6 +702,8 @@
 				444A35961F138ED200D48C63 /* DriverLoginViewController.swift */,
 				44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */,
 				44663FE61F179A97005ACF79 /* DashboardViewController.swift */,
+				B38AB7BD1F19265900157888 /* JobsViewController.swift */,
+				B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -994,6 +1002,7 @@
 		444A379B1F14AD4600D48C63 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				B3ED3B121F1B2A9300B8E480 /* Cells */,
 				444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */,
 				444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */,
 				444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */,
@@ -1065,6 +1074,14 @@
 				44A83C301F0F9E910045E3B0 /* Extensions.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		B3ED3B121F1B2A9300B8E480 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B3ED3B131F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		F9CC64511D1FDB0399911946 /* Pods */ = {
@@ -1628,7 +1645,9 @@
 				444A35971F138ED200D48C63 /* DriverLoginViewController.swift in Sources */,
 				44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */,
 				44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */,
+				B3ED3B181F1B3D2900B8E480 /* CurrentJobViewController.swift in Sources */,
 				44DA7CC21F162D2400C9718A /* APIClient.swift in Sources */,
+				B3ED3B141F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift in Sources */,
 				444A359A1F13A7D100D48C63 /* LocationManager.swift in Sources */,
 				444A379F1F14B3A700D48C63 /* Country.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
@@ -1642,6 +1661,7 @@
 				4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */,
 				444A37A51F14C65100D48C63 /* CountryPickerTextField.swift in Sources */,
 				4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */,
+				B38AB7BE1F19265900157888 /* JobsViewController.swift in Sources */,
 				44663FE71F179A98005ACF79 /* DashboardViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
