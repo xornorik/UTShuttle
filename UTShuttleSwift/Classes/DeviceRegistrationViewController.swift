@@ -152,6 +152,10 @@ class DeviceRegistrationViewController: UIViewController {
     
     func countryPickerButtonTapped()
     {
+        if phoneNoTextField.isFirstResponder
+        {
+            phoneNoTextField.resignFirstResponder()
+        }
         
         countryPicker.delegate = self
         let toolBar = UIToolbar()

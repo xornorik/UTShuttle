@@ -121,7 +121,7 @@ class APIClient : NSObject {
         
     }
     
-    func getDriverVehicles(deviceId:String, callback:@escaping(_ success:Bool, _ vehicles:[Vehicle])->())
+    func getDriverVehicles(deviceId:String, callback:@escaping(_ success:Bool, _ error:String,_ vehicles:[Vehicle])->())
     {
         print("Requesting List of Vehicles")
         showHUD()
@@ -136,8 +136,24 @@ class APIClient : NSObject {
                     let json = JSON(response.result.value!)
                     if json["IsSuccess"].boolValue
                     {
-                        
+                        var vehicles = [Vehicle]()
+                        for subjson in json["DriverVehicles"].arrayValue
+                        {
+                            let vehicle = Vehicle(json: subjson)
+                            vehicles.append(vehicle)
+                        }
+                        callback(true, "",vehicles)
                     }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
                 }
         }
     }

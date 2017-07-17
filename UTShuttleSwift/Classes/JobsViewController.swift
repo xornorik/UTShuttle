@@ -38,8 +38,6 @@ class JobsViewController: UIViewController {
     {
         availableJobsTableView.rowHeight = UITableViewAutomaticDimension
         availableJobsTableView.estimatedRowHeight = 50
-//        myJobsTableView.rowHeight = UITableViewAutomaticDimension
-//        myJobsTableView.estimatedRowHeight = 44
         
         self.title = "My Jobs"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "buttonAddJob"), style: .done, target: self, action: #selector(addJobTapped))

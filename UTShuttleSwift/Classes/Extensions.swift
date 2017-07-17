@@ -931,6 +931,8 @@ extension DefaultsKeys {
     static let driverProfilePhoto = DefaultsKey<String?>("driverProfilePhoto")
     static let driverProfilePhotoSize = DefaultsKey<Double?>("driverProfilePhotoSize")
     static let driverLoginTime = DefaultsKey<String?>("driverLoginTime")
+    static let driverVehicleNo = DefaultsKey<String?>("driverVehicleNo")
+    static let driverVehicleId = DefaultsKey<String?>("driverVehicleId")
 
     
 }

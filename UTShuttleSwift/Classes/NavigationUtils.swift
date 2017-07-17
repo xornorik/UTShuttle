@@ -43,6 +43,11 @@ class NavigationUtils {
         self.setCurrentVC(nextVC: nextVC)
     }
     
+    static func presentVehicleSelection()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "vehicleVC")
+        presentVC(nextVC: nextVC)
+    }
     
     static func presentVC(nextVC: UIViewController) {
         
