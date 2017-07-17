@@ -194,11 +194,18 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
 extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        return cell
+        switch indexPath.row {
+        case tableView.numberOfRows(inSection: 0) - 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addGuestCell", for: indexPath)
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            return cell
+        }
+        
     }
 }
