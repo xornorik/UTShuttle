@@ -24,6 +24,7 @@ class APIClient : NSObject {
     struct EndPoints{
         static let driverRegistration = "Driver/CrudDriverUser"
         static let driverProfile = "Driver/GetDriverProfile"
+        static let getDriverVehicles = "Driver/GetDriverVehicles"
     }
     
     func setup()
@@ -79,7 +80,6 @@ class APIClient : NSObject {
     func getDriverProfile(username:String, callback:@escaping ( _ success:Bool,_ error:String)->())
     {
         print("Requesting Driver profile information")
-        print(username)
         showHUD()
         let parameters:[String : Any] = ["UserId":0,"UserName":username]
         let url = baseUrl + EndPoints.driverProfile
@@ -119,5 +119,26 @@ class APIClient : NSObject {
  
         }
         
+    }
+    
+    func getDriverVehicles(deviceId:String, callback:@escaping(_ success:Bool, _ vehicles:[Vehicle])->())
+    {
+        print("Requesting List of Vehicles")
+        showHUD()
+        let parameters:[String : Any] = ["AccountId":0, "LocationId":0 ,"DeviceId":deviceId]
+        let url = baseUrl + EndPoints.getDriverVehicles
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        
+                    }
+                }
+        }
     }
 }

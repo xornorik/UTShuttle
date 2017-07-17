@@ -91,7 +91,7 @@ class CommandClient: NSObject {
     func deviceAuth(callback:(_ response:deviceAuthError)->()){
         if isConnected()
         {
-            let udid = DeviceDetails.deviceID() //consider encrypting
+            let udid = "545FA95F-D82C-46CE-8135-D62B2ADF3526"//DeviceDetails.deviceID() //consider encrypting
             let command = "#"+udid+"|"+Commands.DeviceAuth
             switch client.send(string: command)
             {
@@ -179,7 +179,7 @@ class CommandClient: NSObject {
         if isConnected()
         {
             var reqParameters = [String]()
-            reqParameters.append(DeviceDetails.deviceID())
+            reqParameters.append("545FA95F-D82C-46CE-8135-D62B2ADF3526")//DeviceDetails.deviceID())
             reqParameters.append(Commands.DeviceReg)
             reqParameters.append(uniqueId)
             reqParameters.append("1") //iOS:1, Android:0
