@@ -42,6 +42,9 @@ class CurrentJobViewController: UIViewController {
     
     func setupVC()
     {
+        jobDetailsTableView.rowHeight = UITableViewAutomaticDimension
+        jobDetailsTableView.estimatedRowHeight = 44
+        
         currentStopIndexPath = IndexPath(item: 0, section: 0)
         nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
         previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
@@ -83,7 +86,7 @@ class CurrentJobViewController: UIViewController {
     {
         guard currentStopIndexPath?.item != nil else {return}
         let previousStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! - 1, section: 0)
-        guard previousStopIndexPath.item < (noOfNodes - 1) else {return}
+        guard previousStopIndexPath.item >= 0 else {return}
         
         UIView.animate(withDuration: 0.1, animations: {
             self.stopsCollectionView.scrollToItem(at: previousStopIndexPath, at: .centeredHorizontally, animated: false)
