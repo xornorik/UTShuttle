@@ -104,14 +104,14 @@ class CurrentJobViewController: UIViewController {
         let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
         guard nextStopIndexPath.item < (noOfNodes - 1) else {return}
         
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
         }) { (true) in
             let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
-            cell.drawRightConnector(duration: 0.2) {
+            cell.drawRightConnector(duration: 0.1) {
                 let nextCell = self.stopsCollectionView.cellForItem(at: nextStopIndexPath) as! UTSNodeCollectionViewCell
-                nextCell.drawLeftConnector(duration: 0.2, callback: {
-                    nextCell.animateNodeColorChange(duration: 0.2, callback: {
+                nextCell.drawLeftConnector(duration: 0.1, callback: {
+                    nextCell.animateNodeColorChange(duration: 0.1, callback: {
                         self.currentStopIndexPath = nextStopIndexPath
                         self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! - 1, section: 0)])
                     })
@@ -131,15 +131,30 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: indexPath) as! UTSNodeCollectionViewCell
-
-        print(indexPath)
+        
         switch indexPath.item
         {
         case 0:
-            cell.type = .start
-            cell.name = "First stop"
+            if let currentStop = currentStopIndexPath?.item
+            {
+                if indexPath.item < currentStop
+                {
+                    cell.type = .firstPassed
+                    cell.name = "first stop passed"
+                }
+                else
+                {
+                    cell.type = .first
+                    cell.name = "First stop"
+                }
+            }
+            else
+            {
+                cell.type = .first
+                cell.name = "First stop"
+            }
         case collectionView.numberOfItems(inSection: 0) - 1:
-            cell.type = .end
+            cell.type = .last
             cell.name = "Last stop"
         default:
             

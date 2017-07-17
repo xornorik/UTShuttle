@@ -11,11 +11,12 @@ import UIKit
 class UTSNodeCollectionViewCell: UICollectionViewCell {
     
     enum NodeType {
-        case start
+        case first
+        case firstPassed
         case middle
         case middlePassed
         case middleReached
-        case end
+        case last
     }
     
     @IBOutlet weak var node:UIView!
@@ -39,9 +40,14 @@ class UTSNodeCollectionViewCell: UICollectionViewCell {
         node.makeCircle = true
         
         switch type {
-        case .start:
+        case .first:
             leftConnector.isHidden = true
             rightArrow.isHidden = true
+            node.backgroundColor = ColorPalette.UTSTealLight
+        case .firstPassed:
+            leftConnector.isHidden = true
+            rightArrow.isHidden = true
+            rightConnector.backgroundColor = ColorPalette.UTSTealLight
             node.backgroundColor = ColorPalette.UTSTealLight
         case .middle:
             leftArrow.isHidden = true
@@ -58,7 +64,7 @@ class UTSNodeCollectionViewCell: UICollectionViewCell {
             leftConnector.backgroundColor = ColorPalette.UTSTealLight
             rightConnector.backgroundColor = UIColor.lightGray
             node.backgroundColor = ColorPalette.UTSTealLight
-        case .end:
+        case .last:
             rightConnector.isHidden = true
             leftArrow.isHidden = true
             node.backgroundColor = UIColor.lightGray
