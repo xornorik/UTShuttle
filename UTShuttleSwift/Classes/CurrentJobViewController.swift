@@ -44,59 +44,18 @@ class CurrentJobViewController: UIViewController {
     {
         currentStopIndexPath = IndexPath(item: 0, section: 0)
         nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
+        previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
+        goToCurrentStop()
         
     }
-    /*
-     func beginAnimations()
-     {
-     let fromIndexPath = IndexPath(item: 0, section: 0)
-     let toIndexPath = IndexPath(item: 8, section: 0)
-     animateToIndexPath(fromIndexPath: fromIndexPath, toIndexPath: toIndexPath, withDuration: 5)
-     }
-     
-     private func animateToIndexPath(fromIndexPath:IndexPath, toIndexPath:IndexPath, withDuration duration:TimeInterval)
-     {
-     var indexPath = fromIndexPath
-     animateCell(indexPath: fromIndexPath, duration: duration) { (success) in
-     if indexPath != toIndexPath
-     {
-     indexPath = IndexPath(item: (indexPath.item + 1), section: 0)
-     self.animateToIndexPath(fromIndexPath: indexPath, toIndexPath: toIndexPath,withDuration: duration)
-     }
-     else
-     {
-     return
-     }
-     }
-     }
-     
-     private func animateCell(indexPath:IndexPath, duration:TimeInterval, callback:@escaping (_ success:Bool)->())
-     {
-     
-     guard let cell = testCV.cellForItem(at: indexPath) else {
-     print("Cell error at indexPath: \(indexPath)")
-     return
-     }
-     
-     self.testCV.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-     
-     drawLineToCenter(cell: cell, duration: duration/3) {
-     self.animateNode(cell: cell, duration: duration/3, callback: {
-     self.drawLineFromCenter(cell: cell, duration: duration/3, callback: {
-     callback(true)
-     })
-     })
-     }
-     }
-
- 
- 
- 
-    */
     
-    
-    
-    
+    func goToCurrentStop()
+    {
+        guard let currentStopIndexPath = self.currentStopIndexPath else {return}
+        UIView.animate(withDuration: 0.1, animations: {
+            self.stopsCollectionView.scrollToItem(at: currentStopIndexPath, at: .centeredHorizontally, animated: false)
+        })
+    }
     
     func nextStopButtonTapped()
     {
@@ -117,9 +76,29 @@ class CurrentJobViewController: UIViewController {
                     })
                 })
             }
-
         }
+    }
+    
+    func previousStopButtonTapped()
+    {
+        guard currentStopIndexPath?.item != nil else {return}
+        let previousStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! - 1, section: 0)
+        guard previousStopIndexPath.item < (noOfNodes - 1) else {return}
         
+        UIView.animate(withDuration: 0.1, animations: {
+            self.stopsCollectionView.scrollToItem(at: previousStopIndexPath, at: .centeredHorizontally, animated: false)
+        }) { (true) in
+            let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
+            cell.drawRightConnector(duration: 0.1) {
+                let nextCell = self.stopsCollectionView.cellForItem(at: previousStopIndexPath) as! UTSNodeCollectionViewCell
+                nextCell.drawLeftConnector(duration: 0.1, callback: {
+                    nextCell.animateNodeColorChange(duration: 0.1, callback: {
+                        self.currentStopIndexPath = previousStopIndexPath
+                        self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! + 1, section: 0)])
+                    })
+                })
+            }
+        }
     }
 }
 extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
