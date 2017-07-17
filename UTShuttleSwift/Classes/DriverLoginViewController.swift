@@ -122,6 +122,9 @@ class DriverLoginViewController: UIViewController {
                 if success
                 {
                     //store stuff and go to Home Screen of app
+                    //save username and password
+                    Defaults[.driverUsername] = self.userIdTF.text!
+                    Defaults[.driverPassword] = self.passwordTF.text!
                     Defaults[.isLoggedIn] = true
                     
                     let dateFormatter = DateFormatter()

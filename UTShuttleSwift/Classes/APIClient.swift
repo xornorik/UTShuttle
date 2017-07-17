@@ -79,6 +79,7 @@ class APIClient : NSObject {
     func getDriverProfile(username:String, callback:@escaping ( _ success:Bool,_ error:String)->())
     {
         print("Requesting Driver profile information")
+        print(username)
         showHUD()
         let parameters:[String : Any] = ["UserId":0,"UserName":username]
         let url = baseUrl + EndPoints.driverProfile
@@ -89,17 +90,18 @@ class APIClient : NSObject {
             if response.result.isSuccess
             {
                 let json = JSON(response.result.value!)
-                if json["isSuccess"].boolValue
+                if json["IsSuccess"].boolValue
                 {
-                    Defaults[.driverFirstName] = json["FirstName"].stringValue
-                    Defaults[.driverLastName] = json["LastName"].stringValue
-                    Defaults[.driverProfilePhoto] = json["ImageUrl"].stringValue
-                    Defaults[.driverCountryCode] = json["CountryCode"].stringValue
-                    Defaults[.driverUsername] = json["UserName"].stringValue
-                    Defaults[.driverPassword] = json["Password"].stringValue
-                    Defaults[.driverEmail] = json["Email"].stringValue
-                    Defaults[.driverLicense] = json["DriverLicenceNumber"].stringValue
-                    Defaults[.driverLicenseExp] = json["DriverLicenceExpiryDate"].stringValue
+                    let subjson = json["DriverProfile"]
+                    Defaults[.driverFirstName] = subjson["FirstName"].stringValue
+                    Defaults[.driverLastName] = subjson["LastName"].stringValue
+                    Defaults[.driverProfilePhoto] = subjson["ImageUrl"].stringValue
+                    Defaults[.driverCountryCode] = subjson["CountryCode"].stringValue
+                    Defaults[.driverUsername] = subjson["UserName"].stringValue
+                    Defaults[.driverPassword] = subjson["Password"].stringValue
+                    Defaults[.driverEmail] = subjson["Email"].stringValue
+                    Defaults[.driverLicense] = subjson["DriverLicenceNumber"].stringValue
+                    Defaults[.driverLicenseExp] = subjson["DriverLicenceExpiryDate"].stringValue
                     showSuccessHUD()
                     callback(true,"")
                 }

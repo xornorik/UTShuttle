@@ -67,11 +67,14 @@ class DashboardViewController: UIViewController {
         
         versionLabel.text = "Version: " + DeviceDetails.appVersion()
         timeLogLabel.text = "Logged in at " + Defaults[.driverLoginTime]!
+        
+        getDriverDetails()
     }
     
     func getDriverDetails()
     {
-       guard let username = Defaults[.driverUsername] else {return}
+       guard let username = Defaults[.driverUsername], username != "" else {return}
+        print(username)
        apiClient.getDriverProfile(username: username) { (success, error) in
         
             if success
@@ -79,8 +82,10 @@ class DashboardViewController: UIViewController {
                 guard let imageUrl = Defaults[.driverProfilePhoto] else {return}
                 let url = URL(string: imageUrl)
                 self.profilePhotoImageView.kf.setImage(with: url, placeholder: UIImage(named: "imgUserProfilePlaceholder"), options: nil, progressBlock: nil, completionHandler: { (image, _, _, _) in
+                    guard image != nil else {self.profilePhotoImageView.image = UIImage(named: "imgUserProfilePlaceholder");return}
                     self.profilePhotoImageView.image = image
                 })
+                print(Defaults[.driverFirstName]!)
                 self.driverNameLabel.text = Defaults[.driverFirstName]! + " " + Defaults[.driverLastName]!
                 
             }

@@ -196,6 +196,7 @@ class CommandClient: NSObject {
                     switch status {
                     case 1:
                         //success
+                        Defaults[.deviceId] = responseArr[0] //should not happen as per flow.. but added for convenience
                         callback(true,deviceRegError.Success)
                     case 0:
                         callback(false, deviceRegError.Failed)
