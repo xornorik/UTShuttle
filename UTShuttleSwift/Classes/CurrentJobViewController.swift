@@ -96,25 +96,30 @@ class CurrentJobViewController: UIViewController {
     
     
     
+    
+    
     func nextStopButtonTapped()
     {
         guard currentStopIndexPath?.item != nil else {return}
         let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
         guard nextStopIndexPath.item < (noOfNodes - 1) else {return}
-        stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: true)
         
-        
-        
-        let cell = stopsCollectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: currentStopIndexPath!) as! UTSNodeCollectionViewCell//stopsCollectionView.cellForItem(at: currentStopIndexPath!) as! UTSNodeCollectionViewCell
-        cell.drawRightConnector(duration: 0.2) { 
-            let nextCell = self.stopsCollectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: nextStopIndexPath) as! UTSNodeCollectionViewCell//self.stopsCollectionView.cellForItem(at: nextStopIndexPath) as! UTSNodeCollectionViewCell
-            nextCell.drawLeftConnector(duration: 0.2, callback: { 
-                nextCell.animateNodeColorChange(duration: 0.2, callback: {
-                    self.currentStopIndexPath = nextStopIndexPath
-                    self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! - 1, section: 0)])
+        UIView.animate(withDuration: 0.3, animations: {
+            self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
+        }) { (true) in
+            let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
+            cell.drawRightConnector(duration: 0.2) {
+                let nextCell = self.stopsCollectionView.cellForItem(at: nextStopIndexPath) as! UTSNodeCollectionViewCell
+                nextCell.drawLeftConnector(duration: 0.2, callback: {
+                    nextCell.animateNodeColorChange(duration: 0.2, callback: {
+                        self.currentStopIndexPath = nextStopIndexPath
+                        self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! - 1, section: 0)])
+                    })
                 })
-            })
+            }
+
         }
+        
     }
 }
 extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
