@@ -111,6 +111,7 @@ class VehicleViewController: UIViewController {
             self.mapOrUnmapVehicle(shouldMap: false,vehicleId: Int(vehicleId)!) { _ in
                 Defaults[.driverVehicleNo] = nil
                 Defaults[.driverVehicleId] = nil
+                self.setupVC()
             }
         }
     }
