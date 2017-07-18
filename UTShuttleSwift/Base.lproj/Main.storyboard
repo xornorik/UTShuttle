@@ -1041,7 +1041,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y61-AV-3yC">
                                         <rect key="frame" x="0.0" y="69" width="375" height="30"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today I am Driving.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLM-iW-7wj">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today I am Driving.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HLM-iW-7wj">
                                                 <rect key="frame" x="10" y="8" width="135" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
@@ -1061,6 +1061,7 @@
                                             <constraint firstAttribute="trailing" secondItem="ulL-ei-jXH" secondAttribute="trailing" constant="10" id="YRv-4B-3v5"/>
                                             <constraint firstAttribute="height" constant="30" id="jVi-Hz-XcJ"/>
                                             <constraint firstItem="HLM-iW-7wj" firstAttribute="leading" secondItem="Y61-AV-3yC" secondAttribute="leading" constant="10" id="kGY-cJ-g2I"/>
+                                            <constraint firstItem="ulL-ei-jXH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HLM-iW-7wj" secondAttribute="trailing" id="lme-ef-6nC"/>
                                             <constraint firstItem="ulL-ei-jXH" firstAttribute="centerY" secondItem="HLM-iW-7wj" secondAttribute="centerY" id="tZN-Bp-gse"/>
                                         </constraints>
                                     </view>

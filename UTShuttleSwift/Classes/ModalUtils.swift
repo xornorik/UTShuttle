@@ -40,6 +40,25 @@ func showConfirm(title:String, message:String, callback: (()-> Void)!)
         .show()
 }
 
+func showConfirmForModal(title:String, message:String,viewController:UIViewController ,callback: (()-> Void)!)
+{
+    Alertift.alert(title: title, message: message)
+        .action(.default("Yes")) {  _ in
+            callback()
+        }
+        .action(.cancel("No"))
+        .show(on: viewController, completion: nil)
+}
+
+func showErrorForModal(title: String, message: String,viewController:UIViewController, callback: (()->())? = nil) {
+    
+    Alertift.alert(title: title, message: message)
+        .action(.default("OK")) { _ in
+            callback?()
+        }
+        .show(on: viewController, completion: nil)
+}
+
 // Mark: Activity Indicator Functions 
 
 func showHUD()

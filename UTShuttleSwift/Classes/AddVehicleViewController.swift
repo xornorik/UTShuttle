@@ -67,7 +67,7 @@ class AddVehicleViewController: UIViewController {
             }
             else
             {
-                showError(title: "Alert", message: "Trouble fetching vehicle types")
+                showErrorForModal(title: "Alert", message: "Trouble fetching vehicle types", viewController: self)
             }
         }
     }

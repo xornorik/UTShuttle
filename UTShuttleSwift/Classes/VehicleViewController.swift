@@ -99,7 +99,7 @@ class VehicleViewController: UIViewController {
             }
             else
             {
-                showError(title: "Alert", message: error)
+                showErrorForModal(title: "Alert", message: error, viewController: self)
             }
         }
     }
@@ -107,8 +107,11 @@ class VehicleViewController: UIViewController {
     func unmapButtonTapped()
     {
         guard let vehicleId = Defaults[.driverVehicleId] else {return}
-        showConfirm(title: "Alert", message: "Are you sure you want to un-map this vehicle?") {
-            self.mapOrUnmapVehicle(shouldMap: false,vehicleId: Int(vehicleId)!, callback: nil)
+        showConfirmForModal(title: "Alert", message: "Are you sure you want to un-map this vehicle?", viewController: self) {
+            self.mapOrUnmapVehicle(shouldMap: false,vehicleId: Int(vehicleId)!) { _ in
+                Defaults[.driverVehicleNo] = nil
+                Defaults[.driverVehicleId] = nil
+            }
         }
     }
     
@@ -155,7 +158,7 @@ extension VehicleViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showConfirm(title: "Alert", message: "Are you sure you want to map \(String(describing: vehicles[indexPath.row].vehicleNo))") {
+        showConfirmForModal(title: "Alert", message: "Are you sure you want to map \(String(describing: vehicles[indexPath.row].vehicleNo))", viewController: self) {
             Defaults[.driverVehicleNo] = self.vehicles[indexPath.row].vehicleNo
             Defaults[.driverVehicleId] = self.vehicles[indexPath.row].vehicleId
             
