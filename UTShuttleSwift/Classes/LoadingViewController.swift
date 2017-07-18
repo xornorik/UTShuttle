@@ -33,63 +33,7 @@ class LoadingViewController: UIViewController {
         {
             if true // Do only if exists on keychain - otherwise take to login page
             {
-                tcpClient.deviceAuth { (response) in
-                    
-                    switch response
-                    {
-                    case .Success:
-                        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-                            self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                            self.splashImageView.alpha = 0
-                        }, completion: { (success) in
-                            let delegate = UIApplication.shared.delegate as! AppDelegate
-                            delegate.setupUI()
-                        })
-                    case .InvalidDevice:
-                        showError(title: "Alert", message: "Your Device is Invalid. Please request for a new unique ID by entering your phone number.") { _ in
-                            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-                                self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                self.splashImageView.alpha = 0
-                            }, completion: { (success) in
-                                let delegate = UIApplication.shared.delegate as! AppDelegate
-                                delegate.setupUI()
-                            })
-
-                        }
-                    case .LoggedOut:
-                        showError(title: "Alert", message: "You have been logged out. Please request for a new unique ID by entering your phone number.") { _ in
-                            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-                                self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                                self.splashImageView.alpha = 0
-                            }, completion: { (success) in
-                                let delegate = UIApplication.shared.delegate as! AppDelegate
-                                delegate.setupUI()
-                            })
-                        }
-                    case .ConnectionError:
-                        showError(title: "Connection Lost", message: "Connection to server has been lost")
-                        
-                    }
-
-
-                    
-//                    if success
-//                    {
-//                        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-//                            self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//                            self.splashImageView.alpha = 0
-//                        }, completion: { (success) in
-//                            let delegate = UIApplication.shared.delegate as! AppDelegate
-//                            delegate.setupUI()
-//                        })
-//                    }
-//                    else
-//                    {
-//                        showError(title: "Connection Lost", message: "Connection to server has been lost")
-//                    }
-                    
-                }
-
+                configureClient()
             }
         }
     }
@@ -123,6 +67,53 @@ class LoadingViewController: UIViewController {
             loadingTimer.invalidate()
             loadingTimer = nil
         }
+    }
+    
+    func configureClient()
+    {
+        tcpClient.deviceAuth { (response) in
+            
+            switch response
+            {
+            case .Success:
+                UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                    self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                    self.splashImageView.alpha = 0
+                }, completion: { (success) in
+                    let delegate = UIApplication.shared.delegate as! AppDelegate
+                    delegate.setupUI()
+                })
+            case .InvalidDevice:
+                showError(title: "Alert", message: "Your Device is Invalid. Please request for a new unique ID by entering your phone number.") { _ in
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                        self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                        self.splashImageView.alpha = 0
+                    }, completion: { (success) in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        delegate.setupUI()
+                    })
+                    
+                }
+            case .LoggedOut:
+                showError(title: "Alert", message: "You have been logged out. Please request for a new unique ID by entering your phone number.") { _ in
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                        self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                        self.splashImageView.alpha = 0
+                    }, completion: { (success) in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        delegate.setupUI()
+                    })
+                }
+            case .ConnectionError:
+                //                        showError(title: "Connection Lost", message: "Connection to server has been lost")
+                showErrorWithRetry(title: "Connection Lost", message: "Connection to server has been lost") { _ in
+                    self.configureClient()
+                }
+                
+            }
+            
+        }
+        
     }
     
     func animateloadingLabel()

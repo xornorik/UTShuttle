@@ -28,12 +28,16 @@ class DashboardViewController: UIViewController {
         
         menuTableView.rowHeight = UITableViewAutomaticDimension
         menuTableView.estimatedRowHeight = 68
+        
+        setupVC()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        setupVC()
+        setVehicleIfSelected()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +72,30 @@ class DashboardViewController: UIViewController {
         versionLabel.text = "Version: " + DeviceDetails.appVersion()
         timeLogLabel.text = "Logged in at " + Defaults[.driverLoginTime]!
         
+        selectVehicleButton.addTarget(self, action: #selector(selectVehicleTapped), for: .touchUpInside)
+        
         getDriverDetails()
+    }
+    
+    func selectVehicleTapped()
+    {
+        NavigationUtils.presentVehicleSelection()
+    }
+    
+    func setVehicleIfSelected()
+    {
+        if let vehicleNo = Defaults[.driverVehicleNo]
+        {
+            self.driverVehicleLabel.text = vehicleNo
+            self.selectVehicleButton.setTitle("Change my Vehicle", for: .normal)
+        }
+        else
+        {
+            self.driverVehicleLabel.text = "????"
+            self.selectVehicleButton.setTitle("Select Vehicle", for: .normal)
+
+        }
+        
     }
     
     func getDriverDetails()

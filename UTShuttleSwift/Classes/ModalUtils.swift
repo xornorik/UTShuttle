@@ -30,6 +30,16 @@ func showErrorWithRetry(title: String, message: String, callback: (()->())? = ni
     .show()
 }
 
+func showConfirm(title:String, message:String, callback: (()-> Void)!)
+{
+    Alertift.alert(title: title, message: message)
+        .action(.default("Yes")) {  _ in
+            callback()
+        }
+        .action(.cancel("No"))
+        .show()
+}
+
 // Mark: Activity Indicator Functions 
 
 func showHUD()

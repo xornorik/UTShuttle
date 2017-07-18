@@ -118,7 +118,7 @@ class CommandClient: NSObject {
                         print("Logged out from backend")
                         callback(.LoggedOut)
                     default:
-                        print("Switch case exhaustive")
+                        callback(.ConnectionError)
                     }
                 }
             case .failure( _ ):

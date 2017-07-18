@@ -282,6 +282,8 @@
 		447B7B341F0E4DBA00C4774E /* UTShuttleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B331F0E4DBA00C4774E /* UTShuttleSwiftUITests.swift */; };
 		448F301C1F1CD6C9008649CA /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F301B1F1CD6C9008649CA /* Vehicle.swift */; };
 		448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F301D1F1CE25A008649CA /* VehicleViewController.swift */; };
+		448F30201F1DD582008649CA /* AddVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F301F1F1DD582008649CA /* AddVehicleViewController.swift */; };
+		448F30221F1DDA80008649CA /* VehicleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F30211F1DDA80008649CA /* VehicleType.swift */; };
 		448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */; };
 		44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C301F0F9E910045E3B0 /* Extensions.swift */; };
 		44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */; };
@@ -597,6 +599,8 @@
 		447B7B351F0E4DBA00C4774E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		448F301B1F1CD6C9008649CA /* Vehicle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vehicle.swift; path = Classes/Vehicle.swift; sourceTree = "<group>"; };
 		448F301D1F1CE25A008649CA /* VehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VehicleViewController.swift; path = Classes/VehicleViewController.swift; sourceTree = "<group>"; };
+		448F301F1F1DD582008649CA /* AddVehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddVehicleViewController.swift; path = Classes/AddVehicleViewController.swift; sourceTree = "<group>"; };
+		448F30211F1DDA80008649CA /* VehicleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VehicleType.swift; path = Classes/VehicleType.swift; sourceTree = "<group>"; };
 		448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceRegistrationViewController.swift; path = Classes/DeviceRegistrationViewController.swift; sourceTree = "<group>"; };
 		44A83C301F0F9E910045E3B0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Classes/Extensions.swift; sourceTree = "<group>"; };
 		44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModalUtils.swift; path = Classes/ModalUtils.swift; sourceTree = "<group>"; };
@@ -709,6 +713,7 @@
 				B38AB7BD1F19265900157888 /* JobsViewController.swift */,
 				B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */,
 				448F301D1F1CE25A008649CA /* VehicleViewController.swift */,
+				448F301F1F1DD582008649CA /* AddVehicleViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1001,6 +1006,7 @@
 			children = (
 				444A379E1F14B3A700D48C63 /* Country.swift */,
 				448F301B1F1CD6C9008649CA /* Vehicle.swift */,
+				448F30211F1DDA80008649CA /* VehicleType.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1648,6 +1654,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448F30221F1DDA80008649CA /* VehicleType.swift in Sources */,
 				444A35971F138ED200D48C63 /* DriverLoginViewController.swift in Sources */,
 				44A989B21F0FB5450021D5E9 /* LoadingViewController.swift in Sources */,
 				44A989B41F109D770021D5E9 /* NavigationUtils.swift in Sources */,
@@ -1657,6 +1664,7 @@
 				444A359A1F13A7D100D48C63 /* LocationManager.swift in Sources */,
 				444A379F1F14B3A700D48C63 /* Country.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
+				448F30201F1DD582008649CA /* AddVehicleViewController.swift in Sources */,
 				448F301C1F1CD6C9008649CA /* Vehicle.swift in Sources */,
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */,

@@ -25,6 +25,8 @@ class APIClient : NSObject {
         static let driverRegistration = "Driver/CrudDriverUser"
         static let driverProfile = "Driver/GetDriverProfile"
         static let getDriverVehicles = "Driver/GetDriverVehicles"
+        static let getVehicleTypes = "VehicleType/GetVehicleType"
+        static let mapVehicle = "Driver/MapDeviceVehicle"
     }
     
     func setup()
@@ -102,7 +104,7 @@ class APIClient : NSObject {
                     Defaults[.driverEmail] = subjson["Email"].stringValue
                     Defaults[.driverLicense] = subjson["DriverLicenceNumber"].stringValue
                     Defaults[.driverLicenseExp] = subjson["DriverLicenceExpiryDate"].stringValue
-                    showSuccessHUD()
+                    hideHUD()
                     callback(true,"")
                 }
                 else
@@ -142,12 +144,84 @@ class APIClient : NSObject {
                             let vehicle = Vehicle(json: subjson)
                             vehicles.append(vehicle)
                         }
+                        hideHUD()
                         callback(true, "",vehicles)
                     }
                     else
                     {
                         hideHUD()
                         callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+    }
+    
+    func getVehicleTypes(username:String, callback:@escaping(_ success:Bool, _ error:String,_ vehicleTypes:[VehicleType])->())
+    {
+        print("Requesting Vehicle Types")
+        showHUD()
+        let parameters:[String : Any] = ["UserName":username]
+        let url = baseUrl + EndPoints.getVehicleTypes
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var vehicleTypes = [VehicleType]()
+                        for subjson in json["VehicleType"].arrayValue
+                        {
+                            let vehicleType = VehicleType(json: subjson)
+                            vehicleTypes.append(vehicleType)
+                        }
+                        hideHUD()
+                        callback(true,"",vehicleTypes)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func mapVehicleToDriver(vehicleId:Int, deviceId:Int, machineIp:String, username:String, isMapped:Bool = true, callback:@escaping(_ success:Bool, _ error:String)->())
+    {
+        print("Requesting Vehicle Mapping")
+        showHUD()
+        let parameters:[String : Any] = ["AccountId":0,"VehicleId":vehicleId, "DeviceId":deviceId, "isMapped":isMapped, "UserId":0, "MachineIP":machineIp, "UserName":username]
+        let url = baseUrl + EndPoints.mapVehicle
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["ResponseCode"].numberValue.intValue != 0
+                    {
+                        showSuccessHUD()
+                        callback(true,"")
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue)
                     }
                 }
                 else
