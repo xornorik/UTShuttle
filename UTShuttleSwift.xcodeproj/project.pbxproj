@@ -284,6 +284,8 @@
 		448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F301D1F1CE25A008649CA /* VehicleViewController.swift */; };
 		448F30201F1DD582008649CA /* AddVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F301F1F1DD582008649CA /* AddVehicleViewController.swift */; };
 		448F30221F1DDA80008649CA /* VehicleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F30211F1DDA80008649CA /* VehicleType.swift */; };
+		448F30241F1E216E008649CA /* ScheduledJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F30231F1E216E008649CA /* ScheduledJob.swift */; };
+		448F30261F1E23BD008649CA /* RideDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448F30251F1E23BD008649CA /* RideDetail.swift */; };
 		448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */; };
 		44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C301F0F9E910045E3B0 /* Extensions.swift */; };
 		44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */; };
@@ -601,6 +603,8 @@
 		448F301D1F1CE25A008649CA /* VehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VehicleViewController.swift; path = Classes/VehicleViewController.swift; sourceTree = "<group>"; };
 		448F301F1F1DD582008649CA /* AddVehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddVehicleViewController.swift; path = Classes/AddVehicleViewController.swift; sourceTree = "<group>"; };
 		448F30211F1DDA80008649CA /* VehicleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VehicleType.swift; path = Classes/VehicleType.swift; sourceTree = "<group>"; };
+		448F30231F1E216E008649CA /* ScheduledJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScheduledJob.swift; path = Classes/ScheduledJob.swift; sourceTree = "<group>"; };
+		448F30251F1E23BD008649CA /* RideDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideDetail.swift; path = Classes/RideDetail.swift; sourceTree = "<group>"; };
 		448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceRegistrationViewController.swift; path = Classes/DeviceRegistrationViewController.swift; sourceTree = "<group>"; };
 		44A83C301F0F9E910045E3B0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Classes/Extensions.swift; sourceTree = "<group>"; };
 		44A83C321F0FA5E30045E3B0 /* ModalUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModalUtils.swift; path = Classes/ModalUtils.swift; sourceTree = "<group>"; };
@@ -1007,6 +1011,8 @@
 				444A379E1F14B3A700D48C63 /* Country.swift */,
 				448F301B1F1CD6C9008649CA /* Vehicle.swift */,
 				448F30211F1DDA80008649CA /* VehicleType.swift */,
+				448F30231F1E216E008649CA /* ScheduledJob.swift */,
+				448F30251F1E23BD008649CA /* RideDetail.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1669,8 +1675,10 @@
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */,
 				44663FEB1F18A86E005ACF79 /* RoundedImageView.swift in Sources */,
+				448F30261F1E23BD008649CA /* RideDetail.swift in Sources */,
 				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,
 				444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */,
+				448F30241F1E216E008649CA /* ScheduledJob.swift in Sources */,
 				4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */,
 				44DA7CC01F14D10800C9718A /* DriverRegisterViewController.swift in Sources */,
 				447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */,

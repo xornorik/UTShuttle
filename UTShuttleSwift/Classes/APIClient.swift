@@ -16,6 +16,7 @@ class APIClient : NSObject {
     static let shared = APIClient()
     
     var testBaseUrl = "http://10.10.11.12:4003/UTSShuttleMobile/CoreService.svc/"
+    var prodBaseUrl = "http://services.utwiz.com/Services/ShuttleMobileService/V1.0.0/CoreService.svc/"
     
     var baseUrl = ""
     
@@ -27,6 +28,8 @@ class APIClient : NSObject {
         static let getDriverVehicles = "Driver/GetDriverVehicles"
         static let getVehicleTypes = "VehicleType/GetVehicleType"
         static let mapVehicle = "Driver/MapDeviceVehicle"
+        static let getJobList = "RouteScheduleJobList/GetRouteScheduleJobList"
+        static let getRideDetails = "RouteScheduleRideList/GetRideDetails"
     }
     
     func setup()
@@ -230,5 +233,82 @@ class APIClient : NSObject {
                     self.parseError(response: response)
                 }
         }
+    }
+    
+    func getRouteSheduledJobList(username:String, callback:@escaping(_ success:Bool, _ error:String,_ scheduledJobs:[ScheduledJob])->())
+    {
+        print("Requesting Scheduled Jobs")
+        showHUD()
+        let parameters:[String : Any] = ["UserName":username]
+        let url = baseUrl + EndPoints.getJobList
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var scheduledJobs = [ScheduledJob]()
+                        for subjson in json["RouteScheduleJob"].arrayValue
+                        {
+                            let scheduledJob = ScheduledJob(json: subjson)
+                            scheduledJobs.append(scheduledJob)
+                        }
+                        hideHUD()
+                        callback(true,"",scheduledJobs)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    func getRideDetails(username:String, callback:@escaping(_ success:Bool, _ error:String,_ rideDetails:[RideDetail])->())
+    {
+        print("Requesting Ride Details")
+        showHUD()
+        let parameters:[String : Any] = ["UserName":username]
+        let url = baseUrl + EndPoints.getRideDetails
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var rideDetails = [RideDetail]()
+                        for subjson in json["RideDetails"].arrayValue
+                        {
+                            let rideDetail = RideDetail(json: subjson)
+                            rideDetails.append(rideDetail)
+                        }
+                        hideHUD()
+                        callback(true,"",rideDetails)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
     }
 }

@@ -49,6 +49,12 @@ class NavigationUtils {
         presentVC(nextVC: nextVC)
     }
     
+    static func goToMyJobs()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "jobsVC")
+        self.pushToVC(nextVC: nextVC)
+    }
+    
     
     static func presentVC(nextVC: UIViewController) {
         
