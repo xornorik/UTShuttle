@@ -8,7 +8,6 @@
 
 import UIKit
 import SwiftyUserDefaults
-import STZPopupView
 
 class JobsViewController: UIViewController {
     
@@ -66,11 +65,6 @@ class JobsViewController: UIViewController {
 //        
 //        let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)//Bundle.main.loadNibNamed("AddNewJob", owner: self, options: nil)![0] as! UIView
 //        presentPopupView(popupView!,config: popupConfig)
-        let overlayView = UIView(frame: self.view.frame)
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        let TGR = UITapGestureRecognizer(target: self, action: #selector(dismissAddNewJobView))
-        overlayView.addGestureRecognizer(TGR)
-        self.view.addSubview(overlayView)
         
         let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)
         popupView?.show()

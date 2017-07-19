@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import DropDown
 
 class AddNewJob: UIView {
 
-    @IBOutlet weak var selectRouteLabel:UILabel!
+    @IBOutlet weak var selectRouteButton:UIButton!
     @IBOutlet weak var timeLabel:UILabel!
     @IBOutlet weak var isRecurringButton:UIButton!
     
@@ -25,6 +26,8 @@ class AddNewJob: UIView {
     @IBOutlet weak var saveButton:UIButton!
     @IBOutlet weak var cancelButton:UIButton!
     
+    var overlayView:UIView?
+    var dialogView:UIView?
     var saveButtonCallback: (()->())?
     
     var scheduledJobs:[ScheduledJob]?
@@ -40,6 +43,7 @@ class AddNewJob: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadView()
+        setupView()
     }
     
     required init?(scheduledJobs: [ScheduledJob]) {
@@ -48,15 +52,22 @@ class AddNewJob: UIView {
         self.scheduledJobs = scheduledJobs
         
         loadView()
+        setupView()
     }
     
     func loadView() {
-        let xibView = Bundle.main.loadNibNamed("AddNewJob", owner: self, options: nil)![0] as! UIView
+        dialogView = Bundle.main.loadNibNamed("AddNewJob", owner: self, options: nil)![0] as? UIView
         self.frame = UIApplication.shared.keyWindow!.frame
-        xibView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - 10, height: self.frame.size.width - 10)//CGRect(0, 0, self.frame.size.width, self.frame.size.height)
-        xibView.center = self.center
-        xibView.cornerRadius = 20
-        self.addSubview(xibView)
+        dialogView?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - 30, height: (self.frame.size.width - 30)*(5/6))//CGRect(0, 0, self.frame.size.width, self.frame.size.height)
+        dialogView?.center = self.center
+        dialogView?.cornerRadius = 20
+        self.addSubview(dialogView!)
+    }
+    
+    func setupView()
+    {
+        self.selectRouteButton.addTarget(self, action: #selector(showDropDown), for: .touchUpInside)
+        self.cancelButton.addTarget(self, action: #selector(hide), for: .touchUpInside)
     }
     
     func weekButtonToggle(sender:UIButton)
@@ -81,15 +92,50 @@ class AddNewJob: UIView {
         }
     }
     
+    func showDropDown()
+    {
+        let dropDown = DropDown()
+        dropDown.anchorView = selectRouteButton
+        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        
+        dropDown.show()
+        
+        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
+            self.selectRouteButton.setTitle(item, for: .normal)
+            dropDown.hide()
+        }
+    }
+    
     func show()
     {
         UIApplication.shared.keyWindow?.rootViewController?.view.addSubview(self)
+        
+        overlayView = UIView(frame: self.frame)
+        overlayView?.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+        let TGR = UITapGestureRecognizer(target: self, action: #selector(hide))
+        overlayView?.addGestureRecognizer(TGR)
+        self.dialogView?.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+
+        self.addSubview(overlayView!)
+        self.bringSubview(toFront: dialogView!)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.overlayView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            self.dialogView?.transform = CGAffineTransform(scaleX: 1, y: 1)
+
+        }) { (true) in
+        }
     }
     
     func hide()
     {
-        self.removeFromSuperview()
-
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            self.overlayView?.backgroundColor = UIColor.black.withAlphaComponent(0.0)
+            self.dialogView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            
+        }) { (true) in
+            self.overlayView?.removeFromSuperview()
+            self.removeFromSuperview()
+        }
     }
 
 }

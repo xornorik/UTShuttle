@@ -1,10 +1,10 @@
 PODS:
   - Alamofire (4.5.0)
   - Alertift (2.0)
+  - DropDown (2)
   - ImagePicker (2.1.1)
   - Kingfisher (3.10.3)
   - PKHUD (4.2.3)
-  - STZPopupView (1.2.0)
   - SwiftSocket (2.0.1)
   - SwiftyJSON (3.1.4)
   - SwiftyUserDefaults (3.0.0)
@@ -12,10 +12,10 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - Alertift
+  - DropDown
   - ImagePicker
   - Kingfisher (~> 3.0)
   - PKHUD
-  - STZPopupView
   - SwiftSocket
   - SwiftyJSON
   - SwiftyUserDefaults
@@ -23,14 +23,14 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   Alertift: 2b28b3ba3af73141390f329153f85aee9a56b2a8
+  DropDown: 744784d9c9aa505100e942c16acd05430cbb2f0a
   ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
   Kingfisher: a0ac82dc5bcf0388dd74b294cf2cc13730c63436
   PKHUD: c7692163a09875cbf15827dc581df3c5cf7f1015
-  STZPopupView: 7e878b4d1baedd5df339067d305ab0120dc6da62
   SwiftSocket: 2d814afdc97c89217982f86fd036c1874134a63f
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: e38ca3f60a3479f438427b910192c30082c957cc
+PODFILE CHECKSUM: ceb30e9c481db2ac15d2b4a70a08d3ed44f62c3d
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.1.1

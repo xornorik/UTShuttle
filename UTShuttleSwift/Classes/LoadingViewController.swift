@@ -33,7 +33,15 @@ class LoadingViewController: UIViewController {
         {
             if true // Do only if exists on keychain - otherwise take to login page
             {
-                configureClient()
+                UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                    self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                    self.splashImageView.alpha = 0
+                }, completion: { (success) in
+                    let delegate = UIApplication.shared.delegate as! AppDelegate
+                    delegate.setupUI()
+                })
+
+                //configureClient()
             }
         }
     }
