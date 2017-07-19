@@ -910,6 +910,12 @@ extension String.CharacterView {
     }
 }
 
+extension UIView {
+    class func fromNib<T : UIView>() -> T {
+        return Bundle.main.loadNibNamed(String(describing: T.self), owner: nil, options: nil)![0] as! T
+    }
+}
+
 extension DefaultsKeys {
     static let deviceId = DefaultsKey<String?>("deviceId")
     static let appVersion = DefaultsKey<String?>("appVersion")

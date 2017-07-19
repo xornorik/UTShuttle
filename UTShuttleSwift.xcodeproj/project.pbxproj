@@ -272,6 +272,8 @@
 		444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */; };
 		444A37A31F14B4F000D48C63 /* SwiftCountryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */; };
 		444A37A51F14C65100D48C63 /* CountryPickerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */; };
+		44551A831F1F68CA00275109 /* AddNewJob.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44551A821F1F68CA00275109 /* AddNewJob.xib */; };
+		44551A851F1F767400275109 /* AddNewJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44551A841F1F767400275109 /* AddNewJob.swift */; };
 		44663FE71F179A98005ACF79 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44663FE61F179A97005ACF79 /* DashboardViewController.swift */; };
 		44663FEB1F18A86E005ACF79 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44663FEA1F18A86E005ACF79 /* RoundedImageView.swift */; };
 		447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447B7B131F0E4DBA00C4774E /* AppDelegate.swift */; };
@@ -585,6 +587,8 @@
 		444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftCountryView.swift; sourceTree = "<group>"; };
 		444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwiftCountryView.xib; sourceTree = "<group>"; };
 		444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CountryPickerTextField.swift; path = Classes/CountryPickerTextField.swift; sourceTree = "<group>"; };
+		44551A821F1F68CA00275109 /* AddNewJob.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNewJob.xib; sourceTree = "<group>"; };
+		44551A841F1F767400275109 /* AddNewJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddNewJob.swift; path = Classes/AddNewJob.swift; sourceTree = "<group>"; };
 		44663FE61F179A97005ACF79 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DashboardViewController.swift; path = Classes/DashboardViewController.swift; sourceTree = "<group>"; };
 		44663FEA1F18A86E005ACF79 /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RoundedImageView.swift; path = Classes/RoundedImageView.swift; sourceTree = "<group>"; };
 		447B7B101F0E4DB900C4774E /* UTShuttleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UTShuttleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1020,6 +1024,7 @@
 		444A379B1F14AD4600D48C63 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				44551A811F1F68A200275109 /* Add job */,
 				B3ED3B121F1B2A9300B8E480 /* Cells */,
 				444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */,
 				444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */,
@@ -1027,6 +1032,15 @@
 				44663FEA1F18A86E005ACF79 /* RoundedImageView.swift */,
 			);
 			name = "Custom Views";
+			sourceTree = "<group>";
+		};
+		44551A811F1F68A200275109 /* Add job */ = {
+			isa = PBXGroup;
+			children = (
+				44551A821F1F68CA00275109 /* AddNewJob.xib */,
+				44551A841F1F767400275109 /* AddNewJob.swift */,
+			);
+			name = "Add job";
 			sourceTree = "<group>";
 		};
 		447B7B071F0E4DB900C4774E = {
@@ -1467,6 +1481,7 @@
 				444A373F1F14AAAC00D48C63 /* NF.png in Resources */,
 				444A37621F14AAAC00D48C63 /* SG.png in Resources */,
 				444A371D1F14AAAC00D48C63 /* LI.png in Resources */,
+				44551A831F1F68CA00275109 /* AddNewJob.xib in Resources */,
 				444A370C1F14AAAC00D48C63 /* JM.png in Resources */,
 				444A37671F14AAAC00D48C63 /* SL.png in Resources */,
 				444A37101F14AAAC00D48C63 /* KG.png in Resources */,
@@ -1672,6 +1687,7 @@
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
 				448F30201F1DD582008649CA /* AddVehicleViewController.swift in Sources */,
 				448F301C1F1CD6C9008649CA /* Vehicle.swift in Sources */,
+				44551A851F1F767400275109 /* AddNewJob.swift in Sources */,
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */,
 				44663FEB1F18A86E005ACF79 /* RoundedImageView.swift in Sources */,

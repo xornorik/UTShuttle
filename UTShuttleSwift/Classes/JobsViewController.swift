@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyUserDefaults
+import STZPopupView
 
 class JobsViewController: UIViewController {
     
@@ -18,6 +19,7 @@ class JobsViewController: UIViewController {
     
     var scheduledJobs = [ScheduledJob]()
     var rideDetails = [RideDetail]()
+    var popupView:AddNewJob?
     
     let apiClient = APIClient.shared
 
@@ -58,7 +60,28 @@ class JobsViewController: UIViewController {
     
     func addJobTapped()
     {
+//        let popupConfig = STZPopupViewConfig()
+//        popupConfig.dismissTouchBackground = false
+//        popupConfig.cornerRadius = 20
+//        
+//        let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)//Bundle.main.loadNibNamed("AddNewJob", owner: self, options: nil)![0] as! UIView
+//        presentPopupView(popupView!,config: popupConfig)
+        let overlayView = UIView(frame: self.view.frame)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        let TGR = UITapGestureRecognizer(target: self, action: #selector(dismissAddNewJobView))
+        overlayView.addGestureRecognizer(TGR)
+        self.view.addSubview(overlayView)
         
+        let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)
+        popupView?.show()
+    }
+    
+    func dismissAddNewJobView()
+    {
+        if popupView != nil
+        {
+            popupView?.hide()
+        }
     }
     
     func getScheduledJobs()
@@ -75,6 +98,7 @@ class JobsViewController: UIViewController {
             else
             {
 //                showError(title: "Alert", message: "Could not Fetch Scheduled Jobs")
+                print("Get Scheduled Jobs call failed")
             }
             
         }
@@ -92,6 +116,7 @@ class JobsViewController: UIViewController {
             else
             {
 //                showError(title: "Alert", message: "Could not Fetch ride details")
+                print("Get Ride Details call failed")
             }
         }
     }
