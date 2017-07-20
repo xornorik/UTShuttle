@@ -49,25 +49,32 @@ class JobsViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "buttonAddJob"), style: .done, target: self, action: #selector(addJobTapped))
         
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "EEEE, dth MMM"
+        dateformatter.dateFormat = "EEEE, dd MMMM"
         datelabel.text = "Today, " + dateformatter.string(from: Date())
 
         
-        getScheduledJobs()
-        getRideDetails()
+        getScheduledJobs { 
+            self.getRideDetails()
+        }
     }
     
     func addJobTapped()
     {
-//        let popupConfig = STZPopupViewConfig()
-//        popupConfig.dismissTouchBackground = false
-//        popupConfig.cornerRadius = 20
-//        
-//        let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)//Bundle.main.loadNibNamed("AddNewJob", owner: self, options: nil)![0] as! UIView
-//        presentPopupView(popupView!,config: popupConfig)
+        guard let username = Defaults[.driverUsername] else {return}
+        apiClient.getRoutes(username: username) { (success, error, routes) in
+            
+            if success
+            {
+                let popupView = AddNewJob(routes: routes)
+                popupView?.saveButtonCallback = self.setupVC
+                popupView?.show()
+            }
+            else
+            {
+                showError(title: "Alert", message: error)
+            }
+        }
         
-        let popupView = AddNewJob(scheduledJobs: self.scheduledJobs)
-        popupView?.show()
     }
     
     func dismissAddNewJobView()
@@ -78,7 +85,7 @@ class JobsViewController: UIViewController {
         }
     }
     
-    func getScheduledJobs()
+    func getScheduledJobs(callback:@escaping ()->())
     {
         guard let username = Defaults[.driverUsername] else {return}
         
@@ -88,6 +95,7 @@ class JobsViewController: UIViewController {
             {
                 self.scheduledJobs = scheduledJobs
                 self.myJobsTableView.reloadData()
+                callback()
             }
             else
             {
@@ -113,6 +121,11 @@ class JobsViewController: UIViewController {
                 print("Get Ride Details call failed")
             }
         }
+    }
+    
+    func reloadJobsTable()
+    {
+        self.myJobsTableView.reloadData()
     }
 
 }
@@ -172,6 +185,14 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
                 
                 return cell
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == myJobsTableView
+        {
+            let scheduledJob = self.scheduledJobs[indexPath.row]
+            NavigationUtils.goToCurrentJob(tripId: scheduledJob.rideId!,scheduleId: scheduledJob.scheduleId!, fromStop: scheduledJob.fromStop!, toStop: scheduledJob.toStop!)
         }
     }
 }

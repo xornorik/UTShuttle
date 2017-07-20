@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 class CurrentJobViewController: UIViewController {
     
@@ -21,8 +22,16 @@ class CurrentJobViewController: UIViewController {
     @IBOutlet weak var stopsCollectionView:UICollectionView!
     @IBOutlet weak var jobDetailsTableView:UITableView!
 
+    var apiClient = APIClient.shared
+    
     var currentStopIndexPath:IndexPath?
-    var noOfNodes = 20
+    var rideDetails:[CurrentRideDetail]?
+    var stops:[ScheduledRouteStop]?
+    
+    var tripId:String!
+    var scheduleId:String!
+    var fromStop:String!
+    var toStop:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,18 +51,63 @@ class CurrentJobViewController: UIViewController {
     
     func setupVC()
     {
+        self.title = "Current Job"
         jobDetailsTableView.rowHeight = UITableViewAutomaticDimension
         jobDetailsTableView.estimatedRowHeight = 44
         
         currentStopIndexPath = IndexPath(item: 0, section: 0)
         nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
         previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
+        
+        tripNoLabel.text = tripId!
+        fromLocationLabel.text = fromStop
+        toLocationLabel.text = toStop
+        
+        getRideStops {
+            self.getRideDetails()
+        }
         goToCurrentStop()
         
     }
     
+    func getRideDetails()
+    {
+        guard let username = Defaults[.driverUsername] else {return}
+        guard tripId != nil else {return}
+        apiClient.getCurrentRideDetails(username: username, rideId: Double(self.tripId)!) { (success, error, rideDetails) in
+            
+            if success
+            {
+                self.rideDetails = rideDetails
+                self.jobDetailsTableView.reloadData()
+            }
+            else
+            {
+                showError(title: "Alert", message: "Could not fetch ride details")
+            }
+        }
+    }
+    
+    func getRideStops(callback:@escaping ()->())
+    {
+        apiClient.getCurrentRideStops(scheduleId: Int(self.scheduleId)!) { (success, error, stops) in
+            if success
+            {
+                self.stops = stops
+                self.stopsCollectionView.reloadData()
+                callback()
+            }
+            else
+            {
+                showError(title: "Alert", message: "Could not fetch ride stops")
+
+            }
+        }
+    }
+    
     func goToCurrentStop()
     {
+        guard (stops?.count) != nil else {return}
         guard let currentStopIndexPath = self.currentStopIndexPath else {return}
         UIView.animate(withDuration: 0.1, animations: {
             self.stopsCollectionView.scrollToItem(at: currentStopIndexPath, at: .centeredHorizontally, animated: false)
@@ -64,7 +118,7 @@ class CurrentJobViewController: UIViewController {
     {
         guard currentStopIndexPath?.item != nil else {return}
         let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
-        guard nextStopIndexPath.item < (noOfNodes - 1) else {return}
+        guard nextStopIndexPath.item < ((stops?.count)! - 1) else {return}
         
         UIView.animate(withDuration: 0.1, animations: {
             self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
@@ -107,13 +161,14 @@ class CurrentJobViewController: UIViewController {
 extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return noOfNodes
+        return stops?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nodeCell", for: indexPath) as! UTSNodeCollectionViewCell
-        
+        cell.name = (stops?[indexPath.item].stopName)!
+
         switch indexPath.item
         {
         case 0:
@@ -122,22 +177,20 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
                 if indexPath.item < currentStop
                 {
                     cell.type = .firstPassed
-                    cell.name = "first stop passed"
                 }
                 else
                 {
                     cell.type = .first
-                    cell.name = "First stop"
                 }
+                
             }
             else
             {
                 cell.type = .first
-                cell.name = "First stop"
             }
         case collectionView.numberOfItems(inSection: 0) - 1:
             cell.type = .last
-            cell.name = "Last stop"
+
         default:
             
             if let currentStop = currentStopIndexPath?.item
@@ -145,23 +198,19 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
                 if indexPath.item < currentStop
                 {
                     cell.type = .middlePassed
-                    cell.name = "middle passed"
                 }
                 else if indexPath.item == currentStop
                 {
                     cell.type = .middleReached
-                    cell.name = "middle reached"
                 }
                 else
                 {
                     cell.type = .middle
-                    cell.name = "middle stop"
                 }
             }
             else
             {
                 cell.type = .middle
-                cell.name = "middle stop"
             }
         }
         cell.setupCell()
@@ -174,7 +223,7 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let cellCount = noOfNodes
+        let cellCount = stops?.count ?? 0
         let cellWidth:CGFloat = 70
         let cellSpacing = 0
         
@@ -197,7 +246,8 @@ extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDa
 extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        guard rideDetails != nil else {return 0}
+        return (rideDetails!.count + 1)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -207,6 +257,17 @@ extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            let pickUplabel = cell.viewWithTag(100) as! UILabel
+            let flightLabel = cell.viewWithTag(101) as! UILabel
+            let timeLabel = cell.viewWithTag(102) as! UILabel
+            let paxLabel = cell.viewWithTag(103) as! UILabel
+            
+            let rideDetail = rideDetails?[indexPath.row]
+            pickUplabel.text = rideDetail?.pickupLocationName
+            flightLabel.text = rideDetail?.flightNo
+            timeLabel.text = rideDetail?.time
+            paxLabel.text = rideDetail?.paxCount
+            
             return cell
         }
         

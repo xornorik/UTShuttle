@@ -32,6 +32,8 @@ class APIClient : NSObject {
         static let getRideDetails = "RouteScheduleRideList/GetRideDetails"
         static let getRoutes = "Route/GetRoutes"
         static let addNewJob = "Vehicle/CrudRouteSchedules"
+        static let getCurrentRideDetails = "RouteScheduleRideList/GetCurrentRide"
+        static let getCurrentRideStops = "ScheduleRouteStops/GetScheduleRouteStops"
     }
     
     func setup()
@@ -386,4 +388,85 @@ class APIClient : NSObject {
         }
 
     }
+    
+    func getCurrentRideDetails(username:String, rideId:Double, callback:@escaping(_ success:Bool,_ error:String,_ currentRideDetails:[CurrentRideDetail])->())
+    {
+        print("Requesting Current Ride Details")
+        showHUD()
+        let parameters:[String : Any] = ["UserName":username, "RideId":rideId]
+        let url = baseUrl + EndPoints.getCurrentRideDetails
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var rideDetails = [CurrentRideDetail]()
+                        for subjson in json["CurrentRide"].arrayValue
+                        {
+                            let rideDetail = CurrentRideDetail(json: subjson)
+                            rideDetails.append(rideDetail)
+                        }
+                        
+                        hideHUD()
+                        callback(true,"",rideDetails)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func getCurrentRideStops(scheduleId:Int, callback:@escaping(_ success:Bool,_ error:String,_ currentRouteStops:[ScheduledRouteStop])->())
+    {
+        print("Requesting Current Ride Stops")
+        showHUD()
+        let parameters:[String : Any] = ["ScheduleId":scheduleId]
+        let url = baseUrl + EndPoints.getCurrentRideStops
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var rideStops = [ScheduledRouteStop]()
+                        for subjson in json["ScheduleRouteStops"].arrayValue
+                        {
+                            let rideStop = ScheduledRouteStop(json: subjson)
+                            rideStops.append(rideStop)
+                        }
+                        
+                        hideHUD()
+                        callback(true,"",rideStops)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+
 }

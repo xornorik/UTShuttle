@@ -2,7 +2,7 @@
 //  NavigationUtils.swift
 //  UTShuttleSwift
 //
-//  Created by Apple Developer on 08/07/17.
+//  Created by Srinivas Vemuri on 08/07/17.
 //  Copyright © 2017 PLEXITECH. All rights reserved.
 //
 
@@ -55,6 +55,15 @@ class NavigationUtils {
         self.pushToVC(nextVC: nextVC)
     }
     
+    static func goToCurrentJob(tripId:String, scheduleId:String, fromStop:String, toStop:String)
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "currentJobVC") as! CurrentJobViewController
+        nextVC.tripId = tripId
+        nextVC.scheduleId = scheduleId
+        nextVC.fromStop = fromStop
+        nextVC.toStop = toStop
+        self.pushToVC(nextVC: nextVC)
+    }
     
     static func presentVC(nextVC: UIViewController) {
         
@@ -83,6 +92,5 @@ class NavigationUtils {
         
         currentNavController.popViewController(animated: false)
         currentNavController.setViewControllers([nextVC], animated: true)
-        
     }
 }

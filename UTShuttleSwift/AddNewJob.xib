@@ -33,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qpd-ma-HhZ">
-                    <rect key="frame" x="29" y="63" width="36" height="19.5"/>
+                    <rect key="frame" x="29" y="60" width="36" height="19.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     <nil key="highlightedColor"/>
@@ -304,15 +304,15 @@
                     <state key="normal" title="Save"/>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Select Route" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5OI-jE-hfc">
-                    <rect key="frame" x="29" y="38" width="348.5" height="17"/>
+                    <rect key="frame" x="29" y="38" width="348.5" height="20"/>
                     <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="10:00 am" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mwf-4S-kLO">
-                    <rect key="frame" x="313.5" y="63.5" width="64" height="17"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <rect key="frame" x="306" y="59" width="71.5" height="20"/>
+                    <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
             </subviews>
@@ -345,7 +345,7 @@
                 <constraint firstItem="qpd-ma-HhZ" firstAttribute="leading" secondItem="nic-uo-CFM" secondAttribute="leading" id="lHJ-Ku-FBk"/>
                 <constraint firstItem="VJT-7y-vLI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="mww-jG-AZu"/>
                 <constraint firstItem="kB4-A7-ap2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="pwp-ZE-MJP"/>
-                <constraint firstItem="qpd-ma-HhZ" firstAttribute="top" secondItem="5OI-jE-hfc" secondAttribute="bottom" constant="8" id="uij-3Z-rsW"/>
+                <constraint firstItem="qpd-ma-HhZ" firstAttribute="top" secondItem="5OI-jE-hfc" secondAttribute="bottom" constant="2" id="uij-3Z-rsW"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-38" y="-173.5"/>

@@ -71,6 +71,7 @@ class AddNewJob: UIView {
     
     func setupView()
     {
+        self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         self.cancelButton.addTarget(self, action: #selector(hide), for: .touchUpInside)
         
         self.isRecurringButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
@@ -207,11 +208,11 @@ class AddNewJob: UIView {
     {
         guard (selectedRouteId != nil) else {showError(title: "Alert", message: "Please select a route");return false}
         guard time != "" else{showError(title: "Alert", message: "Invalid Time"); return false}
-        if !isMonday && !isTuesday && !isWednesday && !isThrusday && !isFriday && !isSaturday && !isSunday && !isRecurring
-        {
-            showError(title: "Alert", message: "Please select at least one day of the week.")
-            return false
-        }
+//        if !isMonday && !isTuesday && !isWednesday && !isThrusday && !isFriday && !isSaturday && !isSunday && !isRecurring
+//        {
+//            showError(title: "Alert", message: "Please select at least one day of the week.")
+//            return false
+//        }
         return true
     }
     
@@ -255,7 +256,7 @@ class AddNewJob: UIView {
     func handleDatePicker(sender:UIDatePicker)
     {
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm a"
+        timeFormatter.dateFormat = "h:mm a"
         
         timeTF.text = timeFormatter.string(from: sender.date)
         time = timeTF.text!

@@ -14,11 +14,15 @@ class ScheduledJob{
     var fromStop:String?
     var toStop:String?
     var time:String?
+    var scheduleId:String?
+    var rideId:String?
     
     init(json:JSON) {
         fromStop = json["FromStopName"].stringValue
         toStop = json["ToStopName"].stringValue
         time = json["ScheduleTime"].stringValue
+        scheduleId = json["ScheduleId"].stringValue
+        rideId = json["RideId"].stringValue
     }
 }
 
