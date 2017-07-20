@@ -74,6 +74,8 @@ class AddNewJob: UIView {
         self.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         self.cancelButton.addTarget(self, action: #selector(hide), for: .touchUpInside)
         
+        self.selectRouteTF.delegate = self
+        
         self.isRecurringButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
         self.isMondayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
         self.isTuesdayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
@@ -296,12 +298,14 @@ class AddNewJob: UIView {
 }
 extension AddNewJob:UIPickerViewDelegate,UIPickerViewDataSource
 {
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return (routes?.count)!
+        guard let routes = self.routes else {return 0}
+        return (routes.count)
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -312,6 +316,15 @@ extension AddNewJob:UIPickerViewDelegate,UIPickerViewDataSource
         selectRouteTF.text = routes?[row].name
         selectedRouteId = routes?[row].id
     }
-    
-    
+}
+extension AddNewJob : UITextFieldDelegate
+{
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard let routes = self.routes else {return}
+        if routes.count == 0
+        {
+            showError(title: "Alert", message: "No Routes found"){ _ in self.hide()};
+            self.dismissPicker()
+        }
+    }
 }

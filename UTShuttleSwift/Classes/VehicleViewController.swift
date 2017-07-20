@@ -124,15 +124,19 @@ class VehicleViewController: UIViewController {
         
         apiClient.mapVehicleToDriver(vehicleId: vehicleId, deviceId: Int(deviceId)!, machineIp: machineIp, username: username) { (success, error) in
             
-            if !success
-            {
-                showError(title: "Alert", message: error)
-                return
+            showErrorForModal(title: "Alert", message: error,viewController: self) { _ in
+                if !success
+                {
+                    return
+                }
+                
+                if callback != nil
+                {
+                    callback()
+                }
+
             }
-            if callback != nil
-            {
-                callback()
-            }
+
         }
         
     }
@@ -159,15 +163,24 @@ extension VehicleViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showConfirmForModal(title: "Alert", message: "Are you sure you want to map \(String(describing: vehicles[indexPath.row].vehicleNo))", viewController: self) {
-            Defaults[.driverVehicleNo] = self.vehicles[indexPath.row].vehicleNo
-            Defaults[.driverVehicleId] = self.vehicles[indexPath.row].vehicleId
-            
-            self.mapOrUnmapVehicle(vehicleId: Int(self.vehicles[indexPath.row].vehicleId!)!) {
-                self.dissmissVehicleVC()
-            }
-
+//        showConfirmForModal(title: "Alert", message: "Are you sure you want to map \(String(describing: vehicles[indexPath.row].vehicleNo))", viewController: self) {
+//            Defaults[.driverVehicleNo] = self.vehicles[indexPath.row].vehicleNo
+//            Defaults[.driverVehicleId] = self.vehicles[indexPath.row].vehicleId
+//            
+//            self.mapOrUnmapVehicle(vehicleId: Int(self.vehicles[indexPath.row].vehicleId!)!) {
+//                self.dissmissVehicleVC()
+//            }
+//
+//        }
+        
+        Defaults[.driverVehicleNo] = self.vehicles[indexPath.row].vehicleNo
+        Defaults[.driverVehicleId] = self.vehicles[indexPath.row].vehicleId
+        
+        self.mapOrUnmapVehicle(vehicleId: Int(self.vehicles[indexPath.row].vehicleId!)!) {
+            self.dissmissVehicleVC()
         }
+        
+
     }
 }
 

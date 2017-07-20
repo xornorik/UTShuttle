@@ -222,8 +222,9 @@ class APIClient : NSObject {
                     let json = JSON(response.result.value!)
                     if json["ResponseCode"].numberValue.intValue != 0
                     {
-                        showSuccessHUD()
-                        callback(true,"")
+                        //showSuccessHUD()
+                        hideHUD()
+                        callback(true,json["ResponseMessage"].stringValue)
                     }
                     else
                     {

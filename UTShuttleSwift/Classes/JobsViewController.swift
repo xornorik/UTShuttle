@@ -63,16 +63,20 @@ class JobsViewController: UIViewController {
         guard let username = Defaults[.driverUsername] else {return}
         apiClient.getRoutes(username: username) { (success, error, routes) in
             
-            if success
-            {
-                let popupView = AddNewJob(routes: routes)
-                popupView?.saveButtonCallback = self.setupVC
-                popupView?.show()
-            }
-            else
-            {
-                showError(title: "Alert", message: error)
-            }
+//            if success
+//            {
+//                let popupView = AddNewJob(routes: routes)
+//                popupView?.saveButtonCallback = self.setupVC
+//                popupView?.show()
+//            }
+//            else
+//            {
+//                showError(title: "Alert", message: error)
+//            }
+            
+            let popupView = AddNewJob(routes: routes)
+            popupView?.saveButtonCallback = self.setupVC
+            popupView?.show()
         }
         
     }
