@@ -30,6 +30,8 @@ class APIClient : NSObject {
         static let mapVehicle = "Driver/MapDeviceVehicle"
         static let getJobList = "RouteScheduleJobList/GetRouteScheduleJobList"
         static let getRideDetails = "RouteScheduleRideList/GetRideDetails"
+        static let getRoutes = "Route/GetRoutes"
+        static let addNewJob = "Vehicle/CrudRouteSchedules"
     }
     
     func setup()
@@ -301,6 +303,79 @@ class APIClient : NSObject {
                     {
                         hideHUD()
                         callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func getRoutes(username:String, callback:@escaping (_ success:Bool,_ error:String, _ routes:[Route])->())
+    {
+        print("Requesting Routes")
+        showHUD()
+        let parameters:[String : Any] = ["UserName":username]
+        let url = baseUrl + EndPoints.getRoutes
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var routes = [Route]()
+                        for subjson in json["Routes"].arrayValue
+                        {
+                            let route = Route(json: subjson)
+                            routes.append(route)
+                        }
+
+                        hideHUD()
+                        callback(true,"",routes)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func addNewJob(payload:[String:Any], callback:@escaping (_ success:Bool,_ error:String)->())
+    {
+        print("Requesting Add new Job")
+        showHUD()
+        let parameters:[String : Any] = ["RouteSchedules":payload]
+        let url = baseUrl + EndPoints.addNewJob
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        hideHUD()
+                        callback(true,"")
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue)
                     }
                 }
                 else

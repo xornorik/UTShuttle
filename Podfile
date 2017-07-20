@@ -12,7 +12,6 @@ target 'UTShuttleSwift' do
   pod 'ImagePicker'
   pod 'PKHUD'
   pod 'Kingfisher', '~> 3.0'
-  pod 'DropDown'
 
   # Pods for UTShuttleSwift
 

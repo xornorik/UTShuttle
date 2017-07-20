@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import DropDown
+import SwiftyUserDefaults
 
 class AddNewJob: UIView {
 
-    @IBOutlet weak var selectRouteButton:UIButton!
-    @IBOutlet weak var timeLabel:UILabel!
+    @IBOutlet weak var selectRouteTF:UITextField!
+    @IBOutlet weak var timeTF:UITextField!
     @IBOutlet weak var isRecurringButton:UIButton!
     
     @IBOutlet weak var isMondayButton:UIButton!
@@ -28,10 +28,13 @@ class AddNewJob: UIView {
     
     var overlayView:UIView?
     var dialogView:UIView?
+    var pickerView:UIPickerView?
     var saveButtonCallback: (()->())?
     
-    var scheduledJobs:[ScheduledJob]?
+    var routes:[Route]?
+    let apiClient = APIClient.shared
     
+    var isRecurring = false
     var isMonday = false
     var isTuesday = false
     var isWednesday = false
@@ -39,6 +42,8 @@ class AddNewJob: UIView {
     var isFriday = false
     var isSaturday = false
     var isSunday = false
+    var selectedRouteId:Int?
+    var time = ""
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -46,10 +51,10 @@ class AddNewJob: UIView {
         setupView()
     }
     
-    required init?(scheduledJobs: [ScheduledJob]) {
+    required init?(routes: [Route]) {
         
         super.init(frame: UIApplication.shared.keyWindow!.frame)
-        self.scheduledJobs = scheduledJobs
+        self.routes = routes
         
         loadView()
         setupView()
@@ -66,44 +71,194 @@ class AddNewJob: UIView {
     
     func setupView()
     {
-        self.selectRouteButton.addTarget(self, action: #selector(showDropDown), for: .touchUpInside)
         self.cancelButton.addTarget(self, action: #selector(hide), for: .touchUpInside)
+        
+        self.isRecurringButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isMondayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isTuesdayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isWednesdayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isThursdayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isFridayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isSaturdayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        self.isSundayButton.addTarget(self, action: #selector(weekButtonToggle(sender:)), for: .touchUpInside)
+        
+        
+        //setting picker View
+        let pickerView = UIPickerView()
+        
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.tintColor = ColorPalette.UTSTeal
+        toolBar.isTranslucent = true
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissPicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([spaceButton, doneButton], animated: false)
+        
+        self.selectRouteTF.inputView = pickerView
+        self.selectRouteTF.inputAccessoryView = toolBar
+        pickerView.delegate = self
+        
+        //setting time picker
+        let timePicker = UIDatePicker()
+        timePicker.datePickerMode = .time
+        timePicker.addTarget(self, action: #selector(handleDatePicker), for: UIControlEvents.valueChanged)
+        timeTF.inputView = timePicker
+        timeTF.inputAccessoryView = toolBar
+
     }
     
     func weekButtonToggle(sender:UIButton)
     {
         switch sender.tag {
         case 101:
-            break
+            if isMonday{
+                isMonday = false
+                isMondayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isMonday = true
+                isMondayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
         case 102:
-            break
+            if isTuesday{
+                isTuesday = false
+                isTuesdayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isTuesday = true
+                isTuesdayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
+
         case 103:
-            break
+            if isWednesday{
+                isWednesday = false
+                isWednesdayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isWednesday = true
+                isWednesdayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
+
         case 104:
-            break
+            if isThrusday{
+                isThrusday = false
+                isThursdayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isThrusday = true
+                isThursdayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
+
         case 105:
-            break
+            if isFriday{
+                isFriday = false
+                isFridayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isFriday = true
+                isFridayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
+
+            
         case 106:
-            break
+            if isSaturday{
+                isSaturday = false
+                isSaturdayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isSaturday = true
+                isSaturdayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
         case 107:
-            break
+            if isSunday{
+                isSunday = false
+                isSundayButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isSunday = true
+                isSundayButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
+        case 108:
+            if isRecurring
+            {
+                isRecurring = false
+                isRecurringButton.setImage(UIImage(named: "buttonCheckboxNewJobFalse"), for: .normal)
+            }
+            else
+            {
+                isRecurring = true
+//                isMonday = true; isTuesday = true; isWednesday = true; isThrusday = true; isFriday = true; isSaturday = true; isSunday = true
+                isRecurringButton.setImage(UIImage(named: "buttonCheckboxNewJobTrue"), for: .normal)
+            }
         default:
             print("Exhaustive")
         }
     }
-    
-    func showDropDown()
+    func validate() -> Bool
     {
-        let dropDown = DropDown()
-        dropDown.anchorView = selectRouteButton
-        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
-        
-        dropDown.show()
-        
-        dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-            self.selectRouteButton.setTitle(item, for: .normal)
-            dropDown.hide()
+        guard (selectedRouteId != nil) else {showError(title: "Alert", message: "Please select a route");return false}
+        guard time != "" else{showError(title: "Alert", message: "Invalid Time"); return false}
+        if !isMonday && !isTuesday && !isWednesday && !isThrusday && !isFriday && !isSaturday && !isSunday && !isRecurring
+        {
+            showError(title: "Alert", message: "Please select at least one day of the week.")
+            return false
         }
+        return true
+    }
+    
+    func saveButtonTapped()
+    {
+        if validate()
+        {
+            guard let username = Defaults[.driverUsername] else {return}
+            let payload:[String:Any] = [
+                "RouteId":selectedRouteId!,
+                "ScheduleTime":time,
+                "Mon":isMonday,
+                "Tue":isTuesday,
+                "Wed":isWednesday,
+                "Thu":isThrusday,
+                "Fri":isFriday,
+                "Sat":isSaturday,
+                "Sun":isSunday,
+                "UserName":username
+            ]
+            
+            apiClient.addNewJob(payload: payload, callback: { (success, error) in
+                if success
+                {
+                    self.saveButtonCallback?()
+                    self.hide()
+                }
+                else
+                {
+                    showError(title: "Alert", message: error)
+                }
+            })
+        }
+    }
+        
+    func dismissPicker()
+    {
+        self.endEditing(false)
+    }
+    
+    func handleDatePicker(sender:UIDatePicker)
+    {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm a"
+        
+        timeTF.text = timeFormatter.string(from: sender.date)
+        time = timeTF.text!
     }
     
     func show()
@@ -137,5 +292,25 @@ class AddNewJob: UIView {
             self.removeFromSuperview()
         }
     }
-
+}
+extension AddNewJob:UIPickerViewDelegate,UIPickerViewDataSource
+{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return (routes?.count)!
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return routes?[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectRouteTF.text = routes?[row].name
+        selectedRouteId = routes?[row].id
+    }
+    
+    
 }
