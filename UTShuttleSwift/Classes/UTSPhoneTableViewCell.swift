@@ -121,6 +121,10 @@ class UTSPhoneTableViewCell: UITableViewCell {
     {
         textField.text = textField.text!.formatPhoneNumber()
         phoneNumber = textField.text?.formatPhoneNumber()
+        if (textField.text?.characters.count)! > 10
+        {
+            dismissKeyboard()
+        }
     }
 
 }
