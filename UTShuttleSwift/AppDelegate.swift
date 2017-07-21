@@ -63,22 +63,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         //check if logged in
         //show correct UI
-        var rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "deviceRegistrationVC")
-        if Defaults[.deviceId] != nil
-        {
-            if Defaults[.isLoggedIn] ?? false
-            {
-                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboardVC")
-            }
-            else
-            {
-                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverLoginVC")
-            }
-        }
-        else
-        {
-            //device registration already instantiated
-        }
+        var rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverLoginVC")
+//        if Defaults[.deviceId] != nil
+//        {
+//            if Defaults[.isLoggedIn] ?? false
+//            {
+//                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dashboardVC")
+//            }
+//            else
+//            {
+//                rootVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "driverLoginVC")
+//            }
+//        }
+//        else
+//        {
+//            //device registration already instantiated
+//        }
         
         mainNC = UINavigationController(rootViewController: rootVC)
         self.window?.rootViewController = self.mainNC

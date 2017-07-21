@@ -29,6 +29,7 @@ class DriverRegisterViewController: UIViewController {
     var firstName = ""
     var lastname = ""
     var email = ""
+    var countryCode = ""
     var mobile = ""
     var licenseNo = ""
     var licenseExp = ""
@@ -36,11 +37,7 @@ class DriverRegisterViewController: UIViewController {
     var password = ""
     var retypePassword = ""
     
-    var countryPicker = UIPickerView()
-    var countries = [Country]()
-    var selectedIndexPath:IndexPath? //used for country picking, date picking and terms and condition toggling
-    var isPickingCountry = false //just for keeping the keyboard active on a special instance
-    var chosenCountry = Country(code: "US", name: "United States", phoneCode: "+1")
+    var selectedIndexPath:IndexPath? //used for terms and condition toggling
     var isAgreeToTermsAndConditions = false
     
     var selectedPhoto:UIImage?
@@ -61,8 +58,6 @@ class DriverRegisterViewController: UIViewController {
         super.viewWillAppear(true)
         
         setupVC()
-        
-        if rStatus == .step1 {setupCountryPicker()}
     }
 
     override func didReceiveMemoryWarning() {
@@ -96,29 +91,6 @@ class DriverRegisterViewController: UIViewController {
         self.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
-    func setupCountryPicker()
-    {
-        if let path = Bundle.main.path(forResource: "countryCodes", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
-                let json = JSON(data: data)
-                if json != JSON.null {
-                    for jsonObj in json.array!
-                    {
-                        let country = Country(code: jsonObj["code"].stringValue, name: jsonObj["name"].stringValue, phoneCode: jsonObj["dial_code"].stringValue)
-                        self.countries.append(country)
-                    }
-                } else {
-                    print("Could not get json from file, make sure that file contains valid json.")
-                }
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        } else {
-            print("Invalid filename/path.")
-        }
-        
-    }
     
     //MARK: UI Functions
 
@@ -140,45 +112,6 @@ class DriverRegisterViewController: UIViewController {
                 registerDriver()
             }
 
-        }
-    }
-    
-    func textFieldDidChange(textField: UITextField)
-    {
-        switch rStatus {
-        case .step1:
-            switch textField.tag {
-            case 1000:
-                firstName = textField.text!
-            case 1001:
-                lastname = textField.text!
-            case 1002:
-                email = textField.text!
-            case 1003:
-                mobile = textField.text!
-            default:
-                print("Exhaustive")
-            }
-        case .step2:
-            switch textField.tag {
-            case 1000:
-                licenseNo = textField.text!
-            case 1001:
-                licenseExp = textField.text!
-            default:
-                print("Exhaustive")
-            }
-        case .step3:
-            switch textField.tag {
-            case 1000:
-                username = textField.text!
-            case 1001:
-                password = textField.text!
-            case 1002:
-                retypePassword = textField.text!
-            default:
-                print("Exhaustive")
-            }
         }
     }
     
@@ -207,7 +140,7 @@ class DriverRegisterViewController: UIViewController {
             Defaults[.driverLastName] = lastname
             Defaults[.driverEmail] = email
             Defaults[.driverMobile] =  mobile
-            Defaults[.driverCountryCode] = chosenCountry.phoneCode
+            Defaults[.driverCountryCode] = countryCode
         case .step2:
             Defaults[.driverLicense] = licenseNo
             Defaults[.driverLicenseExp] = licenseExp
@@ -227,7 +160,7 @@ class DriverRegisterViewController: UIViewController {
                 "FirstName": Defaults[.driverFirstName] ?? "",
                 "LastName": Defaults[.driverLastName] ?? "",
                 "Email": Defaults[.driverEmail] ?? "",
-                "Mobile": format(phoneNumber: Defaults[.driverMobile]!) ?? "",
+                "Mobile": Defaults[.driverMobile] ?? "" ,
                 "Password": Defaults[.driverPassword] ?? "",
                 "DateofBirth": "",
                 "Address_1": "",
@@ -237,7 +170,7 @@ class DriverRegisterViewController: UIViewController {
                 "StateId": 0,
                 "CityName": "",
                 "StateName": "",
-                "Phone": format(phoneNumber: Defaults[.driverMobile]!) ?? "",
+                "Phone": Defaults[.driverMobile] ?? "",
                 "CountryCode": Defaults[.driverCountryCode] ?? "+1",
                 "DriverLicenceNumber": Defaults[.driverLicense] ?? "",
                 "DriverLicenceExpiryDate": Defaults[.driverLicenseExp] ?? "" ,
@@ -264,56 +197,6 @@ class DriverRegisterViewController: UIViewController {
 
     
     //MARK: Validation Functions
-
-    
-    func format(phoneNumber sourcePhoneNumber: String) -> String? {
-        
-        // Remove any character that is not a number
-        let numbersOnly = sourcePhoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        let length = numbersOnly.characters.count
-        let hasLeadingOne = numbersOnly.hasPrefix("+1")
-        
-        // Check for supported phone number length
-        guard length == 7 || length == 10 || (length == 11 && hasLeadingOne) else {
-            return nil
-        }
-        
-        let hasAreaCode = (length >= 10)
-        var sourceIndex = 0
-        
-        // Leading 1
-        var leadingOne = ""
-        if hasLeadingOne {
-            leadingOne = "+1 "
-            sourceIndex += 1
-        }
-        
-        // Area code
-        var areaCode = ""
-        if hasAreaCode {
-            let areaCodeLength = 3
-            guard let areaCodeSubstring = numbersOnly.characters.substring(start: sourceIndex, offsetBy: areaCodeLength) else {
-                return nil
-            }
-            areaCode = String(format: "(%@) ", areaCodeSubstring)
-            sourceIndex += areaCodeLength
-        }
-        
-        // Prefix, 3 characters
-        let prefixLength = 3
-        guard let prefix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: prefixLength) else {
-            return nil
-        }
-        sourceIndex += prefixLength
-        
-        // Suffix, 4 characters
-        let suffixLength = 4
-        guard let suffix = numbersOnly.characters.substring(start: sourceIndex, offsetBy: suffixLength) else {
-            return nil
-        }
-        
-        return leadingOne + areaCode + prefix + "-" + suffix
-    }
     
     func validateForm() -> Bool
     {
@@ -336,65 +219,6 @@ class DriverRegisterViewController: UIViewController {
             if !isAgreeToTermsAndConditions {showError(title: "Alert", message: "Please agree to the terms and conditions before proceeding."); return false}
         }
         return true
-    }
-    
-    //MARK: Picker Functions
-    
-    func countryPickerButtonTapped()
-    {
-        guard rStatus == .step1 else{return}
-        isPickingCountry = true
-        let phoneNoCell = self.registerTableView.cellForRow(at: selectedIndexPath!)//button.superview?.superview as? UITableViewCell
-        let phoneNotextField = phoneNoCell?.viewWithTag(1003) as! UITextField
-        
-        if phoneNotextField.isFirstResponder
-        {
-            phoneNotextField.resignFirstResponder()
-        }
-        
-        countryPicker.delegate = self
-        let toolBar = UIToolbar()
-        toolBar.barStyle = UIBarStyle.default
-        toolBar.isTranslucent = true
-        toolBar.tintColor = ColorPalette.UTSTeal
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(donePickingCountry))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([spaceButton, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        phoneNotextField.inputView = countryPicker
-        phoneNotextField.inputAccessoryView = toolBar
-        
-        phoneNotextField.becomeFirstResponder()
-        
-    }
-    
-    func donePickingCountry()
-    {
-        isPickingCountry = false
-
-        let phoneNoCell = self.registerTableView.cellForRow(at: selectedIndexPath!)//button.superview?.superview as? UITableViewCell
-        let phoneNoTextField = phoneNoCell?.viewWithTag(1003) as! UITextField
-        let countryPickerButton = phoneNoCell?.viewWithTag(102) as! UIButton
-        phoneNoTextField.resignFirstResponder()
-        phoneNoTextField.inputView = nil
-        phoneNoTextField.inputAccessoryView = nil
-        countryPickerButton.setTitle(chosenCountry.phoneCode, for: .normal)
-        phoneNoTextField.becomeFirstResponder()
-
-        phoneNoCell?.setNeedsDisplay()
-    }
-    
-    func handleDatePicker(sender:UIDatePicker)
-    {
-        let dateCell = self.registerTableView.cellForRow(at: self.selectedIndexPath!)
-        let dateTf = dateCell?.viewWithTag(1001) as! UITextField
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        
-        dateTf.text = dateFormatter.string(from: sender.date)
-        licenseExp = dateTf.text!
     }
     
     func dismissKeyboard()
@@ -453,84 +277,27 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
         case .step1:
             switch indexPath.row {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "John"
-                tf.autocapitalizationType = .words
-                tf.keyboardType = .asciiCapable
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-                tf.tag = 1000
-
-
-                label.text = "First Name"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .text, placeholder: "John", text: "", labelText: "First Name")
+                cell.delegate = self
                 return cell
 
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "Doe"
-                tf.autocapitalizationType = .words
-                tf.keyboardType = .asciiCapable
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-                tf.tag = 1001
-                
-                label.text = "Last Name"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .text, placeholder: "Doe", text: "", labelText: "Last Name")
+                cell.delegate = self
                 return cell
 
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "johndoe@company.com"
-                tf.autocapitalizationType = .none
-                tf.keyboardType = .emailAddress
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-                tf.tag = 1002
-                
-                label.text = "Email ID"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .email, placeholder: "johndoe@company.com", text: "", labelText: "Email ID")
+                cell.delegate = self
                 return cell
 
             case 3:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath)
-                if let tf = cell.viewWithTag(100) as? UITextField {
-                    tf.autocapitalizationType = .none
-                    tf.placeholder = "(123) 456-789"
-                    tf.keyboardType = .numberPad
-                    tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                    tf.delegate = self
-
-                    tf.tag = 1003
-                    
-                    if isPickingCountry {tf.becomeFirstResponder()}
-                } else {
-                    let tf = cell.viewWithTag(1003) as! UITextField
-                    tf.text = mobile
-                    tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                    tf.delegate = self
-
-                    tf.becomeFirstResponder()
-                }
-                let label = cell.viewWithTag(101) as! UILabel
-                let countryButton = cell.viewWithTag(102) as! UIButton
-                let countryCodeLabel = cell.viewWithTag(103) as! UILabel
-                                
-                self.selectedIndexPath = indexPath
-                
-                countryCodeLabel.text = chosenCountry.phoneCode
-                Defaults[.driverCountryCode] = chosenCountry.phoneCode //to Initialize it to US
-                countryButton.setImage(chosenCountry.flag, for: .normal)
-                countryButton.addTarget(self, action: #selector(countryPickerButtonTapped), for: .touchUpInside)
-
-                
-                label.text = "Phone Number"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath) as! UTSPhoneTableViewCell
+                cell.setup(placeholder: "(123) 456-7890", text: "", labelText: "Mobile Number")
+                cell.delegate = self
                 return cell
 
             default:
@@ -567,57 +334,14 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
                 
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "9894541234325425"
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-
-                tf.tag = 1000
-                
-                label.text = "Driver License Number"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .text, placeholder: "9894541234325425", text: "", labelText: "Driver License Number")
+                cell.delegate = self
                 return cell
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "12-05-2019"
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                
-                //configure datepicker
-                let minDate = (Calendar.current as NSCalendar).date(byAdding: .month, value: 6, to: Date(), options: []) //[!] Check with mgmt
-                let pickerView = UIDatePicker()
-                pickerView.datePickerMode = .date
-                pickerView.addTarget(self, action: #selector(handleDatePicker), for: UIControlEvents.valueChanged)
-                pickerView.minimumDate = minDate
-                
-                let toolBar = UIToolbar()
-                toolBar.barStyle = UIBarStyle.default
-                toolBar.tintColor = ColorPalette.UTSTeal
-                toolBar.isTranslucent = true
-                toolBar.sizeToFit()
-                
-                let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissKeyboard))
-                let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-                toolBar.setItems([spaceButton, doneButton], animated: false)
-
-                let df = DateFormatter()
-                df.dateFormat = "dd-MM-yyyy"
-                licenseExp = df.string(from: minDate!)
-                
-//                tf.text = df.string(from: pickerView.date)
-                tf.tag = 1001
-                tf.inputView = pickerView
-                tf.inputAccessoryView = toolBar
-                tf.delegate = self
-
-
-                self.selectedIndexPath = indexPath
-                
-                label.text = "Driver License Expiry Date"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .datePicker, placeholder: DateFormatter().string(from: Date()), text: "", labelText: "Driver License Number")
+                cell.delegate = self
                 return cell
             default:
                 return UITableViewCell()
@@ -625,45 +349,19 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
         case .step3:
             switch indexPath.row {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "John Doe"
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-
-                tf.tag = 1000
-                
-                label.text = "Type your User Name"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .text, placeholder: "John Doe", text: "", labelText: "Type your User Name")
+                cell.delegate = self
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "******"
-                tf.isSecureTextEntry = true
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-
-                tf.tag = 1001
-                
-                label.text = "Type password"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .password, placeholder: "******", text: "", labelText: "Type password")
+                cell.delegate = self
                 return cell
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath)
-                let tf = cell.viewWithTag(100) as! UITextField
-                let label = cell.viewWithTag(101) as! UILabel
-                
-                tf.placeholder = "******"
-                tf.isSecureTextEntry = true
-                tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-                tf.delegate = self
-
-                tf.tag = 1002
-                
-                label.text = "Retype Password"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "registerCell", for: indexPath) as! UTSFormTableViewCell
+                cell.setup(type: .password, placeholder: "******", text: "", labelText: "Retype password")
+                cell.delegate = self
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "termsCell", for: indexPath)
@@ -695,42 +393,8 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
 }
-extension DriverRegisterViewController : UIPickerViewDelegate, UIPickerViewDataSource
-{
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
-        return countries.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var resultView: SwiftCountryView
-        
-        if view == nil {
-            resultView = SwiftCountryView()
-        } else {
-            resultView = view as! SwiftCountryView
-        }
-        resultView.setup(countries[row], locale: Locale(identifier: "en_US_POSIX"))
-        
-        return resultView
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let country = countries[row]
-        self.chosenCountry = country
-        
-        self.registerTableView.reloadRows(at: [self.selectedIndexPath!], with: .none)
-        
-    }
-}
 extension DriverRegisterViewController : ImagePickerDelegate
 {
-    
     func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
         imagePicker.dismiss(animated: true, completion: nil)
     }
@@ -761,16 +425,45 @@ extension DriverRegisterViewController : ImagePickerDelegate
         }
     }
 }
-extension DriverRegisterViewController : UITextFieldDelegate
+extension DriverRegisterViewController : UTSPhoneTableViewCellDelegate
 {
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        let cell = textField.superview?.superview as! UITableViewCell
-//        
-//        registerTableView.scrollToRow(at: registerTableView.indexPath(for: cell)!, at: .top, animated: true)
-//    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dismissKeyboard()
-        return true
+    func textFieldContent(cell: UTSPhoneTableViewCell, countryCode:String, phoneNumber: String) {
+        guard rStatus == .step1 else {return}
+        let currentIndexPath = self.registerTableView.indexPath(for: cell)
+        switch (currentIndexPath?.row)! {
+        case 3: self.countryCode = countryCode; mobile = phoneNumber
+        default:
+            break // handled below
+        }
+    }
+}
+extension DriverRegisterViewController : UTSFormTableViewCellDelegate
+{
+    func textFieldContent(cell: UTSFormTableViewCell, content: String, secondaryContent:String) {
+         let currentIndexPath = self.registerTableView.indexPath(for: cell)
+        switch rStatus {
+        case .step1:
+            switch (currentIndexPath?.row)! {
+            case 0: firstName = content
+            case 1: lastname = content
+            case 2: email = content
+            case 3: print("Phone number")
+            default: break
+            }
+        case .step2:
+            switch (currentIndexPath?.row)! {
+            case 0: print("Image Cell")
+            case 1: licenseNo = content
+            case 2: licenseExp = content
+            default: break
+            }
+        case .step3:
+            switch (currentIndexPath?.row)! {
+            case 0: username = content
+            case 1: password = content
+            case 2: retypePassword = content
+            default: break
+            }
+        }
     }
 }

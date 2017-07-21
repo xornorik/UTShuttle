@@ -37,8 +37,6 @@ class NibLoadingView: UIView {
     
 }
 
-
-
 class SwiftCountryView: NibLoadingView {
     
     @IBOutlet weak var flagImageView: UIImageView!
