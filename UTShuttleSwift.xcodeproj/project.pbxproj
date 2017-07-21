@@ -1037,12 +1037,10 @@
 		444A379B1F14AD4600D48C63 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				B3ED3B1E1F2288AF00B8E480 /* Rounded ImageView */,
+				B3ED3B1D1F22889500B8E480 /* Country Picker */,
 				44551A811F1F68A200275109 /* Add job */,
 				B3ED3B121F1B2A9300B8E480 /* Cells */,
-				444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */,
-				444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */,
-				444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */,
-				44663FEA1F18A86E005ACF79 /* RoundedImageView.swift */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
@@ -1129,6 +1127,24 @@
 				B3ED3B1B1F22720500B8E480 /* UTSPhoneTableViewCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		B3ED3B1D1F22889500B8E480 /* Country Picker */ = {
+			isa = PBXGroup;
+			children = (
+				444A37A01F14B4F000D48C63 /* SwiftCountryView.swift */,
+				444A37A11F14B4F000D48C63 /* SwiftCountryView.xib */,
+				444A37A41F14C65100D48C63 /* CountryPickerTextField.swift */,
+			);
+			name = "Country Picker";
+			sourceTree = "<group>";
+		};
+		B3ED3B1E1F2288AF00B8E480 /* Rounded ImageView */ = {
+			isa = PBXGroup;
+			children = (
+				44663FEA1F18A86E005ACF79 /* RoundedImageView.swift */,
+			);
+			name = "Rounded ImageView";
 			sourceTree = "<group>";
 		};
 		F9CC64511D1FDB0399911946 /* Pods */ = {
