@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 enum FormCellType{
     case text
@@ -28,6 +29,9 @@ class UTSFormTableViewCell: UITableViewCell {
     var cellType = FormCellType.text
     var tfContent:String?
     var delegate:UTSFormTableViewCellDelegate?
+    var pickerOptions:[VehicleType]?
+    var pickerContent:VehicleType?
+    var apiClient = APIClient.shared
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -95,7 +99,23 @@ class UTSFormTableViewCell: UITableViewCell {
             formLabel.text = labelText
 
         case .picker:
-            break //for now
+            formTextField.placeholder = placeholder
+            let pickerView = UIPickerView()
+            pickerView.delegate = self
+            
+            let toolBar = UIToolbar()
+            toolBar.barStyle = UIBarStyle.default
+            toolBar.tintColor = ColorPalette.UTSTeal
+            toolBar.isTranslucent = true
+            toolBar.sizeToFit()
+            
+            let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissKeyboard))
+            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+            toolBar.setItems([spaceButton, doneButton], animated: false)
+            
+            formTextField.inputView = pickerView
+            formTextField.inputAccessoryView = toolBar
+
         }
     }
     
@@ -119,8 +139,32 @@ class UTSFormTableViewCell: UITableViewCell {
     {
         self.contentView.endEditing(false)
     }
-
-
+}
+extension UTSFormTableViewCell : UIPickerViewDelegate, UIPickerViewDataSource
+{
+    func handlePicker()
+    {
+        formTextField.text = pickerContent?.name
+        delegate?.textFieldContent(cell: self, content: (pickerContent?.name)!, secondaryContent: "")
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return pickerOptions!.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerOptions?[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.pickerContent = pickerOptions?[row]
+        handlePicker()
+    }
 }
 extension UTSFormTableViewCell : UITextFieldDelegate
 {

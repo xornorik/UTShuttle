@@ -27,6 +27,7 @@ class APIClient : NSObject {
         static let driverProfile = "Driver/GetDriverProfile"
         static let getDriverVehicles = "Driver/GetDriverVehicles"
         static let getVehicleTypes = "VehicleType/GetVehicleType"
+        static let addNewVehicle = "Vehicle/AddEditShuttleVehicle"
         static let mapVehicle = "Driver/MapDeviceVehicle"
         static let getJobList = "RouteScheduleJobList/GetRouteScheduleJobList"
         static let getRideDetails = "RouteScheduleRideList/GetRideDetails"
@@ -197,6 +198,32 @@ class APIClient : NSObject {
                         hideHUD()
                         callback(false,json["ResponseMessage"].stringValue,[])
                     }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func addNewVehicle(vNo:String, vin:String, plateNo:String, dotNo:String, vehicleTypeId:Int, seats:Int, username:String, callback:@escaping(_ success:Bool, _ error:String)->())
+    {
+        print("Requesting Add new Vehicle")
+        showHUD()
+        let vehicle:[String : Any] = ["VehicleNo":vNo,"Vin":vin,"PlateNo":plateNo, "DOTNumber":dotNo, "VehicleTypeId":vehicleTypeId, "seats":seats, "UserName":username]
+        let parameters:[String : Any] = ["Vehicle":vehicle]
+        let url = baseUrl + EndPoints.addNewVehicle
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    hideHUD()
+                    callback(false,json["ResponseMessage"].stringValue)
                 }
                 else
                 {

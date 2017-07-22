@@ -20,7 +20,7 @@ class AddVehicleViewController: UIViewController {
     var licensePlateNumber = ""
     var DOTNumber = ""
     var noOfSeats = 0
-    var vehicleType:VehicleType?
+    var selectedVehicleType:VehicleType?
     var vehicleTypes = [VehicleType]()
     
     let apiClient = APIClient.shared
@@ -37,9 +37,12 @@ class AddVehicleViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
         setupVC()
     }
     
@@ -47,8 +50,9 @@ class AddVehicleViewController: UIViewController {
     {
         closeButton.addTarget(self, action: #selector(dismissAddVehicleVC), for: .touchUpInside)
         addVehicleButton.addTarget(self, action: #selector(addVehicle), for: .touchUpInside)
-        getVehicleTypes()
-        
+        getVehicleTypes() {
+            self.transferVehicleTypeDataToPickerCell()
+        }
     }
     
     func dismissAddVehicleVC()
@@ -56,7 +60,7 @@ class AddVehicleViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func getVehicleTypes()
+    func getVehicleTypes(callback:@escaping ()->()!)
     {
         guard let username = Defaults[.driverUsername] else {return}
         apiClient.getVehicleTypes(username: username) { (success, error, vehicleTypes) in
@@ -64,6 +68,7 @@ class AddVehicleViewController: UIViewController {
             if success
             {
                 self.vehicleTypes = vehicleTypes
+                callback()
             }
             else
             {
@@ -72,170 +77,37 @@ class AddVehicleViewController: UIViewController {
         }
     }
     
+    func validateForm() -> Bool{
+        return true
+    }
+    
     func addVehicle()
     {
-        
-    }
-}
-
-extension AddVehicleViewController : UITableViewDelegate, UITableViewDataSource
-{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        switch indexPath.item
+        if validateForm()
         {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let tf = cell.viewWithTag(100) as! UITextField
-            let label = cell.viewWithTag(101) as! UILabel
-            
-            tf.placeholder = "V100"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1000
-            
-            label.text = "Vehicle Number"
-            return cell
+            guard let username = Defaults[.driverUsername] else {return}
+            apiClient.addNewVehicle(vNo: vehicleNo, vin: vehicleIdentityNumber, plateNo: licensePlateNumber, dotNo: DOTNumber, vehicleTypeId: Int((selectedVehicleType?.id)!)!, seats: noOfSeats, username: username, callback: { (success, error) in
+                
+                showError(title: "Alert", message: error)
+                self.dismiss(animated: true, completion: nil)
+            })
 
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let tf = cell.viewWithTag(100) as! UITextField
-            let label = cell.viewWithTag(101) as! UILabel
-            
-            tf.placeholder = "1HGBH41JXMN"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1001
-            
-            label.text = "Vehicle Identity Number"
-            return cell
-
-        case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let tf = cell.viewWithTag(100) as! UITextField
-            let label = cell.viewWithTag(101) as! UILabel
-            
-            tf.placeholder = "HK ML266"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1002
-            
-            label.text = "License Plate Number"
-            return cell
-
-        case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let tf = cell.viewWithTag(100) as! UITextField
-            let label = cell.viewWithTag(101) as! UILabel
-            
-            tf.placeholder = "USDOT1234"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1003
-            
-            label.text = "DOT Number"
-            return cell
-
-        case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let label = cell.viewWithTag(101) as! UILabel
-            
-           if let tf = cell.viewWithTag(100) as? UITextField
-           {
-            tf.placeholder = "Sedan"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1004
-            
-            
-            let pickerView = UIPickerView()
-            pickerView.delegate = self
-            
-            let toolBar = UIToolbar()
-            toolBar.barStyle = UIBarStyle.default
-            toolBar.tintColor = ColorPalette.UTSTeal
-            toolBar.isTranslucent = true
-            toolBar.sizeToFit()
-            
-            let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissKeyboard))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-            toolBar.setItems([spaceButton, doneButton], animated: false)
-            
-            tf.inputView = pickerView
-            tf.inputAccessoryView = toolBar
-            
-            }
-            else
-           {
-            let tf = cell.viewWithTag(1004) as! UITextField
-            tf.placeholder = "Sedan"
-            tf.keyboardType = .asciiCapable
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1004
-            
-            
-            let pickerView = UIPickerView()
-            pickerView.delegate = self
-            
-            let toolBar = UIToolbar()
-            toolBar.barStyle = UIBarStyle.default
-            toolBar.tintColor = ColorPalette.UTSTeal
-            toolBar.isTranslucent = true
-            toolBar.sizeToFit()
-            
-            let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(dismissKeyboard))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-            toolBar.setItems([spaceButton, doneButton], animated: false)
-            
-            tf.inputView = pickerView
-            tf.inputAccessoryView = toolBar
-
-            }
-
-            label.text = "Vehicle Type"
-
-            return cell
-
-            
-            
-        case 5:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath)
-            let tf = cell.viewWithTag(100) as! UITextField
-            let label = cell.viewWithTag(101) as! UILabel
-            
-            tf.placeholder = "2"
-            tf.keyboardType = .numberPad
-            tf.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
-            tf.delegate = self
-            tf.tag = 1005
-            
-            label.text = "Number of Seats"
-            return cell
-
-        default:
-            print("Exhaustive")
-            return UITableViewCell()
         }
-        
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+    func transferVehicleTypeDataToPickerCell()
+    {
+        let pickerCell = addVehicleTableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! UTSFormTableViewCell
+        for cell in addVehicleTableView.visibleCells
+        {
+            if pickerCell == cell
+            {
+                pickerCell.pickerOptions = self.vehicleTypes
+            }
+        }
     }
-}
-
-extension AddVehicleViewController : UITextFieldDelegate
-{
+    
+    
     // MARK: Keyboard Notifications
     
     func dismissKeyboard()
@@ -256,66 +128,95 @@ extension AddVehicleViewController : UITextFieldDelegate
             self.addVehicleTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         })
     }
-    
-    //MARK: TextField Functions
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dismissKeyboard()
-        return true
+}
+
+extension AddVehicleViewController : UITableViewDelegate, UITableViewDataSource
+{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.tag != 1004
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch indexPath.item
         {
-            textField.tag = 100
-        }
-    }
-    
-    func textFieldDidChange(textField: UITextField)
-    {
-        switch textField.tag {
-        case 1000:
-            vehicleNo = textField.text!
-        case 1001:
-            vehicleIdentityNumber = textField.text!
-        case 1002:
-            licensePlateNumber = textField.text!
-        case 1003:
-            DOTNumber = textField.text!
-        case 1005:
-            noOfSeats = Int(textField.text!)!
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.setup(type: .text, placeholder: "V100", text: "", labelText: "Vehicle Number")
+            cell.delegate = self
+
+            return cell
+
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.setup(type: .text, placeholder: "1HGBH41JXMN", text: "", labelText: "Vehicle Identity Number")
+            cell.delegate = self
+
+            return cell
+
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.setup(type: .text, placeholder: "HK ML266", text: "", labelText: "License Plate Number")
+            cell.delegate = self
+
+            return cell
+
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.setup(type: .text, placeholder: "USDOT1234", text: "", labelText: "DOT Number")
+            cell.delegate = self
+
+            return cell
+
+        case 4:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.pickerOptions = vehicleTypes
+            cell.setup(type: .picker, placeholder: "Sedan", text: "", labelText: "Vehicle Type")
+            cell.delegate = self
+
+            return cell
+
+        case 5:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "addVehicleCell", for: indexPath) as! UTSFormTableViewCell
+            cell.setup(type: .text, placeholder: "2", text: String(noOfSeats), labelText: "Number of Seats")
+            cell.formTextField.isEnabled = false
+            cell.delegate = self
+
+            return cell
+
         default:
             print("Exhaustive")
+            return UITableViewCell()
         }
+        
+    }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
     }
 }
-extension AddVehicleViewController : UIPickerViewDelegate, UIPickerViewDataSource
+
+extension AddVehicleViewController : UTSFormTableViewCellDelegate
 {
-    
-    func handlePicker()
-    {
-//        let cell = self.addVehicleTableView.cellForRow(at: IndexPath(row: 4, section: 0))
-        let textField = self.view.viewWithTag(1004) as! UITextField
-        textField.text = vehicleType?.name
-//        self.addVehicleTableView.reloadRows(at: [IndexPath(row: 4, section: 0)], with: .automatic)
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
-        return vehicleTypes.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return vehicleTypes[row].name
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.vehicleType = vehicleTypes[row]
-        handlePicker()
+    func textFieldContent(cell: UTSFormTableViewCell, content: String, secondaryContent:String) {
+        let currentIndexPath = self.addVehicleTableView.indexPath(for: cell)
+        switch (currentIndexPath?.row)! {
+        case 0: vehicleNo = content
+        case 1: vehicleIdentityNumber = content
+        case 2: licensePlateNumber = content
+        case 3: DOTNumber = content
+        case 4:
+            for vehicle in vehicleTypes
+            {
+                if vehicle.name == content
+                {
+                    selectedVehicleType = vehicle
+                    noOfSeats = vehicle.paxCount!
+                    self.addVehicleTableView.reloadRows(at: [IndexPath(row: 5, section: 0)], with: .automatic) // to update the seat count
+                }
+            }
+//        case 5: noOfSeats = Int(content)! Nothing happens here
+        default: break
+        }
     }
 }
