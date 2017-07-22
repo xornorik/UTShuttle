@@ -259,6 +259,43 @@ class CommandClient: NSObject {
         }
     }
     
+    func logoff(deviceId:String, userId:String, lat:String, lon:String, callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.DriverLogoff)
+            reqParameters.append(lat+","+lon)
+            reqParameters.append(userId)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr.last!) else { print("Wrong Status"); return }
+                    switch status {
+                    case 1:
+                        callback(true)
+                    default:
+                        callback(false)
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+
+        }
+        else
+        {
+            callback(false)
+        }
+    }
+    
     //MARK: Helper Functions
     
     func decodeResponse(responseString:String) -> [String]

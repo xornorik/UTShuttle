@@ -78,6 +78,12 @@ class AddVehicleViewController: UIViewController {
     }
     
     func validateForm() -> Bool{
+        guard vehicleNo != "" else {showError(title: "Alert", message: "Please enter the Vehicle Number."); return false}
+        guard vehicleIdentityNumber != "" else {showError(title: "Alert", message: "Please enter the Vehicle Id Number."); return false}
+        guard licensePlateNumber != "" else {showError(title: "Alert", message: "Please enter the License Plate Number."); return false}
+        guard DOTNumber != "" else {showError(title: "Alert", message: "Please enter the DOT Number."); return false}
+        guard selectedVehicleType != nil else {showError(title: "Alert", message: "Please select the type of vehicle."); return false}
+            //what about number of seats? [!]
         return true
     }
     
