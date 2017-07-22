@@ -169,6 +169,8 @@ extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
         {
         case 0:
             NavigationUtils.goToMyJobs()
+        case 1:
+            NavigationUtils.goToRoutes()
         default:
             print("Not yet defined")
         }

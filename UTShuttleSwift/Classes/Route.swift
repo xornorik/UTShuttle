@@ -13,10 +13,12 @@ class Route {
     
     var id:Int?
     var name:String?
+    var stopCountText:String?
     
     init(json:JSON) {
         id = json["Id"].numberValue.intValue
         name = json["RouteName"].stringValue
+        stopCountText = json["StopCount"].stringValue
     }
 }
 
