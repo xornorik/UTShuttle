@@ -33,6 +33,7 @@ class CommandClient: NSObject {
         static let ReceiveUID = "RU"
         static let DeviceReg = "ND"
         static let DriverAuth = "DL"
+        static let DriverLogoff = "LO"
         
     }
     
@@ -213,7 +214,9 @@ class CommandClient: NSObject {
         }
         else
         {
-            showError(title: "Connection Lost", message: "Connection to server has been lost")
+//            showError(title: "Connection Lost", message: "Connection to server has been lost")
+            callback(false, deviceRegError.ConnectionError)
+
         }
     }
     
