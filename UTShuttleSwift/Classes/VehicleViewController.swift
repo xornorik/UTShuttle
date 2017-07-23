@@ -73,11 +73,11 @@ class VehicleViewController: UIViewController {
             currentVehicleLabel.text = "Today I'm Driving..."
             unmapButton.isHidden = true
         }
-        currentVehicleLabel.text = "Today I'm Driving " + (Defaults[.driverVehicleNo] ?? "...")
         
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "EEEE, dth MMM"
+        dateformatter.dateFormat = "EEEE, dd MMMM"
         dateLabel.text = "Today, " + dateformatter.string(from: Date())
+
         
         getVehicles()
     }
@@ -151,14 +151,27 @@ class VehicleViewController: UIViewController {
 extension VehicleViewController: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if filteredVehicles.count > 0
+        {
+            return filteredVehicles.count
+        }
         return vehicles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = vehicleTableView.dequeueReusableCell(withIdentifier: "vehicleCell", for: indexPath)
         let vehicleNumber = cell.viewWithTag(100) as! UILabel!
+        var vehicle:Vehicle
+        if filteredVehicles.count > 0
+        {
+            vehicle = filteredVehicles[indexPath.row]
+        }
+        else
+        {
+            vehicle = vehicles[indexPath.row]
+        }
         
-        vehicleNumber?.text = vehicles[indexPath.row].vehicleNo
+        vehicleNumber?.text = vehicle.vehicleNo
         return cell
     }
     
@@ -172,11 +185,20 @@ extension VehicleViewController: UITableViewDelegate, UITableViewDataSource
 //            }
 //
 //        }
+        var vehicle:Vehicle
+        if filteredVehicles.count > 0
+        {
+            vehicle = filteredVehicles[indexPath.row]
+        }
+        else
+        {
+            vehicle = vehicles[indexPath.row]
+        }
         
-        Defaults[.driverVehicleNo] = self.vehicles[indexPath.row].vehicleNo
-        Defaults[.driverVehicleId] = self.vehicles[indexPath.row].vehicleId
+        Defaults[.driverVehicleNo] = vehicle.vehicleNo
+        Defaults[.driverVehicleId] = vehicle.vehicleId
         
-        self.mapOrUnmapVehicle(vehicleId: Int(self.vehicles[indexPath.row].vehicleId!)!) {
+        self.mapOrUnmapVehicle(vehicleId: Int(vehicle.vehicleId!)!) {
             self.dissmissVehicleVC()
         }
         

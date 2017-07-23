@@ -2549,7 +2549,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7j-lc-vwb">
-                                                    <rect key="frame" x="320.5" y="11.5" width="44.5" height="21"/>
+                                                    <rect key="frame" x="280.5" y="11.5" width="44.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.23529411764705882" green="0.68627450980392157" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2561,16 +2561,27 @@
                                                         <constraint firstAttribute="height" constant="1" id="jov-pn-KYA"/>
                                                     </constraints>
                                                 </view>
+                                                <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdR-Z7-vrm">
+                                                    <rect key="frame" x="330" y="4" width="35" height="35"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="mdR-Z7-vrm" secondAttribute="height" multiplier="1:1" id="4os-hh-etw"/>
+                                                        <constraint firstAttribute="width" constant="35" id="hjK-K4-6Zf"/>
+                                                    </constraints>
+                                                    <state key="normal" image="iconDelete"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="mdR-Z7-vrm" firstAttribute="leading" secondItem="Y7j-lc-vwb" secondAttribute="trailing" constant="5" id="4tl-7C-I3k"/>
+                                                <constraint firstItem="mdR-Z7-vrm" firstAttribute="centerY" secondItem="DSV-ga-KnA" secondAttribute="centerY" id="7us-bH-G9z"/>
                                                 <constraint firstItem="ebE-Sj-5R6" firstAttribute="leading" secondItem="DSV-ga-KnA" secondAttribute="leading" constant="20" id="CfI-eF-AML"/>
+                                                <constraint firstItem="mdR-Z7-vrm" firstAttribute="width" secondItem="mdR-Z7-vrm" secondAttribute="height" multiplier="1:1" id="EJ3-sB-b16"/>
                                                 <constraint firstAttribute="bottom" secondItem="ebE-Sj-5R6" secondAttribute="bottom" id="UnB-gd-5un"/>
                                                 <constraint firstItem="M45-w7-Rh9" firstAttribute="leading" secondItem="DSV-ga-KnA" secondAttribute="leading" constant="20" id="cto-Ri-axJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="ebE-Sj-5R6" secondAttribute="trailing" constant="20" id="ggS-ie-oZ2"/>
+                                                <constraint firstAttribute="trailing" secondItem="mdR-Z7-vrm" secondAttribute="trailing" constant="10" id="jMJ-PF-NSm"/>
                                                 <constraint firstItem="Y7j-lc-vwb" firstAttribute="centerY" secondItem="DSV-ga-KnA" secondAttribute="centerY" id="ljF-ND-dXQ"/>
                                                 <constraint firstItem="Y7j-lc-vwb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="M45-w7-Rh9" secondAttribute="trailing" constant="5" id="oaG-gi-goY"/>
                                                 <constraint firstItem="M45-w7-Rh9" firstAttribute="centerY" secondItem="DSV-ga-KnA" secondAttribute="centerY" id="pxY-Ca-x0r"/>
-                                                <constraint firstAttribute="trailing" secondItem="Y7j-lc-vwb" secondAttribute="trailing" constant="10" id="ufF-Lj-4JA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
