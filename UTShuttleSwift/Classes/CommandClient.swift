@@ -15,14 +15,22 @@ class CommandClient: NSObject {
     
     static let shared = CommandClient()
     
-    var address = "10.10.11.14"
-    var port:Int32 = 3006
+    var testAddress = "10.10.11.14"
+    var testPort:Int32 = 3006
+    var prodAddress = "64.69.36.142"
+    var prodPort:Int32 = 5557
+    
+    var address = ""
+    var port:Int32 = 0
     var client:TCPClient
     
     let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.apple.com")
 
-    
     override init() {
+        
+        self.address = testAddress
+        self.port = testPort
+        
         self.client = TCPClient(address: self.address, port: self.port)
     }
     

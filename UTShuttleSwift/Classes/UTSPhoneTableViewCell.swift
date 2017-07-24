@@ -71,6 +71,7 @@ class UTSPhoneTableViewCell: UITableViewCell {
         formTextField.placeholder = placeholder
         formTextField.keyboardType = .decimalPad
         formTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+        formTextField.delegate = self
         
         countryCodeLabel.text = chosenCountry.phoneCode
         Defaults[.driverCountryCode] = chosenCountry.phoneCode //to Initialize it to US
@@ -121,7 +122,7 @@ class UTSPhoneTableViewCell: UITableViewCell {
     {
         textField.text = textField.text!.formatPhoneNumber()
         phoneNumber = textField.text?.formatPhoneNumber()
-        if (textField.text?.characters.count)! > 10
+        if (textField.text?.characters.count)! > 13
         {
             dismissKeyboard()
         }

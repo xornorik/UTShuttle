@@ -160,6 +160,8 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
             let job = scheduledJobs[indexPath.row]
             
             indexLabel.text = String(indexPath.row + 1)
+            job.jobId != "0" ? (routeNameLabel.textColor = UIColor.green) : (routeNameLabel.textColor = UIColor(hex: "5C5E66"))
+
 //            fromlabel.text = job.fromStop
 //            toLabel.text = job.toStop
             routeNameLabel.text = job.routeName

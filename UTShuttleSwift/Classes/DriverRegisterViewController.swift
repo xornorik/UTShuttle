@@ -208,7 +208,7 @@ class DriverRegisterViewController: UIViewController {
             guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
             guard lastname != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
             guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
-            guard mobile != "", mobile.characters.count < 10 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
+            guard mobile != "", mobile.characters.count < 15 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
         case .step2:
             guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
             guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
@@ -428,6 +428,7 @@ extension DriverRegisterViewController : ImagePickerDelegate
 extension DriverRegisterViewController : UTSPhoneTableViewCellDelegate
 {
     func textFieldContent(cell: UTSPhoneTableViewCell, countryCode:String, phoneNumber: String) {
+        
         guard rStatus == .step1 else {return}
         let currentIndexPath = self.registerTableView.indexPath(for: cell)
         switch (currentIndexPath?.row)! {

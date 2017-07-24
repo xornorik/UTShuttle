@@ -992,7 +992,7 @@ extension DefaultsKeys {
     static let driverVehicleNo = DefaultsKey<String?>("driverVehicleNo")
     static let driverVehicleId = DefaultsKey<String?>("driverVehicleId")
     static let jobId = DefaultsKey<String?>("jobId")
-
+    static let currentStopId = DefaultsKey<String?>("currentStopId")
     
 }
 

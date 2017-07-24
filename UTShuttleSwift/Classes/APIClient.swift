@@ -239,7 +239,7 @@ class APIClient : NSObject {
     {
         print("Requesting Vehicle Mapping")
         showHUD()
-        let parameters:[String : Any] = ["AccountId":0,"VehicleId":vehicleId, "DeviceId":deviceId, "isMapped":isMapped, "UserId":0, "MachineIP":machineIp, "UserName":username]
+        let parameters:[String : Any] = ["AccountId":0,"VehicleId":vehicleId, "DeviceId":deviceId, "IsMapped":isMapped, "UserId":0, "MachineIP":machineIp, "UserName":username]
         let url = baseUrl + EndPoints.mapVehicle
         manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .validate()

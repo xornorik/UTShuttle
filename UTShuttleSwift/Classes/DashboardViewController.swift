@@ -77,11 +77,23 @@ class DashboardViewController: UIViewController {
         logOffButton.addTarget(self, action: #selector(logOffTapped), for: .touchUpInside)
         
         getDriverDetails()
+         _ = promptVehiclSelection()
     }
     
     func selectVehicleTapped()
     {
         NavigationUtils.presentVehicleSelection()
+    }
+    
+    func promptVehiclSelection() -> Bool
+    {
+        guard Defaults[.driverVehicleNo] != nil else {
+            showConfirm(title: "Alert", message: "Please select a vehicle to inform your dispatcher that you are ready to start a new job.", callback: {
+                NavigationUtils.presentVehicleSelection()
+            })
+            return false
+        }
+        return true
     }
     
     func setVehicleIfSelected()
@@ -95,10 +107,6 @@ class DashboardViewController: UIViewController {
         {
             self.driverVehicleLabel.text = "????"
             self.selectVehicleButton.setTitle("Select Vehicle", for: .normal)
-            
-            showConfirm(title: "Alert", message: "", callback: { 
-                NavigationUtils.presentVehicleSelection()
-            })
 
         }
         
@@ -135,21 +143,23 @@ class DashboardViewController: UIViewController {
     
     func logOffTapped()
     {
-        guard let deviceId = Defaults[.deviceId] else {return}
-        guard let userId = Defaults[.driverUsername] else {return}
-        guard let lat = Defaults[.lastLatitude] else {return}
-        guard let lon = Defaults[.lastLongitude] else {return}
-        tcpClient.logoff(deviceId: deviceId, userId: userId, lat: String(lat), lon: String(lon)) { (success) in
-            
-            if success
-            {
-                logOff()
-            }
-            else
-            {
-                showConfirm(title: "Confirm", message: "Device is not connected. Do you still want to log off?", callback: { 
+        showConfirm(title: "Alert", message: "Are you sure you want to log off?") { 
+            guard let deviceId = Defaults[.deviceId] else {return}
+            guard let userId = Defaults[.driverUsername] else {return}
+            guard let lat = Defaults[.lastLatitude] else {return}
+            guard let lon = Defaults[.lastLongitude] else {return}
+            self.tcpClient.logoff(deviceId: deviceId, userId: userId, lat: String(lat), lon: String(lon)) { (success) in
+                
+                if success
+                {
                     self.logOff()
-                })
+                }
+                else
+                {
+                    showConfirm(title: "Confirm", message: "Device is not connected. Do you still want to log off?", callback: {
+                        self.logOff()
+                    })
+                }
             }
         }
     }
@@ -222,9 +232,15 @@ extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
         switch indexPath.row
         {
         case 0:
-            NavigationUtils.goToMyJobs()
+            if promptVehiclSelection()
+            {
+                NavigationUtils.goToMyJobs()
+            }
         case 1:
-            NavigationUtils.goToRoutes()
+            if promptVehiclSelection()
+            {
+                NavigationUtils.goToRoutes()
+            }
         case 2:
             NavigationUtils.goToTripHistory()
         default:
