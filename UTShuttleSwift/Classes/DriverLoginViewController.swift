@@ -52,6 +52,8 @@ class DriverLoginViewController: UIViewController {
             if rememberMe
             {
                 //add details from inApp persistence
+                self.userIdTF.text = Defaults[.driverUsername] ?? ""
+                self.passwordTF.text = Defaults[.driverPassword] ?? ""
                 checkBoxButton.setImage(UIImage(named: "buttonCheckboxTrue"), for: .normal)
             }
             else

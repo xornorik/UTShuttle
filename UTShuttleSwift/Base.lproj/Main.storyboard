@@ -1766,6 +1766,7 @@
                                             <constraint firstItem="NQX-Lc-Cm3" firstAttribute="leading" secondItem="WpN-AC-EmY" secondAttribute="trailing" constant="8" id="ASA-IY-sFS"/>
                                             <constraint firstItem="WpN-AC-EmY" firstAttribute="top" secondItem="Pof-FP-CGS" secondAttribute="top" id="I9t-Zm-yJs"/>
                                             <constraint firstAttribute="bottom" secondItem="WpN-AC-EmY" secondAttribute="bottom" id="NzC-xZ-u4r"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="50" id="U1y-5u-4sW"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Uzu-hN-61C"/>
                                             <constraint firstAttribute="trailing" secondItem="NQX-Lc-Cm3" secondAttribute="trailing" constant="10" id="cy8-mc-SlW"/>
                                             <constraint firstItem="WpN-AC-EmY" firstAttribute="leading" secondItem="Pof-FP-CGS" secondAttribute="leading" constant="10" id="h6t-fl-vsP"/>
@@ -1794,7 +1795,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hv9-3N-n6d">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South Street" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cKx-by-7Jd">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South Street" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cKx-by-7Jd">
                                                         <rect key="frame" x="144.5" y="0.0" width="86.5" height="40"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2172,7 +2173,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ai9-CT-ev2" userLabel="1">
                                                             <rect key="frame" x="0.0" y="2.5" width="71" height="39"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JFK Airport" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ouq-hI-rES">
+                                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JFK Airport" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ouq-hI-rES">
                                                                     <rect key="frame" x="2" y="5" width="67" height="29"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
@@ -2245,7 +2246,7 @@
                                                             <rect key="frame" x="283" y="2" width="72" height="39.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkU-wg-u3d">
-                                                                    <rect key="frame" x="0.0" y="4.5" width="72" height="30"/>
+                                                                    <rect key="frame" x="0.0" y="2" width="72" height="35.5"/>
                                                                     <color key="backgroundColor" red="0.36470588240000001" green="0.7725490196" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <state key="normal" title="BOARD">
                                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2260,7 +2261,8 @@
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstItem="vkU-wg-u3d" firstAttribute="leading" secondItem="8Bo-lL-4N6" secondAttribute="leading" id="Im6-Db-1kr"/>
-                                                                <constraint firstItem="vkU-wg-u3d" firstAttribute="centerY" secondItem="8Bo-lL-4N6" secondAttribute="centerY" id="cxv-7H-KdW"/>
+                                                                <constraint firstAttribute="bottom" secondItem="vkU-wg-u3d" secondAttribute="bottom" constant="2.5" id="fGF-D1-HUW"/>
+                                                                <constraint firstItem="vkU-wg-u3d" firstAttribute="top" secondItem="8Bo-lL-4N6" secondAttribute="top" constant="2.5" id="pca-Qf-hYE"/>
                                                                 <constraint firstAttribute="trailing" secondItem="vkU-wg-u3d" secondAttribute="trailing" id="viL-hh-6kn"/>
                                                             </constraints>
                                                         </view>
@@ -2372,7 +2374,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fcS-jW-Wpi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1534" y="762"/>
+            <point key="canvasLocation" x="1534" y="761"/>
         </scene>
         <!--Add Vehicle View Controller-->
         <scene sceneID="Dln-Yi-wbD">

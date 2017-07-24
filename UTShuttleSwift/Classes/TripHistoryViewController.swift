@@ -26,11 +26,18 @@ class TripHistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        getTripHistory()
+        setupVC()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupVC()
+    {
+        self.title = "Trip History"
+        getTripHistory()
+
     }
     
     func getTripHistory()

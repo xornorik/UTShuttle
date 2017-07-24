@@ -28,6 +28,7 @@ class CurrentJobViewController: UIViewController {
     var currentStopIndexPath:IndexPath?
     var rideDetails:[CurrentRideDetail]?
     var stops:[ScheduledRouteStop]?
+    var currentStop:ScheduledRouteStop?
     
     var tripId:String!
     var scheduleId:String!
@@ -56,7 +57,6 @@ class CurrentJobViewController: UIViewController {
         jobDetailsTableView.rowHeight = UITableViewAutomaticDimension
         jobDetailsTableView.estimatedRowHeight = 44
         
-        currentStopIndexPath = IndexPath(item: 0, section: 0)
         self.startJobButton.addTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
         nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
         previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
@@ -70,6 +70,29 @@ class CurrentJobViewController: UIViewController {
         }
         goToCurrentStop()
         
+    }
+    
+    func syncTripDetails()
+    {
+        if let currentStopId = Defaults[.currentStopId]
+        {
+            for (index,stop) in stops!.enumerated()
+            {
+                if stop.stopId == currentStopId
+                {
+                    currentStop = stop
+                    currentStopIndexPath = IndexPath(item: index, section: 0)
+                    currentStopLabel.text = currentStop?.stopName
+                    break
+                }
+            }
+        }
+        else
+        {
+            currentStop = stops?[0]
+            currentStopIndexPath = IndexPath(item: 0, section: 0)
+            currentStopLabel.text = currentStop?.stopName
+        }
     }
     
     func getRideDetails()
@@ -97,6 +120,7 @@ class CurrentJobViewController: UIViewController {
             {
                 self.stops = stops
                 self.stopsCollectionView.reloadData()
+                self.syncTripDetails()
                 callback()
             }
             else
