@@ -74,6 +74,7 @@ class DashboardViewController: UIViewController {
         timeLogLabel.text = "Logged in at " + Defaults[.driverLoginTime]!
         
         selectVehicleButton.addTarget(self, action: #selector(selectVehicleTapped), for: .touchUpInside)
+        logOffButton.addTarget(self, action: #selector(logOffTapped), for: .touchUpInside)
         
         getDriverDetails()
     }
@@ -94,6 +95,10 @@ class DashboardViewController: UIViewController {
         {
             self.driverVehicleLabel.text = "????"
             self.selectVehicleButton.setTitle("Select Vehicle", for: .normal)
+            
+            showConfirm(title: "Alert", message: "", callback: { 
+                NavigationUtils.presentVehicleSelection()
+            })
 
         }
         
@@ -138,11 +143,13 @@ class DashboardViewController: UIViewController {
             
             if success
             {
-                
+                logOff()
             }
             else
             {
-                
+                showConfirm(title: "Confirm", message: "Device is not connected. Do you still want to log off?", callback: { 
+                    self.logOff()
+                })
             }
         }
     }
@@ -154,8 +161,24 @@ class DashboardViewController: UIViewController {
         {
             Defaults[.driverUsername] = nil
             Defaults[.driverPassword] = nil
-            
         }
+        Defaults[.lastLongitude] = nil
+        Defaults[.lastLatitude] = nil
+        Defaults[.driverFirstName] = nil
+        Defaults[.driverLastName] = nil
+        Defaults[.driverEmail] = nil
+        Defaults[.driverMobile] = nil
+        Defaults[.driverCountryCode] = nil
+        Defaults[.driverLicense] = nil
+        Defaults[.driverLicenseExp] = nil
+        Defaults[.driverProfilePhoto] = nil
+        Defaults[.driverProfilePhotoSize] = nil
+        Defaults[.driverLoginTime] = nil
+        Defaults[.driverVehicleNo] = nil
+        Defaults[.driverVehicleId] = nil
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.setupUI()
     }
 }
 extension DashboardViewController : UITableViewDelegate, UITableViewDataSource

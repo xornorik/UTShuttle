@@ -991,6 +991,7 @@ extension DefaultsKeys {
     static let driverLoginTime = DefaultsKey<String?>("driverLoginTime")
     static let driverVehicleNo = DefaultsKey<String?>("driverVehicleNo")
     static let driverVehicleId = DefaultsKey<String?>("driverVehicleId")
+    static let jobId = DefaultsKey<String?>("jobId")
 
     
 }

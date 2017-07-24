@@ -62,6 +62,23 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 //        Defaults["lastSpeed"] = lastLocation.speed > 0 ? lastLocation.speed : 0
 //        Defaults["lastAccuracy"] = lastLocation.horizontalAccuracy
     }
+    
+    func isWithinAcceptableBounds(lat:String, lon:String) -> Bool
+    {
+//        let destinationLocationCoords = CLLocationCoordinate2D(latitude: CLLocationDegrees(lat)!, longitude: CLLocationDegrees(lon)!)
+        let destinationLocation = CLLocation(latitude: CLLocationDegrees(lat)!, longitude: CLLocationDegrees(lon)!)
+//        let currentLocationCoords = currentLocation?.coordinate
+        if (currentLocation?.distance(from: destinationLocation))! < Double(distanceInterval)
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+        
+        
+    }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         

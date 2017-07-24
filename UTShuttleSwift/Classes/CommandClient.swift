@@ -34,6 +34,9 @@ class CommandClient: NSObject {
         static let DeviceReg = "ND"
         static let DriverAuth = "DL"
         static let DriverLogoff = "LO"
+        static let StartJob = "SJ"
+        static let CompleteJob = "EJ"
+        static let UpdateCurrentTrip = "US"
         
     }
     
@@ -60,6 +63,13 @@ class CommandClient: NSObject {
         case DriverAlreadyLoggedIn = 4
         case InvalidDevice = 5
         case InvalidDriver = 6
+        case ConnectionError = 99
+    }
+    
+    enum startJobError:Int {
+        case Fail = 0
+        case Success = 1
+        case DriverAlreadyOnJob = 2
         case ConnectionError = 99
     }
     
@@ -294,6 +304,132 @@ class CommandClient: NSObject {
         {
             callback(false)
         }
+    }
+    
+    func startJob(deviceId:String, rideId:String, callback:(_ success:Bool,_ error:startJobError)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.StartJob)
+            reqParameters.append(rideId)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr.last!) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false,.Fail)
+                    case 1:
+                        Defaults[.jobId] = responseArr[3]
+                        callback(true,.Success)
+                    case 2:
+                        callback(false,.DriverAlreadyOnJob)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false,.ConnectionError)
+            }
+            
+        }
+        else
+        {
+            callback(false,.ConnectionError)
+        }
+
+    }
+    
+    func completeTrip(deviceId:String, rideId:String, deviceTime:String, lat:String, lon:String, callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.CompleteJob)
+            reqParameters.append(rideId)
+            reqParameters.append(deviceTime)
+            reqParameters.append(lat+","+lon)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false)
+                    case 1:
+                        callback(true)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+            
+        }
+        else
+        {
+            callback(false)
+        }
+
+    }
+    
+    func updateCurrentTrip(deviceId:String, rideId:String, currentStopId:String, callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.UpdateCurrentTrip)
+            reqParameters.append(rideId)
+            reqParameters.append(currentStopId)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false)
+                    case 1:
+                        callback(true)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+            
+        }
+        else
+        {
+            callback(false)
+        }
+
     }
     
     //MARK: Helper Functions

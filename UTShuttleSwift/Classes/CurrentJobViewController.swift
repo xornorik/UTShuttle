@@ -23,6 +23,7 @@ class CurrentJobViewController: UIViewController {
     @IBOutlet weak var jobDetailsTableView:UITableView!
 
     var apiClient = APIClient.shared
+    var tcpClient = CommandClient.shared
     
     var currentStopIndexPath:IndexPath?
     var rideDetails:[CurrentRideDetail]?
@@ -101,6 +102,58 @@ class CurrentJobViewController: UIViewController {
             {
                 showError(title: "Alert", message: "Could not fetch ride stops")
 
+            }
+        }
+    }
+    
+    func startjobTapped()
+    {
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let rideId = self.tripId else {return}
+        tcpClient.startJob(deviceId: deviceId, rideId: rideId) { (success, error) in
+            if success
+            {
+                self.startJobButton.setTitle("COMPLETE TRIP", for: .normal)
+                self.startJobButton.removeTarget(self, action: #selector(startjobTapped), for: .touchUpInside)
+                self.startJobButton.addTarget(self, action: #selector(completeTripButtonTapped), for: .touchUpInside)
+            }
+            else
+            {
+                switch error
+                {
+                case .Fail:
+                    showError(title: "Alert", message: "Action failed, Please try again")
+                case .DriverAlreadyOnJob:
+                    showError(title: "Alert", message: "Please complete the current job before beginning another one.")
+                case .ConnectionError:
+                    showError(title: "Connection Lost", message: "Connection to server has been lost")
+                case .Success:
+                    print("Should not come here")
+                }
+            }
+        }
+    }
+    
+    func completeTripButtonTapped()
+    {
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let rideId = self.tripId else {return}
+        guard let lat = Defaults[.lastLatitude] else {return}
+        guard let lon = Defaults[.lastLongitude] else {return}
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        let deviceTime = dateFormatter.string(from: Date())
+        
+        tcpClient.completeTrip(deviceId: deviceId, rideId: rideId, deviceTime: deviceTime, lat: String(lat), lon: String(lon)) { (success) in
+            
+            if success
+            {
+                NavigationUtils.popViewController()
+            }
+            else
+            {
+                showError(title: "Alert", message: "Action Failed, Please try again.")
             }
         }
     }
@@ -270,6 +323,5 @@ extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
             
             return cell
         }
-        
     }
 }
