@@ -2524,7 +2524,7 @@
         <!--Routes View Controller-->
         <scene sceneID="U8z-Ze-upb">
             <objects>
-                <viewController storyboardIdentifier="routesVC" id="fpG-0A-8sx" customClass="RoutesViewController" customModule="UTShuttleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="routesVC" automaticallyAdjustsScrollViewInsets="NO" id="fpG-0A-8sx" customClass="RoutesViewController" customModule="UTShuttleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T82-fQ-WJW"/>
                         <viewControllerLayoutGuide type="bottom" id="oz9-Z5-bQ7"/>
@@ -2588,6 +2588,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="fpG-0A-8sx" id="Tz3-zF-eta"/>
+                                    <outlet property="delegate" destination="fpG-0A-8sx" id="Qb8-OV-sCw"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2598,6 +2602,9 @@
                             <constraint firstItem="L6r-8e-GZa" firstAttribute="leading" secondItem="8mU-uf-0r9" secondAttribute="leading" id="h26-h6-U2t"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="routesTableView" destination="L6r-8e-GZa" id="aBY-4l-h4M"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NzF-AD-3Gh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

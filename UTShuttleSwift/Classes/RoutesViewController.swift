@@ -24,12 +24,18 @@ class RoutesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        getRoutes()
+        setupVC()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupVC()
+    {
+        self.title = "Routes"
+        getRoutes()
     }
     
     func getRoutes(callback:(()->())? = nil)
