@@ -35,6 +35,7 @@ class APIClient : NSObject {
         static let addNewJob = "Vehicle/CrudRouteSchedules"
         static let getCurrentRideDetails = "RouteScheduleRideList/GetCurrentRide"
         static let getCurrentRideStops = "ScheduleRouteStops/GetScheduleRouteStops"
+        static let getDriverTripHistory = "TripHistory/GetDriverTripHistory"
     }
     
     func setup()
@@ -481,6 +482,46 @@ class APIClient : NSObject {
                         
                         hideHUD()
                         callback(true,"",rideStops)
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue,[])
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+
+    }
+    
+    func getDriverTripHistory(username:String, callback:@escaping (_ success:Bool,_ error:String, _ datewiseTripHistoryElements:[DatewiseTripHistory])->())
+    {
+        print("Requesting Trip History")
+        showHUD()
+        let parameters:[String : Any] = ["UserId":username]
+        let url = baseUrl + EndPoints.getDriverTripHistory
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        var datewiseTripHistoryElements = [DatewiseTripHistory]()
+                        for subjson in json["DriverTripHistory"].arrayValue
+                        {
+                            let datewiseTripHistoryElement = DatewiseTripHistory(json: subjson)
+                            datewiseTripHistoryElements.append(datewiseTripHistoryElement)
+                        }
+                        
+                        hideHUD()
+                        callback(true,"",datewiseTripHistoryElements)
                     }
                     else
                     {

@@ -44,7 +44,9 @@ class RoutesViewController: UIViewController {
             }
             else
             {
-                showError(title: "Alert", message: "Could not fetch routes. Please try again")
+                showError(title: "Alert", message: error){
+                    NavigationUtils.popViewController()
+                }
             }
         }
     }

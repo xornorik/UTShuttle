@@ -71,6 +71,13 @@ class NavigationUtils {
         pushToVC(nextVC: nextVC)
     }
     
+    static func goToTripHistory()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "tripHistoryVC")
+        pushToVC(nextVC: nextVC)
+
+    }
+    
     static func presentVC(nextVC: UIViewController) {
         
         let currentNavController = UIApplication.topViewController()!.navigationController!
@@ -99,4 +106,13 @@ class NavigationUtils {
         currentNavController.popViewController(animated: false)
         currentNavController.setViewControllers([nextVC], animated: true)
     }
+    
+    static func popViewController()
+    {
+        let currentNavController = UIApplication.topViewController()!.navigationController!
+        currentNavController.popViewController(animated: true)
+    }
+    
+    
+    
 }

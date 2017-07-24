@@ -64,7 +64,7 @@ class VehicleViewController: UIViewController {
         addVehicleButton.addTarget(self, action: #selector(addVehicleTapped), for: .touchUpInside)
         if let vehicleNo = Defaults[.driverVehicleNo]
         {
-            currentVehicleLabel.text = "Today I'm Driving Vehicle" + vehicleNo
+            currentVehicleLabel.text = "Today I'm Driving " + vehicleNo
             unmapButton.isHidden = false
             unmapButton.addTarget(self, action: #selector(unmapButtonTapped), for: .touchUpInside)
         }
@@ -122,7 +122,7 @@ class VehicleViewController: UIViewController {
         guard let username = Defaults[.driverUsername] else {return}
         let machineIp = DeviceDetails.ipAddress()
         
-        apiClient.mapVehicleToDriver(vehicleId: vehicleId, deviceId: Int(deviceId)!, machineIp: machineIp, username: username) { (success, error) in
+        apiClient.mapVehicleToDriver(vehicleId: vehicleId, deviceId: Int(deviceId)!, machineIp: machineIp, username: username, isMapped: shouldMap) { (success, error) in
             
             showErrorForModal(title: "Alert", message: error,viewController: self) { _ in
                 if !success
@@ -198,7 +198,7 @@ extension VehicleViewController: UITableViewDelegate, UITableViewDataSource
         Defaults[.driverVehicleNo] = vehicle.vehicleNo
         Defaults[.driverVehicleId] = vehicle.vehicleId
         
-        self.mapOrUnmapVehicle(vehicleId: Int(vehicle.vehicleId!)!) {
+        self.mapOrUnmapVehicle(shouldMap: true, vehicleId: Int(vehicle.vehicleId!)!) {
             self.dissmissVehicleVC()
         }
         

@@ -22,6 +22,7 @@ class DashboardViewController: UIViewController {
     @IBOutlet weak var menuTableView:UITableView!
     
     let apiClient = APIClient.shared
+    let tcpClient = CommandClient.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,6 +127,36 @@ class DashboardViewController: UIViewController {
         
         }
     }
+    
+    func logOffTapped()
+    {
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let userId = Defaults[.driverUsername] else {return}
+        guard let lat = Defaults[.lastLatitude] else {return}
+        guard let lon = Defaults[.lastLongitude] else {return}
+        tcpClient.logoff(deviceId: deviceId, userId: userId, lat: String(lat), lon: String(lon)) { (success) in
+            
+            if success
+            {
+                
+            }
+            else
+            {
+                
+            }
+        }
+    }
+    
+    func logOff()
+    {
+        Defaults[.isLoggedIn] = false
+        if !(Defaults[.isLoginDetailsRemembered] ?? true)
+        {
+            Defaults[.driverUsername] = nil
+            Defaults[.driverPassword] = nil
+            
+        }
+    }
 }
 extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
 {
@@ -171,6 +202,8 @@ extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
             NavigationUtils.goToMyJobs()
         case 1:
             NavigationUtils.goToRoutes()
+        case 2:
+            NavigationUtils.goToTripHistory()
         default:
             print("Not yet defined")
         }

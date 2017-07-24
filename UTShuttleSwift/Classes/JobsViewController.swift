@@ -150,17 +150,19 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == myJobsTableView
         {
-            let cell = myJobsTableView.dequeueReusableCell(withIdentifier: "myJobCell", for: indexPath)
+            let cell = myJobsTableView.dequeueReusableCell(withIdentifier: "myModifiedJobCell", for: indexPath)
             let indexLabel = cell.viewWithTag(100) as! UILabel
-            let fromlabel = cell.viewWithTag(101) as! UILabel
-            let toLabel = cell.viewWithTag(102) as! UILabel
+//            let fromlabel = cell.viewWithTag(101) as! UILabel
+//            let toLabel = cell.viewWithTag(102) as! UILabel
+            let routeNameLabel = cell.viewWithTag(101) as! UILabel
             let timeLabel = cell.viewWithTag(103) as! UILabel
             
             let job = scheduledJobs[indexPath.row]
             
             indexLabel.text = String(indexPath.row + 1)
-            fromlabel.text = job.fromStop
-            toLabel.text = job.toStop
+//            fromlabel.text = job.fromStop
+//            toLabel.text = job.toStop
+            routeNameLabel.text = job.routeName
             timeLabel.text = job.time
             
             return cell

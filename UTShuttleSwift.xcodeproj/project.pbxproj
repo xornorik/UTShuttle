@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2FEC6BA4A3AB3C7D424B1843 /* Pods_UTShuttleSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B13FCEEBC0C589EC6975E86D /* Pods_UTShuttleSwift.framework */; };
+		444621DF1F25BEFF002CBEB3 /* TripHistoryStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621DE1F25BEFF002CBEB3 /* TripHistoryStop.swift */; };
+		444621E11F25BFB1002CBEB3 /* TripHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E01F25BFB1002CBEB3 /* TripHistory.swift */; };
+		444621E31F25C245002CBEB3 /* DatewiseTripHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E21F25C245002CBEB3 /* DatewiseTripHistory.swift */; };
+		444621E51F25CDA8002CBEB3 /* TripHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */; };
 		4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444850591F0F57B60039E209 /* CommandClient.swift */; };
 		4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505B1F0F57F20039E209 /* DefaultStyle.swift */; };
 		4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505D1F0F62C70039E209 /* DeviceDetails.swift */; };
@@ -328,6 +332,10 @@
 /* Begin PBXFileReference section */
 		0F8C833C7B629D08C71C82D8 /* Pods-UTShuttleSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UTShuttleSwiftUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UTShuttleSwiftUITests/Pods-UTShuttleSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2B788D8310D89358AD9D2C6A /* Pods_UTShuttleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UTShuttleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		444621DE1F25BEFF002CBEB3 /* TripHistoryStop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistoryStop.swift; path = Classes/TripHistoryStop.swift; sourceTree = "<group>"; };
+		444621E01F25BFB1002CBEB3 /* TripHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistory.swift; path = Classes/TripHistory.swift; sourceTree = "<group>"; };
+		444621E21F25C245002CBEB3 /* DatewiseTripHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatewiseTripHistory.swift; path = Classes/DatewiseTripHistory.swift; sourceTree = "<group>"; };
+		444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistoryViewController.swift; path = Classes/TripHistoryViewController.swift; sourceTree = "<group>"; };
 		444850591F0F57B60039E209 /* CommandClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommandClient.swift; path = Classes/CommandClient.swift; sourceTree = "<group>"; };
 		4448505B1F0F57F20039E209 /* DefaultStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultStyle.swift; path = Classes/DefaultStyle.swift; sourceTree = "<group>"; };
 		4448505D1F0F62C70039E209 /* DeviceDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceDetails.swift; path = Classes/DeviceDetails.swift; sourceTree = "<group>"; };
@@ -735,6 +743,7 @@
 				448F301D1F1CE25A008649CA /* VehicleViewController.swift */,
 				448F301F1F1DD582008649CA /* AddVehicleViewController.swift */,
 				B3ED3B1F1F23970B00B8E480 /* RoutesViewController.swift */,
+				444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1026,6 +1035,7 @@
 			isa = PBXGroup;
 			children = (
 				444A379E1F14B3A700D48C63 /* Country.swift */,
+				444621E21F25C245002CBEB3 /* DatewiseTripHistory.swift */,
 				448F301B1F1CD6C9008649CA /* Vehicle.swift */,
 				448F30211F1DDA80008649CA /* VehicleType.swift */,
 				448F30231F1E216E008649CA /* ScheduledJob.swift */,
@@ -1033,6 +1043,8 @@
 				44A4F3951F20906800F11A4A /* Route.swift */,
 				44A4F3971F20B1F600F11A4A /* CurrentRideDetail.swift */,
 				44A4F3991F20B48700F11A4A /* ScheduledRouteStop.swift */,
+				444621DE1F25BEFF002CBEB3 /* TripHistoryStop.swift */,
+				444621E01F25BFB1002CBEB3 /* TripHistory.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1719,6 +1731,7 @@
 				44DA7CC21F162D2400C9718A /* APIClient.swift in Sources */,
 				B3ED3B1A1F22385500B8E480 /* UTSFormTableViewCell.swift in Sources */,
 				B3ED3B141F1B2C9F00B8E480 /* UTSNodeCollectionViewCell.swift in Sources */,
+				444621E31F25C245002CBEB3 /* DatewiseTripHistory.swift in Sources */,
 				444A359A1F13A7D100D48C63 /* LocationManager.swift in Sources */,
 				444A379F1F14B3A700D48C63 /* Country.swift in Sources */,
 				44A83C311F0F9E910045E3B0 /* Extensions.swift in Sources */,
@@ -1728,11 +1741,14 @@
 				44A83C331F0FA5E30045E3B0 /* ModalUtils.swift in Sources */,
 				448F301E1F1CE25A008649CA /* VehicleViewController.swift in Sources */,
 				44663FEB1F18A86E005ACF79 /* RoundedImageView.swift in Sources */,
+				444621E51F25CDA8002CBEB3 /* TripHistoryViewController.swift in Sources */,
+				444621DF1F25BEFF002CBEB3 /* TripHistoryStop.swift in Sources */,
 				448F30261F1E23BD008649CA /* RideDetail.swift in Sources */,
 				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,
 				444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */,
 				448F30241F1E216E008649CA /* ScheduledJob.swift in Sources */,
 				4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */,
+				444621E11F25BFB1002CBEB3 /* TripHistory.swift in Sources */,
 				44DA7CC01F14D10800C9718A /* DriverRegisterViewController.swift in Sources */,
 				447B7B141F0E4DBA00C4774E /* AppDelegate.swift in Sources */,
 				4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */,
