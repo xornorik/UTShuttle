@@ -170,6 +170,7 @@ class CurrentJobViewController: UIViewController {
                     self.startJobButton.addTarget(self, action: #selector(self.completeTripButtonTapped), for: .touchUpInside)
                     self.nextStopButton.isHidden = false
                     self.previousStopButton.isHidden = false
+                    self.jobDetailsTableView.reloadData()
                 }
                 else
                 {
@@ -285,8 +286,8 @@ class CurrentJobViewController: UIViewController {
     {
         //have to show view first
         let cell = sender.superview?.superview?.superview?.superview as! UITableViewCell
-        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {return}
-        guard let jobDetail = rideDetails?[indexPath.row] else {return}
+        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {print("indexPath issue");return}
+        guard let jobDetail = rideDetails?[indexPath.row] else {print("jobdetail issue");return}
         
         guard let deviceId = Defaults[.deviceId] else {return}
         guard let currentStop = currentStop else {return}
@@ -315,8 +316,8 @@ class CurrentJobViewController: UIViewController {
     func unloadPassengerButtontapped(sender:UIButton)
     {
         let cell = sender.superview?.superview?.superview?.superview as! UITableViewCell
-        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {return}
-        guard let jobDetail = rideDetails?[indexPath.row] else {return}
+        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {print("indexPath issue");return}
+        guard let jobDetail = rideDetails?[indexPath.row] else {print("jobdetail issue");return}
         
         guard let deviceId = Defaults[.deviceId] else {return}
         guard let currentStop = currentStop else {return}
@@ -431,7 +432,7 @@ extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard rideDetails != nil else {return 0}
-        return (rideDetails!.count + 1)
+        return (rideDetails!.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
