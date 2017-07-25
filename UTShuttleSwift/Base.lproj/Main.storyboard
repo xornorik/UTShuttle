@@ -2781,7 +2781,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WMU-1E-I7X">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="597"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="profilePhoneCell" rowHeight="60" id="dJa-h8-rDB" customClass="UTSPhoneTableViewCell" customModule="UTShuttleSwift" customModuleProvider="target">
@@ -3060,9 +3060,9 @@
                             <constraint firstItem="FD1-tV-6ZO" firstAttribute="leading" secondItem="JOV-km-JgM" secondAttribute="leading" id="56W-hA-LX8"/>
                             <constraint firstItem="WMU-1E-I7X" firstAttribute="leading" secondItem="JOV-km-JgM" secondAttribute="leading" id="Apq-lX-m0y"/>
                             <constraint firstAttribute="trailing" secondItem="FD1-tV-6ZO" secondAttribute="trailing" id="G6g-eF-noZ"/>
-                            <constraint firstItem="mSd-Z4-GVj" firstAttribute="top" secondItem="WMU-1E-I7X" secondAttribute="bottom" id="G99-HW-q8z"/>
                             <constraint firstItem="mSd-Z4-GVj" firstAttribute="top" secondItem="FD1-tV-6ZO" secondAttribute="bottom" id="SoV-uj-qf9"/>
                             <constraint firstItem="WMU-1E-I7X" firstAttribute="top" secondItem="9fE-XD-F6N" secondAttribute="bottom" id="UCb-Y2-icp"/>
+                            <constraint firstItem="FD1-tV-6ZO" firstAttribute="top" secondItem="WMU-1E-I7X" secondAttribute="bottom" id="dkY-2V-7yq"/>
                             <constraint firstAttribute="trailing" secondItem="WMU-1E-I7X" secondAttribute="trailing" id="efe-qL-w6F"/>
                         </constraints>
                     </view>
@@ -3073,7 +3073,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpq-NL-jpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3486" y="761"/>
+            <point key="canvasLocation" x="3485.5999999999999" y="760.56971514242889"/>
         </scene>
     </scenes>
     <resources>

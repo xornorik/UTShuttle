@@ -405,7 +405,7 @@ extension DriverRegisterViewController : ImagePickerDelegate
     
     func compressImage(photo:UIImage) -> UIImage
     {
-        let compressedImage = UIImageJPEGRepresentation(photo, 0.7)!
+        let compressedImage = UIImageJPEGRepresentation(photo, 0.5)!
         return UIImage(data: compressedImage)!
     }
     
@@ -434,7 +434,7 @@ extension DriverRegisterViewController : ImagePickerDelegate
         guard let photo = images.first else {return}
         
         var photoImage = photo //for compressing (photo is constant)
-        var img = UIImageJPEGRepresentation(photo, 1.0)!
+        var img = UIImageJPEGRepresentation(photoImage, 1.0)!
         var imgData = NSData(data: img)
         var imgSize:Int = imgData.length
         
@@ -442,7 +442,7 @@ extension DriverRegisterViewController : ImagePickerDelegate
         {
             //compress
             photoImage = compressImage(photo: photoImage)
-            img = UIImageJPEGRepresentation(photo, 1.0)!
+            img = UIImageJPEGRepresentation(photoImage, 1.0)!
             imgData = NSData(data: img)
             imgSize = imgData.length
         }
