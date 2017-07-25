@@ -31,15 +31,15 @@ class ProfileViewController: UIViewController {
     var hasChangedPhoto = false
     
     var apiClient = APIClient.shared
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -73,7 +73,7 @@ class ProfileViewController: UIViewController {
         guard let _licenseNo = Defaults[.driverLicense] else {displayError();return}
         guard let _licenseExp = Defaults[.driverLicenseExp] else {displayError();return}
         guard let _profilePhotoUrl = Defaults[.driverProfilePhoto] else {displayError();return}
-
+        
         
         firstName = _firstName
         lastName = _lastName
@@ -111,83 +111,89 @@ class ProfileViewController: UIViewController {
     
     func validateForm() -> Bool
     {
-            let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-            let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-            
-            guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
-            guard lastName != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
-            guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
-            guard mobile != "", mobile.characters.count < 15 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
-            guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
-            guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
-            return true
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        
+        guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
+        guard lastName != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
+        guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
+        guard mobile != "", mobile.characters.count < 15 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
+        guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
+        guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
+        return true
     }
     
     func storeDetails()
     {
-            Defaults[.driverFirstName] = firstName
-            Defaults[.driverLastName] = lastName
-            Defaults[.driverEmail] = email
-            Defaults[.driverMobile] =  mobile
-            Defaults[.driverCountryCode] = countryCode
-            Defaults[.driverLicense] = licenseNo
-            Defaults[.driverLicenseExp] = licenseExp
-
+        Defaults[.driverFirstName] = firstName
+        Defaults[.driverLastName] = lastName
+        Defaults[.driverEmail] = email
+        Defaults[.driverMobile] =  mobile
+        Defaults[.driverCountryCode] = countryCode
+        Defaults[.driverLicense] = licenseNo
+        Defaults[.driverLicenseExp] = licenseExp
+        
     }
     
     func saveButtonTapped()
     {
         
-        guard let deviceId = Defaults[.deviceId] else {return}
-        guard let username = Defaults[.driverUsername] else {return}
-        guard let password = Defaults[.driverPassword] else {return}
-        guard let imgUser = profilePhotoString else {return}
-        guard let imgSize = profilePhotoSize else {return}
-        
-        let payload:[String:Any] = [
-            "RowIndex": 0,
-            "UniqueId": "",
-            "DeviceId": deviceId,
-            "UserName": username,
-            "FirstName": firstName,
-            "LastName": lastName,
-            "Email": email,
-            "Mobile": mobile ,
-            "Password": password,
-            "DateofBirth": "",
-            "Address_1": "",
-            "Address_2": "",
-            "ZipCode": "",
-            "CityId": 0,
-            "StateId": 0,
-            "CityName": "",
-            "StateName": "",
-            "Phone": mobile,
-            "CountryCode": countryCode,
-            "DriverLicenceNumber": licenseNo,
-            "DriverLicenceExpiryDate": licenseExp ,
-            "DotPermitNumber": "",
-            "DotPermitExpiryDate": "",
-            "ImageUser": imgUser,
-            "ImageSize": imgSize,
-            "Extension": ".jpeg"
-        ]
-        apiClient.driverRegistration(payload: payload) { (success, error) in
+        if validateForm()
+        {
+            guard let deviceId = Defaults[.deviceId] else {return}
+            guard let username = Defaults[.driverUsername] else {return}
+            guard let password = Defaults[.driverPassword] else {return}
+            guard let imgUser = profilePhotoString else {return}
+            guard let imgSize = profilePhotoSize else {return}
+            guard let rowIndex = Defaults[.driverRowIndex] else {return}
             
-            if success
-            {
-                if self.hasChangedPhoto
+            let payload:[String:Any] = [
+                "RowIndex": rowIndex,
+                "UniqueId": "",
+                "DeviceId": deviceId,
+                "UserName": username,
+                "FirstName": firstName,
+                "LastName": lastName,
+                "Email": email,
+                "Mobile": mobile ,
+                "Password": password,
+                "DateofBirth": "",
+                "Address_1": "",
+                "Address_2": "",
+                "ZipCode": "",
+                "CityId": 0,
+                "StateId": 0,
+                "CityName": "",
+                "StateName": "",
+                "Phone": mobile,
+                "CountryCode": countryCode,
+                "DriverLicenceNumber": licenseNo,
+                "DriverLicenceExpiryDate": licenseExp ,
+                "DotPermitNumber": "",
+                "DotPermitExpiryDate": "",
+                "ImageUser": imgUser,
+                "ImageSize": imgSize,
+                "Extension": ".jpeg"
+            ]
+            apiClient.driverRegistration(payload: payload) { (success, error) in
+                
+                if success
                 {
-                    //notify profile manager, so URL can be fetched on dashboard
+                    if self.hasChangedPhoto
+                    {
+                        //notify profile manager, so URL can be fetched on dashboard
+                    }
+                    self.storeDetails()
+                    ProfileManager.shared.isChangedProfile = true
+                    NavigationUtils.popViewController()
                 }
-                NavigationUtils.popViewController()
+                else
+                {
+                    showError(title: "Alert", message: error)
+                }
             }
-            else
-            {
-                showError(title: "Alert", message: error)
-            }
+            
         }
-
     }
     
     // MARK: Keyboard Notifications
@@ -205,7 +211,7 @@ class ProfileViewController: UIViewController {
             self.profileTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         })
     }
-
+    
 }
 extension ProfileViewController : UITableViewDelegate, UITableViewDataSource
 {
@@ -289,7 +295,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource
             return 65
         }
     }
-
+    
 }
 extension ProfileViewController : UTSPhoneTableViewCellDelegate
 {
@@ -351,10 +357,11 @@ extension ProfileViewController : ImagePickerDelegate
             imgData = NSData(data: img)
             imgSize = imgData.length
         }
-        while Double(imgSize)/(1024*1024) >= 2 //(in MB)
+            while Double(imgSize)/(1024*1024) >= 2 //(in MB)
         
         Defaults[.driverProfilePhotoSize] = Double(imgSize)
         Defaults[.driverProfilePhoto] = imgData.base64EncodedString(options: .lineLength64Characters)
+        print(Defaults[.driverProfilePhoto] ?? "")
         hasChangedPhoto = true
         self.profileTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
         imagePicker.dismiss(animated: true, completion: nil)

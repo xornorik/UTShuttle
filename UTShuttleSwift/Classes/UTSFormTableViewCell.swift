@@ -42,6 +42,11 @@ class UTSFormTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         formTextField.delegate = self
+        if secondaryFormTextField != nil
+        {
+            secondaryFormTextField.delegate = self
+            secondaryFormTextField.tag = 0
+        }
     }
     
     func setup(type:FormCellType, placeholder:String, text:String, labelText:String,secondaryPlaceholder:String? = nil, secondaryText:String? = nil, secondaryLabelText:String? = nil) //secondary stuff for profile View reusing same cell
@@ -131,7 +136,6 @@ class UTSFormTableViewCell: UITableViewCell {
             formTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
             
             secondaryFormTextField.placeholder = secondaryPlaceholder
-            secondaryFormTextField.tag = 200 //for storing value of second tf
             secondaryFormTextField.text = secondaryText
             secondaryFormTextField.autocapitalizationType = .words
             secondaryFormTextField.autocorrectionType = .no
@@ -144,11 +148,15 @@ class UTSFormTableViewCell: UITableViewCell {
     
     func textFieldDidChange(textField: UITextField)
     {
-        tfContent = textField.text
-        if textField.tag == 200 //handling second TF
+        if textField == formTextField
+        {
+            tfContent = textField.text
+        }
+        else
         {
             secondaryTfContent = textField.text
         }
+        
     }
     
     func handleDatePicker(sender:UIDatePicker)

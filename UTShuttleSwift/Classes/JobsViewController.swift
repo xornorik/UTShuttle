@@ -160,19 +160,27 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
             let job = scheduledJobs[indexPath.row]
             
             indexLabel.text = String(indexPath.row + 1)
-            job.jobId != "0" ? (routeNameLabel.textColor = UIColor.green) : (routeNameLabel.textColor = UIColor(hex: "5C5E66"))
-            
-            //store jobID and current stop if not there
-            if let _ = Defaults[.jobId], let _ = Defaults[.currentStopId]
+            if job.jobId != "0"
             {
-                //current job ID and CurrentStopID are there, so do nothing
+                (routeNameLabel.textColor = UIColor.green)
+                //store jobID and current stop if not there
+                if let _ = Defaults[.jobId], let _ = Defaults[.currentStopId]
+                {
+                    //current job ID and CurrentStopID are there, so do nothing
+                }
+                else
+                {
+                    Defaults[.jobId] = job.jobId
+                    Defaults[.currentStopId] = job.currentStopId
+                }
+
             }
             else
             {
-                Defaults[.jobId] = job.jobId
-                Defaults[.currentStopId] = job.currentStopId
+                (routeNameLabel.textColor = UIColor(hex: "5C5E66"))
             }
-//            fromlabel.text = job.fromStop
+            
+            //            fromlabel.text = job.fromStop
 //            toLabel.text = job.toStop
             routeNameLabel.text = job.routeName
             timeLabel.text = job.time
@@ -210,7 +218,7 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
         if tableView == myJobsTableView
         {
             let scheduledJob = self.scheduledJobs[indexPath.row]
-            NavigationUtils.goToCurrentJob(tripId: scheduledJob.rideId!,scheduleId: scheduledJob.scheduleId!, fromStop: scheduledJob.fromStop!, toStop: scheduledJob.toStop!)
+            NavigationUtils.goToCurrentJob(tripId: scheduledJob.rideId!,scheduleId: scheduledJob.scheduleId!, fromStop: scheduledJob.fromStop!, toStop: scheduledJob.toStop!, scheduledTime: scheduledJob.time!)
         }
     }
 }

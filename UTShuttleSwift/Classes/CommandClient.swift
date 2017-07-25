@@ -45,6 +45,9 @@ class CommandClient: NSObject {
         static let StartJob = "SJ"
         static let CompleteJob = "EJ"
         static let UpdateCurrentTrip = "US"
+        static let loadPassenger = "PL"
+        static let unloadPassenger = "PU"
+        static let addGuest = "AG"
         
     }
     
@@ -408,6 +411,141 @@ class CommandClient: NSObject {
             reqParameters.append(Commands.UpdateCurrentTrip)
             reqParameters.append(rideId)
             reqParameters.append(currentStopId)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr[responseArr.endIndex - 2]) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false)
+                    case 1:
+                        callback(true)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+            
+        }
+        else
+        {
+            callback(false)
+        }
+    }
+    
+    func loadPassenger(deviceId:String, refId:String, rideId:String, stopId:String, deviceTime:String, lat:String, lon:String, sourceTypeId:String,paxCount:String, paxDetailId:String, callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.loadPassenger)
+            reqParameters.append(refId)
+            reqParameters.append(rideId)
+            reqParameters.append(stopId)
+            reqParameters.append(deviceTime)
+            reqParameters.append(lat+","+lon)
+            reqParameters.append(sourceTypeId)
+            reqParameters.append(paxCount)
+            reqParameters.append(paxDetailId)
+
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr[responseArr.endIndex - 3]) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false)
+                    case 1:
+                        callback(true)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+            
+        }
+        else
+        {
+            callback(false)
+        }
+    }
+    
+    func unloadPassenger(deviceId:String, refId:String, rideId:String, stopId:String, deviceTime:String, lat:String, lon:String, sourceTypeId:String,paxCount:String, paxDetailId:String,callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.unloadPassenger)
+            reqParameters.append(refId)
+            reqParameters.append(rideId)
+            reqParameters.append(stopId)
+            reqParameters.append(deviceTime)
+            reqParameters.append(lat+","+lon)
+            reqParameters.append(sourceTypeId)
+            reqParameters.append(paxCount)
+            reqParameters.append(paxDetailId)
+            
+            let command = encodeRequest(requestParameters: reqParameters)
+            switch client.send(string: command)
+            {
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                if let response = String(bytes: data, encoding: .utf8) {
+                    print("response received: \(response)")
+                    let responseArr = decodeResponse(responseString: response)
+                    guard let status = Int(responseArr[responseArr.endIndex - 3]) else { print("Wrong Status"); return }
+                    switch status {
+                    case 0:
+                        callback(false)
+                    case 1:
+                        callback(true)
+                    default:
+                        //callback(false,.ConnectionError)
+                        print("Bad response from server")
+                    }
+                }
+            case .failure(_):
+                callback(false)
+            }
+        }
+        else
+        {
+            callback(false)
+        }
+    }
+    
+    func addGuest(deviceId:String, rideId:String, stopId:String, deviceTime:String, lat:String, lon:String, paxCount:String, callback:(_ success:Bool)->())
+    {
+        if isConnected()
+        {
+            var reqParameters = [String]()
+            reqParameters.append(deviceId)
+            reqParameters.append(Commands.addGuest)
+            reqParameters.append(rideId)
+            reqParameters.append(stopId)
+            reqParameters.append(deviceTime)
+            reqParameters.append(lat+","+lon)
+            reqParameters.append(paxCount)
             
             let command = encodeRequest(requestParameters: reqParameters)
             switch client.send(string: command)

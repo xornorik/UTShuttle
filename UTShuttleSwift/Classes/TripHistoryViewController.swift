@@ -86,7 +86,7 @@ extension TripHistoryViewController : UITableViewDelegate, UITableViewDataSource
         
         let tripHistory = datewiseTripHistoryElements[indexPath.section].tripHistory[indexPath.row]
         indexLabel.text = String(indexPath.row + 1)
-        rideIdlabel.text = tripHistory.rideId
+        rideIdlabel.text = "Ride ID  " + tripHistory.rideId!
         fromStopLabel.text = tripHistory.pickUpStop
         toStopLabel.text = tripHistory.dropOffStop
         
@@ -94,14 +94,17 @@ extension TripHistoryViewController : UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
-        headerView.backgroundColor = UIColor(hex: "3C3C3C")
-        let dateLabel = UILabel(frame: CGRect(x: 10, y: 10, width: 50, height: 10))
-        dateLabel.center.y = headerView.centerY
+        
+        let dateLabel = UILabel(frame: CGRect(x: 10, y: 0, width: 200, height: 10))
         dateLabel.textColor = UIColor.white
-        headerView.addSubview(dateLabel)
+        dateLabel.font =  UIFont.systemFont(ofSize: 13)
         dateLabel.text = datewiseTripHistoryElements[section].tripDate
         dateLabel.sizeToFit()
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 20))
+        headerView.backgroundColor = UIColor(red: 60/255, green: 60/255, blue: 60/255, alpha: 1)
+        dateLabel.center.y = headerView.center.y
+        headerView.addSubview(dateLabel)
         return headerView
     }
     

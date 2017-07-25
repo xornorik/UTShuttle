@@ -114,6 +114,8 @@ class APIClient : NSObject {
                     Defaults[.driverMobile] = subjson["Mobile"].stringValue
                     Defaults[.driverLicense] = subjson["DriverLicenceNumber"].stringValue
                     Defaults[.driverLicenseExp] = subjson["DriverLicenceExpiryDate"].stringValue
+                    Defaults[.driverRowIndex] = subjson["RowIndex"].stringValue
+
                     hideHUD()
                     callback(true,"")
                 }

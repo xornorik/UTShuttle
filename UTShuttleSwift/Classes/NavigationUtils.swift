@@ -55,13 +55,14 @@ class NavigationUtils {
         self.pushToVC(nextVC: nextVC)
     }
     
-    static func goToCurrentJob(tripId:String, scheduleId:String, fromStop:String, toStop:String)
+    static func goToCurrentJob(tripId:String, scheduleId:String, fromStop:String, toStop:String, scheduledTime:String)
     {
         let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "currentJobVC") as! CurrentJobViewController
         nextVC.tripId = tripId
         nextVC.scheduleId = scheduleId
         nextVC.fromStop = fromStop
         nextVC.toStop = toStop
+        nextVC.scheduledTime = scheduledTime
         self.pushToVC(nextVC: nextVC)
     }
     

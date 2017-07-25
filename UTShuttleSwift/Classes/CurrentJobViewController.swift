@@ -34,6 +34,8 @@ class CurrentJobViewController: UIViewController {
     var scheduleId:String!
     var fromStop:String!
     var toStop:String!
+    var scheduledTime:String!
+    var isJobStarted = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,17 +59,42 @@ class CurrentJobViewController: UIViewController {
         jobDetailsTableView.rowHeight = UITableViewAutomaticDimension
         jobDetailsTableView.estimatedRowHeight = 44
         
-        self.startJobButton.addTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
-        nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
-        previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
-        
         tripNoLabel.text = tripId!
         fromLocationLabel.text = fromStop
         toLocationLabel.text = toStop
+        timeLabel.text = scheduledTime
+        if let _ = Defaults[.jobId]
+        {
+            isJobStarted = true
+        }
+        
+        setUIBasedOnJobStatus()
         
         getRideStops {
             self.getRideDetails()
         }        
+    }
+    
+    func setUIBasedOnJobStatus()
+    {
+         if isJobStarted //exisiting job incomplete
+        {
+            self.startJobButton.setTitle("COMPLETE TRIP", for: .normal)
+            self.startJobButton.removeTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
+            self.startJobButton.addTarget(self, action: #selector(self.completeTripButtonTapped), for: .touchUpInside)
+            self.nextStopButton.isHidden = false
+            self.previousStopButton.isHidden = false
+        }
+        else
+        {
+            self.startJobButton.addTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
+            nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
+            previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
+            nextStopButton.isHidden = true
+            previousStopButton.isHidden = true
+
+        }
+
     }
     
     func syncTripDetails()
@@ -141,6 +168,8 @@ class CurrentJobViewController: UIViewController {
                     self.startJobButton.setTitle("COMPLETE TRIP", for: .normal)
                     self.startJobButton.removeTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
                     self.startJobButton.addTarget(self, action: #selector(self.completeTripButtonTapped), for: .touchUpInside)
+                    self.nextStopButton.isHidden = false
+                    self.previousStopButton.isHidden = false
                 }
                 else
                 {
@@ -176,6 +205,8 @@ class CurrentJobViewController: UIViewController {
                 
                 if success
                 {
+                    Defaults[.jobId] = nil
+                    Defaults[.currentStopId] = nil
                     NavigationUtils.popViewController()
                 }
                 else
@@ -198,22 +229,32 @@ class CurrentJobViewController: UIViewController {
     
     func nextStopButtonTapped()
     {
-        guard currentStopIndexPath?.item != nil else {return}
-        let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
-        guard nextStopIndexPath.item < ((stops?.count)! - 1) else {return}
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let currentStopIndex = currentStopIndexPath?.row else {return}
+        let nextStop = stops?[currentStopIndex + 1]
         
-        UIView.animate(withDuration: 0.1, animations: {
-            self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
-        }) { (true) in
-            let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
-            cell.drawRightConnector(duration: 0.1) {
-                let nextCell = self.stopsCollectionView.cellForItem(at: nextStopIndexPath) as! UTSNodeCollectionViewCell
-                nextCell.drawLeftConnector(duration: 0.1, callback: {
-                    nextCell.animateNodeColorChange(duration: 0.1, callback: {
-                        self.currentStopIndexPath = nextStopIndexPath
-                        self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! - 1, section: 0)])
-                    })
-                })
+        tcpClient.updateCurrentTrip(deviceId: deviceId, rideId: self.tripId, currentStopId: (nextStop?.stopId)!) { (success) in
+            
+            if success
+            {
+                guard currentStopIndexPath?.item != nil else {return}
+                let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
+                guard nextStopIndexPath.item < ((stops?.count)! - 1) else {return}
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
+                }) { (true) in
+                    let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
+                    cell.drawRightConnector(duration: 0.1) {
+                        let nextCell = self.stopsCollectionView.cellForItem(at: nextStopIndexPath) as! UTSNodeCollectionViewCell
+                        nextCell.drawLeftConnector(duration: 0.1, callback: {
+                            nextCell.animateNodeColorChange(duration: 0.1, callback: {
+                                self.currentStopIndexPath = nextStopIndexPath
+                                self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! - 1, section: 0)])
+                            })
+                        })
+                    }
+                }
             }
         }
     }
@@ -239,6 +280,67 @@ class CurrentJobViewController: UIViewController {
             }
         }
     }
+    
+    func loadPassengerButtontapped(sender:UIButton)
+    {
+        //have to show view first
+        let cell = sender.superview?.superview?.superview?.superview as! UITableViewCell
+        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {return}
+        guard let jobDetail = rideDetails?[indexPath.row] else {return}
+        
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let currentStop = currentStop else {return}
+        guard let lat = Defaults[.lastLatitude] else {return}
+        guard let lon = Defaults[.lastLongitude] else {return}
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        let deviceTime = dateFormatter.string(from: Date())
+        
+        
+        tcpClient.loadPassenger(deviceId: deviceId, refId: jobDetail.refId!, rideId: self.tripId, stopId: currentStop.stopId!, deviceTime: deviceTime, lat: String(lat), lon: String(lon), sourceTypeId: jobDetail.sourceTypeId!, paxCount: jobDetail.paxCount!, paxDetailId: jobDetail.paxDetailId!) { (success) in
+            
+            if success
+            {
+                self.getRideDetails()
+            }
+            else
+            {
+                showError(title: "Alert", message: "Action Failed, Please try again.")
+            }
+        }
+        
+    }
+    
+    
+    func unloadPassengerButtontapped(sender:UIButton)
+    {
+        let cell = sender.superview?.superview?.superview?.superview as! UITableViewCell
+        guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {return}
+        guard let jobDetail = rideDetails?[indexPath.row] else {return}
+        
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let currentStop = currentStop else {return}
+        guard let lat = Defaults[.lastLatitude] else {return}
+        guard let lon = Defaults[.lastLongitude] else {return}
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        let deviceTime = dateFormatter.string(from: Date())
+        
+        
+        tcpClient.unloadPassenger(deviceId: deviceId, refId: jobDetail.refId!, rideId: self.tripId, stopId: currentStop.stopId!, deviceTime: deviceTime, lat: String(lat), lon: String(lon), sourceTypeId: jobDetail.sourceTypeId!, paxCount: jobDetail.paxCount!, paxDetailId: jobDetail.paxDetailId!) { (success) in
+            
+            if success
+            {
+                self.getRideDetails()
+
+            }
+            else
+            {
+                showError(title: "Alert", message: "Action Failed, Please try again.")
+            }
+        }
+    }
+
 }
 extension CurrentJobViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
@@ -333,24 +435,42 @@ extension CurrentJobViewController : UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.row {
-        case tableView.numberOfRows(inSection: 0) - 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "addGuestCell", for: indexPath)
-            return cell
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            let pickUplabel = cell.viewWithTag(100) as! UILabel
-            let flightLabel = cell.viewWithTag(101) as! UILabel
-            let timeLabel = cell.viewWithTag(102) as! UILabel
-            let paxLabel = cell.viewWithTag(103) as! UILabel
-            
-            let rideDetail = rideDetails?[indexPath.row]
-            pickUplabel.text = rideDetail?.pickupLocationName
-            flightLabel.text = rideDetail?.flightNo
-            timeLabel.text = rideDetail?.time
-            paxLabel.text = rideDetail?.paxCount
-            
-            return cell
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let pickUplabel = cell.viewWithTag(100) as! UILabel
+        let flightLabel = cell.viewWithTag(101) as! UILabel
+        let timeLabel = cell.viewWithTag(102) as! UILabel
+        let paxLabel = cell.viewWithTag(103) as! UILabel
+        let paxButton = cell.viewWithTag(104) as! UIButton
+        
+        let rideDetail = rideDetails?[indexPath.row]
+        pickUplabel.text = rideDetail?.pickupLocationName
+        flightLabel.text = rideDetail?.flightNo
+        timeLabel.text = rideDetail?.time
+        paxLabel.text = rideDetail?.paxCount
+        
+        if isJobStarted
+        {
+            paxButton.isHidden = false
+            if rideDetail?.tripStatus == TripStatus.Board
+            {
+                paxButton.setTitle("BOARD", for: .normal)
+                paxButton.removeTarget(self, action: #selector(unloadPassengerButtontapped(sender:)), for: .touchUpInside)
+                paxButton.addTarget(self, action: #selector(loadPassengerButtontapped(sender:)), for: .touchUpInside)
+            }
+            else
+            {
+                paxButton.setTitle("UNLOAD", for: .normal)
+                paxButton.removeTarget(self, action: #selector(loadPassengerButtontapped(sender:)), for: .touchUpInside)
+                paxButton.addTarget(self, action: #selector(unloadPassengerButtontapped(sender:)), for: .touchUpInside)
+            }
         }
+        else
+        {
+            paxButton.isHidden = true
+        }
+        
+        return cell
+
     }
 }

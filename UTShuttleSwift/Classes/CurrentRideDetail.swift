@@ -20,6 +20,9 @@ class CurrentRideDetail {
     var flightNo:String?
     var time:String?
     var paxCount:String?
+    var refId:String?
+    var sourceTypeId:String?
+    var paxDetailId:String?
     var tripStatus:TripStatus?
     
     init(json:JSON) {
@@ -27,6 +30,9 @@ class CurrentRideDetail {
         flightNo = json["PuAirLineCode"].stringValue + " - " + json["PuAirLineNo"].stringValue
         time = json["PuDateTime"].stringValue
         paxCount = json["AdultNo"].stringValue
+        refId = json["RefNo"].stringValue
+        sourceTypeId = json["SourceTypeId"].stringValue
+        paxDetailId = json["PaxDetailId"].stringValue
         tripStatus = TripStatus(rawValue: json["TripStatusId"].numberValue.intValue)
     }
 }

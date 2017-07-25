@@ -32,13 +32,16 @@ class DashboardViewController: UIViewController {
         
         setupVC()
 
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        setVehicleIfSelected()
-
+        if ProfileManager.shared.isChangedProfile
+        {
+            getDriverDetails()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +79,8 @@ class DashboardViewController: UIViewController {
         selectVehicleButton.addTarget(self, action: #selector(selectVehicleTapped), for: .touchUpInside)
         logOffButton.addTarget(self, action: #selector(logOffTapped), for: .touchUpInside)
         
-        getDriverDetails()
+        setVehicleIfSelected()
+
          _ = promptVehiclSelection()
     }
     
@@ -129,6 +133,8 @@ class DashboardViewController: UIViewController {
                 print(Defaults[.driverFirstName]!)
                 self.driverNameLabel.text = Defaults[.driverFirstName]! + " " + Defaults[.driverLastName]!
                 
+                ProfileManager.shared.isChangedProfile = false
+                
             }
             else
             {
@@ -152,43 +158,16 @@ class DashboardViewController: UIViewController {
                 
                 if success
                 {
-                    self.logOff()
+                    ProfileManager.shared.logOff()
                 }
                 else
                 {
                     showConfirm(title: "Confirm", message: "Device is not connected. Do you still want to log off?", callback: {
-                        self.logOff()
+                        ProfileManager.shared.logOff()
                     })
                 }
             }
         }
-    }
-    
-    func logOff()
-    {
-        Defaults[.isLoggedIn] = false
-        if !(Defaults[.isLoginDetailsRemembered] ?? true)
-        {
-            Defaults[.driverUsername] = nil
-            Defaults[.driverPassword] = nil
-        }
-        Defaults[.lastLongitude] = nil
-        Defaults[.lastLatitude] = nil
-        Defaults[.driverFirstName] = nil
-        Defaults[.driverLastName] = nil
-        Defaults[.driverEmail] = nil
-        Defaults[.driverMobile] = nil
-        Defaults[.driverCountryCode] = nil
-        Defaults[.driverLicense] = nil
-        Defaults[.driverLicenseExp] = nil
-        Defaults[.driverProfilePhoto] = nil
-        Defaults[.driverProfilePhotoSize] = nil
-        Defaults[.driverLoginTime] = nil
-        Defaults[.driverVehicleNo] = nil
-        Defaults[.driverVehicleId] = nil
-        
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.setupUI()
     }
 }
 extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
