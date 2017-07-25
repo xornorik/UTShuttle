@@ -12,6 +12,7 @@
 		444621E11F25BFB1002CBEB3 /* TripHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E01F25BFB1002CBEB3 /* TripHistory.swift */; };
 		444621E31F25C245002CBEB3 /* DatewiseTripHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E21F25C245002CBEB3 /* DatewiseTripHistory.swift */; };
 		444621E51F25CDA8002CBEB3 /* TripHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */; };
+		444621E71F2702BD002CBEB3 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E61F2702BD002CBEB3 /* ProfileViewController.swift */; };
 		4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444850591F0F57B60039E209 /* CommandClient.swift */; };
 		4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505B1F0F57F20039E209 /* DefaultStyle.swift */; };
 		4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505D1F0F62C70039E209 /* DeviceDetails.swift */; };
@@ -336,6 +337,7 @@
 		444621E01F25BFB1002CBEB3 /* TripHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistory.swift; path = Classes/TripHistory.swift; sourceTree = "<group>"; };
 		444621E21F25C245002CBEB3 /* DatewiseTripHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatewiseTripHistory.swift; path = Classes/DatewiseTripHistory.swift; sourceTree = "<group>"; };
 		444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistoryViewController.swift; path = Classes/TripHistoryViewController.swift; sourceTree = "<group>"; };
+		444621E61F2702BD002CBEB3 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Classes/ProfileViewController.swift; sourceTree = "<group>"; };
 		444850591F0F57B60039E209 /* CommandClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommandClient.swift; path = Classes/CommandClient.swift; sourceTree = "<group>"; };
 		4448505B1F0F57F20039E209 /* DefaultStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultStyle.swift; path = Classes/DefaultStyle.swift; sourceTree = "<group>"; };
 		4448505D1F0F62C70039E209 /* DeviceDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceDetails.swift; path = Classes/DeviceDetails.swift; sourceTree = "<group>"; };
@@ -733,17 +735,18 @@
 		444850551F0F45540039E209 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */,
+				448F301F1F1DD582008649CA /* AddVehicleViewController.swift */,
+				B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */,
+				44663FE61F179A97005ACF79 /* DashboardViewController.swift */,
 				448FE4BE1F1346EF009E644B /* DeviceRegistrationViewController.swift */,
 				444A35961F138ED200D48C63 /* DriverLoginViewController.swift */,
 				44DA7CBF1F14D10800C9718A /* DriverRegisterViewController.swift */,
-				44663FE61F179A97005ACF79 /* DashboardViewController.swift */,
 				B38AB7BD1F19265900157888 /* JobsViewController.swift */,
-				B3ED3B171F1B3D2900B8E480 /* CurrentJobViewController.swift */,
-				448F301D1F1CE25A008649CA /* VehicleViewController.swift */,
-				448F301F1F1DD582008649CA /* AddVehicleViewController.swift */,
+				44A989B11F0FB5450021D5E9 /* LoadingViewController.swift */,
 				B3ED3B1F1F23970B00B8E480 /* RoutesViewController.swift */,
 				444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */,
+				448F301D1F1CE25A008649CA /* VehicleViewController.swift */,
+				444621E61F2702BD002CBEB3 /* ProfileViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1757,6 +1760,7 @@
 				B38AB7BE1F19265900157888 /* JobsViewController.swift in Sources */,
 				44663FE71F179A98005ACF79 /* DashboardViewController.swift in Sources */,
 				B3ED3B1C1F22720500B8E480 /* UTSPhoneTableViewCell.swift in Sources */,
+				444621E71F2702BD002CBEB3 /* ProfileViewController.swift in Sources */,
 				B3ED3B201F23970B00B8E480 /* RoutesViewController.swift in Sources */,
 				44A4F39A1F20B48800F11A4A /* ScheduledRouteStop.swift in Sources */,
 			);

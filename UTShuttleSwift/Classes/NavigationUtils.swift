@@ -78,6 +78,12 @@ class NavigationUtils {
 
     }
     
+    static func gotoMyProfile()
+    {
+        let nextVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileVC")
+        pushToVC(nextVC: nextVC)
+    }
+    
     static func presentVC(nextVC: UIViewController) {
         
         let currentNavController = UIApplication.topViewController()!.navigationController!

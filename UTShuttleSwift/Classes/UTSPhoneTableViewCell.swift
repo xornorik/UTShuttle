@@ -57,6 +57,18 @@ class UTSPhoneTableViewCell: UITableViewCell {
         }
         
     }
+    
+    func findCountryByCode(countryCode:String) -> Country
+    {
+        for country in countries
+        {
+            if countryCode == country.phoneCode
+            {
+                return country
+            }
+        }
+        return Country(code: "US", name: "United States", phoneCode: "+1")
+    }
 
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -65,13 +77,16 @@ class UTSPhoneTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setup(placeholder:String, text:String, labelText:String)
+    func setup(placeholder:String, text:String, labelText:String, countryCode:String)
     {
         formTextField.autocapitalizationType = .none
         formTextField.placeholder = placeholder
+        formTextField.text = text
         formTextField.keyboardType = .decimalPad
         formTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
         formTextField.delegate = self
+        
+        chosenCountry = findCountryByCode(countryCode: countryCode)
         
         countryCodeLabel.text = chosenCountry.phoneCode
         Defaults[.driverCountryCode] = chosenCountry.phoneCode //to Initialize it to US

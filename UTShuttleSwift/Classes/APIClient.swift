@@ -111,6 +111,7 @@ class APIClient : NSObject {
                     Defaults[.driverUsername] = subjson["UserName"].stringValue
                     Defaults[.driverPassword] = subjson["Password"].stringValue
                     Defaults[.driverEmail] = subjson["Email"].stringValue
+                    Defaults[.driverMobile] = subjson["Mobile"].stringValue
                     Defaults[.driverLicense] = subjson["DriverLicenceNumber"].stringValue
                     Defaults[.driverLicenseExp] = subjson["DriverLicenceExpiryDate"].stringValue
                     hideHUD()

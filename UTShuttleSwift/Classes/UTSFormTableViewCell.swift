@@ -15,6 +15,7 @@ enum FormCellType{
     case email
     case datePicker
     case picker
+    case  double
 }
 
 protocol UTSFormTableViewCellDelegate {
@@ -26,8 +27,12 @@ class UTSFormTableViewCell: UITableViewCell {
     @IBOutlet weak var formTextField:UITextField!
     @IBOutlet weak var formLabel:UILabel!
     
+    @IBOutlet weak var secondaryFormTextField:UITextField!
+    @IBOutlet weak var secondaryFormLabel:UILabel!
+    
     var cellType = FormCellType.text
     var tfContent:String?
+    var secondaryTfContent:String?
     var delegate:UTSFormTableViewCellDelegate?
     var pickerOptions:[VehicleType]?
     var pickerContent:VehicleType?
@@ -72,6 +77,7 @@ class UTSFormTableViewCell: UITableViewCell {
         case .datePicker:
             formTextField.placeholder = placeholder
             formTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+            formTextField.text = text
             
             //configure datepicker
 //            let minDate = (Calendar.current as NSCalendar).date(byAdding: .month, value: 6, to: Date(), options: []) //[!] Check with mgmt
@@ -115,6 +121,23 @@ class UTSFormTableViewCell: UITableViewCell {
             
             formTextField.inputView = pickerView
             formTextField.inputAccessoryView = toolBar
+        case .double:
+            formTextField.placeholder = placeholder
+            formTextField.text = text
+            formTextField.autocapitalizationType = .words
+            formTextField.autocorrectionType = .no
+            formTextField.keyboardType = .asciiCapable
+            formLabel.text = labelText
+            formTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
+            
+            secondaryFormTextField.placeholder = secondaryPlaceholder
+            secondaryFormTextField.tag = 200 //for storing value of second tf
+            secondaryFormTextField.text = secondaryText
+            secondaryFormTextField.autocapitalizationType = .words
+            secondaryFormTextField.autocorrectionType = .no
+            secondaryFormTextField.keyboardType = .asciiCapable
+            secondaryFormLabel.text = secondaryLabelText
+            secondaryFormTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControlEvents.editingChanged)
 
         }
     }
@@ -122,6 +145,10 @@ class UTSFormTableViewCell: UITableViewCell {
     func textFieldDidChange(textField: UITextField)
     {
         tfContent = textField.text
+        if textField.tag == 200 //handling second TF
+        {
+            secondaryTfContent = textField.text
+        }
     }
     
     func handleDatePicker(sender:UIDatePicker)
@@ -170,7 +197,7 @@ extension UTSFormTableViewCell : UITextFieldDelegate
 {
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard tfContent != nil else {return}
-        delegate?.textFieldContent(cell: self, content: tfContent!, secondaryContent: "")
+        delegate?.textFieldContent(cell: self, content: tfContent!, secondaryContent: secondaryTfContent ?? "")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

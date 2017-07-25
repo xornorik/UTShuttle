@@ -161,7 +161,17 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
             
             indexLabel.text = String(indexPath.row + 1)
             job.jobId != "0" ? (routeNameLabel.textColor = UIColor.green) : (routeNameLabel.textColor = UIColor(hex: "5C5E66"))
-
+            
+            //store jobID and current stop if not there
+            if let _ = Defaults[.jobId], let _ = Defaults[.currentStopId]
+            {
+                //current job ID and CurrentStopID are there, so do nothing
+            }
+            else
+            {
+                Defaults[.jobId] = job.jobId
+                Defaults[.currentStopId] = job.currentStopId
+            }
 //            fromlabel.text = job.fromStop
 //            toLabel.text = job.toStop
             routeNameLabel.text = job.routeName

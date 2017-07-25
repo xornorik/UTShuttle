@@ -243,6 +243,8 @@ extension DashboardViewController : UITableViewDelegate, UITableViewDataSource
             }
         case 2:
             NavigationUtils.goToTripHistory()
+        case 3:
+            NavigationUtils.gotoMyProfile()
         default:
             print("Not yet defined")
         }

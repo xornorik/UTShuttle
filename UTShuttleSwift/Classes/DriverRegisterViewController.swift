@@ -208,7 +208,7 @@ class DriverRegisterViewController: UIViewController {
             guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
             guard lastname != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
             guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
-            guard mobile != "", mobile.characters.count < 15 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
+            guard mobile != "", mobile.characters.count < 14 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
         case .step2:
             guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
             guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
@@ -296,7 +296,7 @@ extension DriverRegisterViewController: UITableViewDelegate, UITableViewDataSour
 
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "phoneCell", for: indexPath) as! UTSPhoneTableViewCell
-                cell.setup(placeholder: "(123) 456-7890", text: "", labelText: "Mobile Number")
+                cell.setup(placeholder: "(123) 456-7890", text: "", labelText: "Mobile Number", countryCode: "+1")
                 cell.delegate = self
                 return cell
 
@@ -403,26 +403,56 @@ extension DriverRegisterViewController : ImagePickerDelegate
         //do Nothing
     }
     
-    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-//        self.selectedPhoto = images.first
-        guard let photo = images.first else {return}
-        let compressedImage = UIImageJPEGRepresentation(photo, 0.5)!
-        let compressedImageData = NSData(data: compressedImage)
+    func compressImage(photo:UIImage) -> UIImage
+    {
+        let compressedImage = UIImageJPEGRepresentation(photo, 0.7)!
+        return UIImage(data: compressedImage)!
+    }
+    
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage])
+    {
+////        self.selectedPhoto = images.first
+//        guard let photo = images.first else {return}
+//        let compressedImage = UIImageJPEGRepresentation(photo, 0.5)!
+//        let compressedImageData = NSData(data: compressedImage)
+//        
+//        let imgSize:Int = compressedImageData.length
+//        Defaults[.driverProfilePhotoSize] = Double(imgSize) /// 1024
+//        if Double(imgSize)/(1024*1024) > 2
+//        {
+//            imagePicker.dismiss(animated: true, completion: { 
+//                showError(title: "Alert", message: "File size greater than 2MB")
+//            })
+//        }
+//        else
+//        {
+//            Defaults[.driverProfilePhoto] = compressedImage.base64EncodedString(options: .lineLength64Characters)
+//            self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+//            imagePicker.dismiss(animated: true, completion: nil)
+//        }
         
-        let imgSize:Int = compressedImageData.length
-        Defaults[.driverProfilePhotoSize] = Double(imgSize) /// 1024
-        if Double(imgSize)/(1024*1024) > 2
+        guard let photo = images.first else {return}
+        
+        var photoImage = photo //for compressing (photo is constant)
+        var img = UIImageJPEGRepresentation(photo, 1.0)!
+        var imgData = NSData(data: img)
+        var imgSize:Int = imgData.length
+        
+        repeat
         {
-            imagePicker.dismiss(animated: true, completion: { 
-                showError(title: "Alert", message: "File size greater than 2MB")
-            })
+            //compress
+            photoImage = compressImage(photo: photoImage)
+            img = UIImageJPEGRepresentation(photo, 1.0)!
+            imgData = NSData(data: img)
+            imgSize = imgData.length
         }
-        else
-        {
-            Defaults[.driverProfilePhoto] = compressedImage.base64EncodedString(options: .lineLength64Characters)
-            self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
-            imagePicker.dismiss(animated: true, completion: nil)
-        }
+        while Double(imgSize)/(1024*1024) >= 2 //(in MB)
+        
+        
+        Defaults[.driverProfilePhotoSize] = Double(imgSize)
+        Defaults[.driverProfilePhoto] = imgData.base64EncodedString(options: .lineLength64Characters)
+        self.registerTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+        imagePicker.dismiss(animated: true, completion: nil)
     }
 }
 extension DriverRegisterViewController : UTSPhoneTableViewCellDelegate

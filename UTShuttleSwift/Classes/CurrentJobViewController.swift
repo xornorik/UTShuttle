@@ -67,9 +67,7 @@ class CurrentJobViewController: UIViewController {
         
         getRideStops {
             self.getRideDetails()
-        }
-        goToCurrentStop()
-        
+        }        
     }
     
     func syncTripDetails()
@@ -83,6 +81,7 @@ class CurrentJobViewController: UIViewController {
                     currentStop = stop
                     currentStopIndexPath = IndexPath(item: index, section: 0)
                     currentStopLabel.text = currentStop?.stopName
+                    goToCurrentStop()
                     break
                 }
             }

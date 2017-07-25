@@ -18,6 +18,7 @@ class ScheduledJob{
     var rideId:String?
     var routeName:String?
     var jobId:String?
+    var currentStopId:String?
     
     init(json:JSON) {
         fromStop = json["FromStopName"].stringValue
@@ -27,6 +28,7 @@ class ScheduledJob{
         rideId = json["RideId"].stringValue
         routeName = json["RouteName"].stringValue
         jobId = json["JobId"].stringValue
+        currentStopId = json["CurrentStopId"].stringValue
     }
 }
 
