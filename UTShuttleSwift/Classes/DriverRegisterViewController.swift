@@ -208,7 +208,7 @@ class DriverRegisterViewController: UIViewController {
             guard firstName != "" else {showError(title: "Alert", message: "Please enter the first name."); return false}
             guard lastname != "" else {showError(title: "Alert", message: "Please enter the last name."); return false}
             guard email != "", emailTest.evaluate(with: email) else {showError(title: "Alert", message: "Please enter a valid email Id."); return false}
-            guard mobile != "", mobile.characters.count < 14 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
+            guard mobile != "", mobile.characters.count <= 14 else {showError(title: "Alert", message: "Please enter a valid phone number."); return false}
         case .step2:
             guard licenseNo != "" else {showError(title: "Alert", message: "Please enter a valid driving license number."); return false}
             guard licenseExp != "" else {showError(title: "Alert", message: "Please enter the expiry date of the driving license."); return false}
@@ -462,7 +462,7 @@ extension DriverRegisterViewController : UTSPhoneTableViewCellDelegate
         guard rStatus == .step1 else {return}
         let currentIndexPath = self.registerTableView.indexPath(for: cell)
         switch (currentIndexPath?.row)! {
-        case 3: self.countryCode = countryCode; mobile = phoneNumber
+        case 3: self.countryCode = countryCode; mobile = phoneNumber;
         default:
             break // handled below
         }

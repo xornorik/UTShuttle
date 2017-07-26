@@ -178,6 +178,7 @@ extension UTSPhoneTableViewCell : UIPickerViewDelegate, UIPickerViewDataSource
         self.chosenCountry = country
         
         countryCodeLabel.text = country.phoneCode
+        countryPickerButton.setImage(country.flag, for: .normal)
     }
 }
 
