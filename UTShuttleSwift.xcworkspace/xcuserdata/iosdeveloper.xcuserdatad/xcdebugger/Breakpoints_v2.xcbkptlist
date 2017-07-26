@@ -9,78 +9,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "UTShuttleSwift/Classes/CurrentJobViewController.swift"
-            timestampString = "522680448.779928"
+            filePath = "UTShuttleSwift/Classes/JobsViewController.swift"
+            timestampString = "522747285.918773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
-            landmarkName = "nextStopButtonTapped()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "UTShuttleSwift/Classes/CurrentJobViewController.swift"
-            timestampString = "522680547.607774"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
-            landmarkName = "loadPassengerButtontapped(sender:)"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "deleteJobTapped(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "UTShuttleSwift.CurrentJobViewController.loadPassengerButtontapped (sender : __ObjC.UIButton) -&gt; ()"
+                  symbolName = "UTShuttleSwift.JobsViewController.deleteJobTapped (sender : __ObjC.UIButton) -&gt; ()"
                   moduleName = "UTShuttleSwift"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/iosdeveloper/Documents/Srinivas/Experiments/UTShuttleSwift/UTShuttleSwift/Classes/CurrentJobViewController.swift"
-                  timestampString = "522680720.975751"
+                  urlString = "file:///Users/iosdeveloper/Documents/Srinivas/Experiments/UTShuttleSwift/UTShuttleSwift/Classes/JobsViewController.swift"
+                  timestampString = "522757816.233075"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "288"
-                  endingLineNumber = "288"
-                  offsetFromSymbolStart = "28">
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "24">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "UTShuttleSwift.CurrentJobViewController.loadPassengerButtontapped (sender : __ObjC.UIButton) -&gt; ()"
+                  symbolName = "UTShuttleSwift.JobsViewController.deleteJobTapped (sender : __ObjC.UIButton) -&gt; ()"
                   moduleName = "UTShuttleSwift"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/iosdeveloper/Documents/Srinivas/Experiments/UTShuttleSwift/UTShuttleSwift/Classes/CurrentJobViewController.swift"
-                  timestampString = "522680720.978034"
+                  urlString = "file:///Users/iosdeveloper/Documents/Srinivas/Experiments/UTShuttleSwift/UTShuttleSwift/Classes/JobsViewController.swift"
+                  timestampString = "522757816.234548"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "288"
-                  endingLineNumber = "288"
-                  offsetFromSymbolStart = "5473">
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "1840">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "UTShuttleSwift/Classes/CurrentJobViewController.swift"
-            timestampString = "522680744.247012"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "loadPassengerButtontapped(sender:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

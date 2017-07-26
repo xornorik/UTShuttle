@@ -36,6 +36,8 @@ class APIClient : NSObject {
         static let getCurrentRideDetails = "RouteScheduleRideList/GetCurrentRide"
         static let getCurrentRideStops = "ScheduleRouteStops/GetScheduleRouteStops"
         static let getDriverTripHistory = "TripHistory/GetDriverTripHistory"
+        static let deleteRoute = "Routes/DeleteRoute"
+        static let deleteJob = "VoidSchedule/VoidScheduleReservation"
     }
     
     func setup()
@@ -540,5 +542,71 @@ class APIClient : NSObject {
         }
 
     }
+    
+    func deleteRoute(routeId:Double, username:String, callback:@escaping (_ success:Bool,_ error:String)->())
+    {
+        print("Requesting Route Delete")
+        showHUD()
+        let parameters:[String : Any] = ["Id":routeId,"UserName":username]
+        let url = baseUrl + EndPoints.deleteRoute
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        
+                        hideHUD()
+                        callback(true,"")
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue)
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
+    }
+    
+    func deleteJob(rideId:Double, scheduleId:Double, username:String, callback:@escaping (_ success:Bool,_ error:String)->())
+    {
+        print("Requesting Job Delete")
+        showHUD()
+        let parameters:[String : Any] = ["RideId":rideId,"ScheduleId":scheduleId, "UserName":username]
+        let url = baseUrl + EndPoints.deleteJob
+        manager.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+            .validate()
+            .responseJSON { (response) in
+                print("Received response \(response)")
+                if response.result.isSuccess
+                {
+                    let json = JSON(response.result.value!)
+                    if json["IsSuccess"].boolValue
+                    {
+                        
+                        hideHUD()
+                        callback(true,"")
+                    }
+                    else
+                    {
+                        hideHUD()
+                        callback(false,json["ResponseMessage"].stringValue)
+                    }
+                }
+                else
+                {
+                    hideHUD()
+                    self.parseError(response: response)
+                }
+        }
 
+    }
 }

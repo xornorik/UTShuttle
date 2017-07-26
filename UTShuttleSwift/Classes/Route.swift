@@ -11,12 +11,12 @@ import SwiftyJSON
 
 class Route {
     
-    var id:Int?
+    var id:Double?
     var name:String?
     var stopCountText:String?
     
     init(json:JSON) {
-        id = json["Id"].numberValue.intValue
+        id = json["Id"].numberValue.doubleValue
         name = json["RouteName"].stringValue
         stopCountText = json["StopCount"].stringValue
     }

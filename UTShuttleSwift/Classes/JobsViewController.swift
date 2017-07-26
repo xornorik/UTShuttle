@@ -18,7 +18,6 @@ class JobsViewController: UIViewController {
     
     var scheduledJobs = [ScheduledJob]()
     var rideDetails = [RideDetail]()
-    var popupView:AddNewJob?
     
     let apiClient = APIClient.shared
 
@@ -81,15 +80,7 @@ class JobsViewController: UIViewController {
         
     }
     
-    func dismissAddNewJobView()
-    {
-        if popupView != nil
-        {
-            popupView?.hide()
-        }
-    }
-    
-    func getScheduledJobs(callback:@escaping ()->())
+    func getScheduledJobs(callback: (()->())? = nil)
     {
         guard let username = Defaults[.driverUsername] else {return}
         
@@ -99,7 +90,10 @@ class JobsViewController: UIViewController {
             {
                 self.scheduledJobs = scheduledJobs
                 self.myJobsTableView.reloadData()
-                callback()
+                if callback != nil
+                {
+                    callback!()
+                }
             }
             else
             {
@@ -130,6 +124,27 @@ class JobsViewController: UIViewController {
     func reloadJobsTable()
     {
         self.myJobsTableView.reloadData()
+    }
+    
+    func deleteJobTapped(sender:UIButton)
+    {
+        let cell = sender.superview?.superview as! UITableViewCell
+        guard let indexPath = self.availableJobsTableView.indexPath(for: cell) else {return}
+        let job = scheduledJobs[indexPath.row]
+        guard let username = Defaults[.driverUsername] else {return}
+        
+        apiClient.deleteJob(rideId: Double(job.rideId!)!, scheduleId: Double(job.scheduleId!)!, username: username) { (success, error) in
+            
+            if success
+            {
+                self.getScheduledJobs()
+            }
+            else
+            {
+                showError(title: "Alert", message: error)
+            }
+        }
+        
     }
 
 }
@@ -201,6 +216,7 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
                 let flightLabel = cell.viewWithTag(101) as! UILabel
                 let timeLabel = cell.viewWithTag(102) as! UILabel
                 let paxLabel = cell.viewWithTag(103) as! UILabel
+                let deleteButton = cell.viewWithTag(104) as! UIButton!
                 
                 let rideDetail = rideDetails[indexPath.row]
                 
@@ -208,6 +224,7 @@ extension JobsViewController : UITableViewDelegate, UITableViewDataSource
                 flightLabel.text = rideDetail.flightDetails
                 timeLabel.text = rideDetail.time
                 paxLabel.text = rideDetail.pax
+                deleteButton?.addTarget(self, action: #selector(deleteJobTapped(sender:)), for: .touchUpInside)
                 
                 return cell
             }

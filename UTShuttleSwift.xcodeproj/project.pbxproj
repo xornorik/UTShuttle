@@ -14,6 +14,8 @@
 		444621E51F25CDA8002CBEB3 /* TripHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */; };
 		444621E71F2702BD002CBEB3 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621E61F2702BD002CBEB3 /* ProfileViewController.swift */; };
 		444621EB1F275BC8002CBEB3 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621EA1F275BC8002CBEB3 /* ProfileManager.swift */; };
+		444621EE1F28670F002CBEB3 /* PaxCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444621ED1F28670F002CBEB3 /* PaxCounterView.swift */; };
+		444621F01F286797002CBEB3 /* PaxCounterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 444621EF1F286797002CBEB3 /* PaxCounterView.xib */; };
 		4448505A1F0F57B60039E209 /* CommandClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444850591F0F57B60039E209 /* CommandClient.swift */; };
 		4448505C1F0F57F20039E209 /* DefaultStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505B1F0F57F20039E209 /* DefaultStyle.swift */; };
 		4448505E1F0F62C70039E209 /* DeviceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4448505D1F0F62C70039E209 /* DeviceDetails.swift */; };
@@ -340,6 +342,8 @@
 		444621E41F25CDA8002CBEB3 /* TripHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TripHistoryViewController.swift; path = Classes/TripHistoryViewController.swift; sourceTree = "<group>"; };
 		444621E61F2702BD002CBEB3 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = Classes/ProfileViewController.swift; sourceTree = "<group>"; };
 		444621EA1F275BC8002CBEB3 /* ProfileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileManager.swift; path = Classes/ProfileManager.swift; sourceTree = "<group>"; };
+		444621ED1F28670F002CBEB3 /* PaxCounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaxCounterView.swift; path = Classes/PaxCounterView.swift; sourceTree = "<group>"; };
+		444621EF1F286797002CBEB3 /* PaxCounterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PaxCounterView.xib; path = XIB/PaxCounterView.xib; sourceTree = "<group>"; };
 		444850591F0F57B60039E209 /* CommandClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommandClient.swift; path = Classes/CommandClient.swift; sourceTree = "<group>"; };
 		4448505B1F0F57F20039E209 /* DefaultStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultStyle.swift; path = Classes/DefaultStyle.swift; sourceTree = "<group>"; };
 		4448505D1F0F62C70039E209 /* DeviceDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceDetails.swift; path = Classes/DeviceDetails.swift; sourceTree = "<group>"; };
@@ -688,6 +692,15 @@
 				DF6145F7D1AE52E70E57237D /* Pods_UTShuttleSwiftUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		444621EC1F2865C3002CBEB3 /* Pax Count */ = {
+			isa = PBXGroup;
+			children = (
+				444621ED1F28670F002CBEB3 /* PaxCounterView.swift */,
+				444621EF1F286797002CBEB3 /* PaxCounterView.xib */,
+			);
+			name = "Pax Count";
 			sourceTree = "<group>";
 		};
 		444850501F0F45070039E209 /* API Client */ = {
@@ -1058,6 +1071,7 @@
 		444A379B1F14AD4600D48C63 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				444621EC1F2865C3002CBEB3 /* Pax Count */,
 				B3ED3B1E1F2288AF00B8E480 /* Rounded ImageView */,
 				B3ED3B1D1F22889500B8E480 /* Country Picker */,
 				44551A811F1F68A200275109 /* Add job */,
@@ -1516,6 +1530,7 @@
 				444A36E01F14AAAC00D48C63 /* ET.png in Resources */,
 				444A36E61F14AAAC00D48C63 /* FR.png in Resources */,
 				444A36E51F14AAAC00D48C63 /* FO.png in Resources */,
+				444621F01F286797002CBEB3 /* PaxCounterView.xib in Resources */,
 				444A36EC1F14AAAC00D48C63 /* GF.png in Resources */,
 				444A376A1F14AAAC00D48C63 /* SO.png in Resources */,
 				444A37761F14AAAC00D48C63 /* TH.png in Resources */,
@@ -1750,6 +1765,7 @@
 				44663FEB1F18A86E005ACF79 /* RoundedImageView.swift in Sources */,
 				444621E51F25CDA8002CBEB3 /* TripHistoryViewController.swift in Sources */,
 				444621DF1F25BEFF002CBEB3 /* TripHistoryStop.swift in Sources */,
+				444621EE1F28670F002CBEB3 /* PaxCounterView.swift in Sources */,
 				448F30261F1E23BD008649CA /* RideDetail.swift in Sources */,
 				448FE4BF1F1346EF009E644B /* DeviceRegistrationViewController.swift in Sources */,
 				444A37A21F14B4F000D48C63 /* SwiftCountryView.swift in Sources */,

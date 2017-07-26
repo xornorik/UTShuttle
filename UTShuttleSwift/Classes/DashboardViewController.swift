@@ -42,6 +42,7 @@ class DashboardViewController: UIViewController {
         {
             getDriverDetails()
         }
+        setVehicleIfSelected()
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,8 +80,6 @@ class DashboardViewController: UIViewController {
         selectVehicleButton.addTarget(self, action: #selector(selectVehicleTapped), for: .touchUpInside)
         logOffButton.addTarget(self, action: #selector(logOffTapped), for: .touchUpInside)
         
-        setVehicleIfSelected()
-
          _ = promptVehiclSelection()
     }
     

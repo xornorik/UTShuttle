@@ -113,7 +113,7 @@ class CommandClient: NSObject {
     func deviceAuth(callback:(_ response:deviceAuthError)->()){
         if isConnected()
         {
-            let udid = "545FA95F-D82C-46CE-8135-D62B2ADF3526"//DeviceDetails.deviceID() //consider encrypting
+            let udid = DeviceDetails.deviceID() //consider encrypting
             let command = "#"+udid+"|"+Commands.DeviceAuth
             switch client.send(string: command)
             {
@@ -201,10 +201,10 @@ class CommandClient: NSObject {
         if isConnected()
         {
             var reqParameters = [String]()
-            reqParameters.append("545FA95F-D82C-46CE-8135-D62B2ADF3526")//DeviceDetails.deviceID())
+            reqParameters.append(DeviceDetails.deviceID())
             reqParameters.append(Commands.DeviceReg)
             reqParameters.append(uniqueId)
-            reqParameters.append("1") //iOS:1, Android:0
+            reqParameters.append("1") //iOS:1, Android:0 [!]should I invert
             
             let command = encodeRequest(requestParameters: reqParameters)
             switch client.send(string: command)
@@ -265,6 +265,9 @@ class CommandClient: NSObject {
                     case 0,3,4,5,6:
                         callback(false, driverAuthError(rawValue: status)!, [])
                     case 1,2:
+                        //login details are being stored on the login page, but vehicle number is left. This happens when there is an exisiting job.
+                        let resp = responseArr[3]
+                        
                         callback(true, driverAuthError.Success, responseArr) //as advised by backend
                     default:
                         print("Bad response from server")

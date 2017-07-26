@@ -84,12 +84,12 @@ class CurrentJobViewController: UIViewController {
             self.startJobButton.addTarget(self, action: #selector(self.completeTripButtonTapped), for: .touchUpInside)
             self.nextStopButton.isHidden = false
             self.previousStopButton.isHidden = false
+            nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
+            previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
         }
         else
         {
             self.startJobButton.addTarget(self, action: #selector(self.startjobTapped), for: .touchUpInside)
-            nextStopButton.addTarget(self, action: #selector(nextStopButtonTapped), for: .touchUpInside)
-            previousStopButton.addTarget(self, action: #selector(previousStopButtonTapped), for: .touchUpInside)
             nextStopButton.isHidden = true
             previousStopButton.isHidden = true
 
@@ -101,15 +101,26 @@ class CurrentJobViewController: UIViewController {
     {
         if let currentStopId = Defaults[.currentStopId]
         {
-            for (index,stop) in stops!.enumerated()
+            if currentStopId == "0"
             {
-                if stop.stopId == currentStopId
+                currentStop = stops?[0]
+                currentStopIndexPath = IndexPath(row: 0, section: 0)
+                currentStopLabel.text = currentStop?.stopName
+                goToCurrentStop()
+                
+            }
+            else
+            {
+                for (index,stop) in stops!.enumerated()
                 {
-                    currentStop = stop
-                    currentStopIndexPath = IndexPath(item: index, section: 0)
-                    currentStopLabel.text = currentStop?.stopName
-                    goToCurrentStop()
-                    break
+                    if stop.stopId == currentStopId
+                    {
+                        currentStop = stop
+                        currentStopIndexPath = IndexPath(item: index, section: 0)
+                        currentStopLabel.text = currentStop?.stopName
+                        goToCurrentStop()
+                        break
+                    }
                 }
             }
         }
@@ -170,6 +181,9 @@ class CurrentJobViewController: UIViewController {
                     self.startJobButton.addTarget(self, action: #selector(self.completeTripButtonTapped), for: .touchUpInside)
                     self.nextStopButton.isHidden = false
                     self.previousStopButton.isHidden = false
+                    self.nextStopButton.addTarget(self, action: #selector(self.nextStopButtonTapped), for: .touchUpInside)
+                    self.previousStopButton.addTarget(self, action: #selector(self.previousStopButtonTapped), for: .touchUpInside)
+                    self.isJobStarted = true
                     self.jobDetailsTableView.reloadData()
                 }
                 else
@@ -232,6 +246,7 @@ class CurrentJobViewController: UIViewController {
     {
         guard let deviceId = Defaults[.deviceId] else {return}
         guard let currentStopIndex = currentStopIndexPath?.row else {return}
+        guard currentStopIndex < (stops?.count)! else {return} //do nothing if it's the last stop
         let nextStop = stops?[currentStopIndex + 1]
         
         tcpClient.updateCurrentTrip(deviceId: deviceId, rideId: self.tripId, currentStopId: (nextStop?.stopId)!) { (success) in
@@ -240,7 +255,8 @@ class CurrentJobViewController: UIViewController {
             {
                 guard currentStopIndexPath?.item != nil else {return}
                 let nextStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! + 1, section: 0)
-                guard nextStopIndexPath.item < ((stops?.count)! - 1) else {return}
+                guard nextStopIndexPath.item <= ((stops?.count)!) else {return}
+                self.currentStopLabel.text = stops?[nextStopIndexPath.row].stopName
                 
                 UIView.animate(withDuration: 0.1, animations: {
                     self.stopsCollectionView.scrollToItem(at: nextStopIndexPath, at: .centeredHorizontally, animated: false)
@@ -257,27 +273,49 @@ class CurrentJobViewController: UIViewController {
                     }
                 }
             }
+            else
+            {
+                showError(title: "Alert", message: "Action Failed, Please try again.")
+            }
         }
     }
     
     func previousStopButtonTapped()
     {
-        guard currentStopIndexPath?.item != nil else {return}
-        let previousStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! - 1, section: 0)
-        guard previousStopIndexPath.item >= 0 else {return}
+        guard let deviceId = Defaults[.deviceId] else {return}
+        guard let currentStopIndex = currentStopIndexPath?.row else {return}
+        guard currentStopIndex != 0 else {return}         //do nothing if the current stop is the first stop
+        let nextStop = stops?[currentStopIndex - 1]
         
-        UIView.animate(withDuration: 0.1, animations: {
-            self.stopsCollectionView.scrollToItem(at: previousStopIndexPath, at: .centeredHorizontally, animated: false)
-        }) { (true) in
-            let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
-            cell.drawRightConnector(duration: 0.1) {
-                let nextCell = self.stopsCollectionView.cellForItem(at: previousStopIndexPath) as! UTSNodeCollectionViewCell
-                nextCell.drawLeftConnector(duration: 0.1, callback: {
-                    nextCell.animateNodeColorChange(duration: 0.1, callback: {
-                        self.currentStopIndexPath = previousStopIndexPath
-                        self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! + 1, section: 0)])
+        tcpClient.updateCurrentTrip(deviceId: deviceId, rideId: self.tripId, currentStopId: (nextStop?.stopId)!) { (success) in
+            
+           if success
+           {
+            guard currentStopIndexPath?.item != nil else {return}
+            let previousStopIndexPath = IndexPath(item: (currentStopIndexPath?.item)! - 1, section: 0)
+            guard previousStopIndexPath.item >= 0 else {return}
+            self.currentStopLabel.text = stops?[previousStopIndexPath.row].stopName
+            
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                self.stopsCollectionView.scrollToItem(at: previousStopIndexPath, at: .centeredHorizontally, animated: false)
+            }) { (true) in
+                let cell = self.stopsCollectionView.cellForItem(at: self.currentStopIndexPath!) as! UTSNodeCollectionViewCell
+                cell.drawRightConnector(duration: 0.1) {
+                    let nextCell = self.stopsCollectionView.cellForItem(at: previousStopIndexPath) as! UTSNodeCollectionViewCell
+                    nextCell.drawLeftConnector(duration: 0.1, callback: {
+                        nextCell.animateNodeColorChange(duration: 0.1, callback: {
+                            self.currentStopIndexPath = previousStopIndexPath
+                            self.stopsCollectionView.reloadItems(at: [self.currentStopIndexPath!,IndexPath(item: (self.currentStopIndexPath?.item)! + 1, section: 0)])
+                        })
                     })
-                })
+                }
+            }
+
+            }
+            else
+           {
+            showError(title: "Alert", message: "Action Failed, Please try again.")
             }
         }
     }
@@ -287,29 +325,12 @@ class CurrentJobViewController: UIViewController {
         //have to show view first
         let cell = sender.superview?.superview?.superview?.superview as! UITableViewCell
         guard let indexPath = jobDetailsTableView.indexPath(for: cell) else {print("indexPath issue");return}
+        guard let currentStop = currentStop else {print("current stop issue");return}
         guard let jobDetail = rideDetails?[indexPath.row] else {print("jobdetail issue");return}
         
-        guard let deviceId = Defaults[.deviceId] else {return}
-        guard let currentStop = currentStop else {return}
-        guard let lat = Defaults[.lastLatitude] else {return}
-        guard let lon = Defaults[.lastLongitude] else {return}
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMddHHmmss"
-        let deviceTime = dateFormatter.string(from: Date())
-        
-        
-        tcpClient.loadPassenger(deviceId: deviceId, refId: jobDetail.refId!, rideId: self.tripId, stopId: currentStop.stopId!, deviceTime: deviceTime, lat: String(lat), lon: String(lon), sourceTypeId: jobDetail.sourceTypeId!, paxCount: jobDetail.paxCount!, paxDetailId: jobDetail.paxDetailId!) { (success) in
-            
-            if success
-            {
-                self.getRideDetails()
-            }
-            else
-            {
-                showError(title: "Alert", message: "Action Failed, Please try again.")
-            }
-        }
-        
+        let popupView = PaxCounterView(jobDetail: jobDetail, currentStop: currentStop, rideId: self.tripId)
+        popupView?.saveButtonCallback = self.getRideDetails
+        popupView?.show()
     }
     
     

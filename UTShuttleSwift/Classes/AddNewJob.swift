@@ -42,7 +42,7 @@ class AddNewJob: UIView {
     var isFriday = false
     var isSaturday = false
     var isSunday = false
-    var selectedRouteId:Int?
+    var selectedRouteId:Double?
     var time = ""
     
     required init?(coder aDecoder: NSCoder) {

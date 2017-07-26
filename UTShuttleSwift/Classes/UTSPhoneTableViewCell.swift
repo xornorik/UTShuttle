@@ -60,6 +60,10 @@ class UTSPhoneTableViewCell: UITableViewCell {
     
     func findCountryByCode(countryCode:String) -> Country
     {
+        if countryCode == "+1"
+        {
+            return Country(code: "US", name: "United States", phoneCode: "+1")
+        }
         for country in countries
         {
             if countryCode == country.phoneCode

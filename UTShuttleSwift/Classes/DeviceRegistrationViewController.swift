@@ -56,6 +56,8 @@ class DeviceRegistrationViewController: UIViewController {
         
         //delegates
         phoneNoTextField.delegate = self
+        phoneNoTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+
         
         //assigning selectors
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
@@ -123,7 +125,7 @@ class DeviceRegistrationViewController: UIViewController {
                 case .InvalidUniqueId:
                     showError(title: "Alert", message: "The unique ID entered by you is invalid. Please enter the correct ID or send a request for another ID.")
                 case .Failed:
-                    showError(title: "Alert", message: "Invalid unique ID.")
+                    showError(title: "Alert", message: "The unique ID entered by you is invalid. Please enter the correct ID or send a request for another ID.")
                 case .Success:
                     break
                 }
@@ -169,9 +171,25 @@ class DeviceRegistrationViewController: UIViewController {
         toolBar.isUserInteractionEnabled = true
         phoneNoTextField.inputView = countryPicker
         phoneNoTextField.inputAccessoryView = toolBar
-        
         phoneNoTextField.becomeFirstResponder()
 
+    }
+    
+    func textFieldDidChange(textField: UITextField)
+    {
+        if textField == phoneNoTextField
+        {
+            textField.text = textField.text?.formatPhoneNumber()
+            if (textField.text?.characters.count)! >= 14
+            {
+                if (textField.text?.characters.count)! > 14
+                {
+                    let index = textField.text?.index((textField.text?.startIndex)!, offsetBy: 14)
+                    textField.text = textField.text?.substring(to: index!)
+                }
+                dismissKeyboard()
+            }
+        }
     }
 }
 extension DeviceRegistrationViewController:UITextFieldDelegate

@@ -120,7 +120,7 @@ class VehicleViewController: UIViewController {
     {
         guard let deviceId = Defaults[.deviceId] else {return}
         guard let username = Defaults[.driverUsername] else {return}
-        let machineIp = "DEVICE- 545FA95F-D82C-46CE-8135-D62B2ADF3526"//DeviceDetails.deviceID()
+        let machineIp = "DEVICE- " + DeviceDetails.deviceID()
         
         apiClient.mapVehicleToDriver(vehicleId: vehicleId, deviceId: Int(deviceId)!, machineIp: machineIp, username: username, isMapped: shouldMap) { (success, error) in
             

@@ -84,16 +84,23 @@ class LoadingViewController: UIViewController {
                     delegate.setupUI()
                 })
             case .InvalidDevice:
-                showError(title: "Alert", message: "Your Device is Invalid. Please request for a new unique ID by entering your phone number.") { _ in
-                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
-                        self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-                        self.splashImageView.alpha = 0
-                    }, completion: { (success) in
-                        let delegate = UIApplication.shared.delegate as! AppDelegate
-                        delegate.setupUI()
-                    })
-                    
-                }
+//                showError(title: "Alert", message: "Your Device is Invalid. Please request for a new unique ID by entering your phone number.") { _ in
+//                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+//                        self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//                        self.splashImageView.alpha = 0
+//                    }, completion: { (success) in
+//                        let delegate = UIApplication.shared.delegate as! AppDelegate
+//                        delegate.setupUI()
+//                    })
+//                }
+                UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
+                    self.view.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                    self.splashImageView.alpha = 0
+                }, completion: { (success) in
+                    let delegate = UIApplication.shared.delegate as! AppDelegate
+                    delegate.setupUI()
+                })
+
             case .LoggedOut:
                 showError(title: "Alert", message: "You have been logged out. Please request for a new unique ID by entering your phone number.") { _ in
                     UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {

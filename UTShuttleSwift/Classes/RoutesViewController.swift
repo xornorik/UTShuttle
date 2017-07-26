@@ -56,6 +56,27 @@ class RoutesViewController: UIViewController {
             }
         }
     }
+    
+    func deleteRouteTapped(sender:UIButton)
+    {
+        let cell = sender.superview?.superview as! UITableViewCell
+        guard let indexPath = self.routesTableView.indexPath(for: cell) else {return}
+        guard let route = routes?[indexPath.row] else {return}
+        guard let username = Defaults[.driverUsername] else {return}
+        
+        apiClient.deleteRoute(routeId: route.id!, username: username) { (success, error) in
+            
+            if success
+            {
+                self.getRoutes()
+            }
+            else
+            {
+                showError(title: "Alert", message: error)
+
+            }
+        }
+    }
 }
 extension RoutesViewController : UITableViewDelegate, UITableViewDataSource
 {
@@ -67,10 +88,12 @@ extension RoutesViewController : UITableViewDelegate, UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "routeCell", for: indexPath)
         let routeNameLabel = cell.viewWithTag(100) as! UILabel
         let stopsLabel = cell.viewWithTag(101) as! UILabel
+        let deleteButton = cell.viewWithTag(102) as! UIButton
         let route = routes?[indexPath.row]
         
         routeNameLabel.text = route?.name
         stopsLabel.text = route?.stopCountText
+        deleteButton.addTarget(self, action: #selector(deleteRouteTapped(sender:)), for: .touchUpInside)
         
         return cell
     }
